@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Crafting the Cluster CNF Operators Configs :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://redhat-scholars.github.io/course-template/5g-ran-deployments-on-ocp-lab/main/13-crafting-cluster-cnf-operators-configs.html">
+    <link rel="prev" href="12-crafting-deployments-iaac.html">
+    <link rel="next" href="14-running-the-deployment.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img src="../../_/img/NewRHDFullLogo_4-color_white-wordmark.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-scholars.github.io/course-template">LAB - 5G RAN Deployments on OpenShift</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="5g-ran-deployments-on-ocp-lab" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="00-introduction.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="01-5g-ran-context.html">5G Ran Context</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-5g-ran-context.html#low-latency">Low Latency</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-5g-ran-context.html#numa-nodes">NUMA Nodes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-5g-ran-context.html#huge-pages">Huge Pages</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-5g-ran-context.html#cpu-pinning">CPU Pinning</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-5g-ran-context.html#irq-load-balancing">IRQ Load Balancing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-5g-ran-context.html#dpdk">DPDK</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-5g-ran-context.html#oot-drivers">OoT Drivers</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-5g-ran-context.html#cpu-reduction-tuning">Tuning for CPU Reduction</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-sno-intro.html">Introduction to Single Node OpenShift (SNO)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-sno-intro.html#5g-ran">5G Radio Access Network</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-sno-intro.html#things-keep-mind">Things to keep in mind</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-sno-intro.html#deployments">Deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-sno-intro.html#extra-information">Extra information</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="03-cnf-operators-intro.html">Introduction to CNF Operators</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-cnf-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-cnf-operators-intro.html#sriov-operator">SR-IOV Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-cnf-operators-intro.html#ptp-operator">PTP Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-cnf-operators-intro.html#accelerators-operators">Accelerators Operators</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="04-ztp-intro.html">Introduction to Zero Touch Provisioning (ZTP)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="04-ztp-intro.html#gitops">GitOps</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="04-ztp-intro.html#gitops-principles">GitOps Principles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="04-ztp-intro.html#gitops-patterns-ocp">GitOps Patterns on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="04-ztp-intro.html#direct-commit-to-main">Direct commit to main</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="04-ztp-intro.html#prs-review-cycles">Pull Requests and review cycles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="04-ztp-intro.html#directories-vs-branches">Directories vs Branches</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="04-ztp-intro.html#ztp-workflow">ZTP workflow</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="05-ocp-gitops.html">OpenShift GitOps</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="05-ocp-gitops.html#gitops-principles">Principles of GitOps</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="05-ocp-gitops.html#gitops-ocp">GitOps on OpenShift</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="06-rhacm-policies.html">RHACM Policies</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="07-managing-at-scale.html">Managing at Scale</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="07-managing-at-scale.html#inform-policies">Inform Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="07-managing-at-scale.html#olm-subscriptions">OLM Subscriptions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="07-managing-at-scale.html#cluster-policies">Cluster Policies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="08-ztp-at-scale.html">ZTP at Scale</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="09-talm.html">Topology Aware Lifecycle Manager (TALM)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="09-talm.html#cluster-lifecycle-at-scale">Lifecycle management of many clusters at scale</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="10-policygen-deepdive.html">PolicyGen Deepdive</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="11-deployment-considerations.html">Deployment Considerations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="11-deployment-considerations.html#hardware-configurations">Hardware configurations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="11-deployment-considerations.html#bios-settings">Bios Settings</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="11-deployment-considerations.html#networking">Networking</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="11-deployment-considerations.html#disconnected-environments">Disconnected Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="11-deployment-considerations.html#connected-proxy">Connected through proxy</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="11-deployment-considerations.html#fully-disconnected">Fully disconnected</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="11-deployment-considerations.html#git-repo-structure">Git Repository Structure</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="12-crafting-deployments-iaac.html">Crafting Deployment&#8217;s IaaC</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="13-crafting-cluster-cnf-operators-configs.html">Crafting Cluster and CNF Operators Configs</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="14-running-the-deployment.html">Running the Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="15-monitoring-the-deployment.html">Monitoring the Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="16-check-deployment-is-finished.html">Check Deployment is finished</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="17-using-talm-to-update-clusters.html">Using TALM to update clusters</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="18-troubleshooting-tips.html">Troubleshooting Tips</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="19-common-pitfalls.html">Common Pitfalls</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="20-closing-thoughts.html">Closing Thoughts</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
+    <li><a href="13-crafting-cluster-cnf-operators-configs.html">Crafting Cluster and CNF Operators Configs</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/13-crafting-cluster-cnf-operators-configs.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Crafting the Cluster CNF Operators Configs</h1>
+<div class="paragraph">
+<p>TBD</p>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="12-crafting-deployments-iaac.html">Crafting Deployment&#8217;s IaaC</a></span>
+  <span class="next"><a href="14-running-the-deployment.html">Running the Deployment</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
