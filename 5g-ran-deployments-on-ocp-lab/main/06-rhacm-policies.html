@@ -281,7 +281,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>As we mentioned in the [ZTP Workflow](<a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/main/content/4.md#ztp-workflow" class="bare">https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/main/content/4.md#ztp-workflow</a>) section, the Advanced Cluster Management for Kubernetes allow us to <em>provision</em> and <em>configure</em> multiple clusters in a declarative way following GitOps best practices. ZTP makes intensive use of Policies when setting up the target clusters as a day 2 operation. In our telco use case, the ZTP policyGen kustomize plugin translates the vRAN DU profile based on <code>PolicyGenTemplates</code> into multiple `Policies`that are understood by the Hub cluster and applied to the managed clusters.</p>
+<p>As we mentioned in the <a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/main/content/4.md#ztp-workflow">ZTP Workflow</a> section, the Advanced Cluster Management for Kubernetes allow us to <em>provision</em> and <em>configure</em> multiple clusters in a declarative way following GitOps best practices. ZTP makes intensive use of Policies when setting up the target clusters as a day 2 operation. In our telco use case, the ZTP policyGen kustomize plugin translates the vRAN DU profile based on <code>PolicyGenTemplates</code> into multiple `Policies`that are understood by the Hub cluster and applied to the managed clusters.</p>
 </div>
 <div class="paragraph">
 <p>In this section we provide an introduction to the concepts behind the “Governance" section of RHACM. Furthermore, we are going to introduce the concept of a Policy, which is key for managing the configuration lifecycle of our managed clusters.</p>
@@ -474,12 +474,14 @@ spec:
 <div class="paragraph">
 <p>This is important, since sometimes we just need to be informed about the drift between our desired state defined by the Policy and the current status of the spoke cluster or clusters. On the other hand, in case where we want to apply a configuration, such as installing an operator, replacing the existing configuration or adding a new set up to the cluster, the Policy should be set to enforce.</p>
 </div>
-<div id="rhacm-policies-takeaways" class="paragraph">
-<p>==Takeaways</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="rhacm-policies-takeaways"><a class="anchor" href="#rhacm-policies-takeaways"></a>Takeaways</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>[1] <a href="https://github.com/stolostron/policy-collection" class="bare">https://github.com/stolostron/policy-collection</a></p>
-</div>
 </div>
 </div>
 </div>
