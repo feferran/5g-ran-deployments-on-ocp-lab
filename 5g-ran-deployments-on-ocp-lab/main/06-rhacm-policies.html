@@ -289,13 +289,15 @@
 <div class="paragraph">
 <p>In the RHACM console you can find the governance section in the bottom left part of the menu bar. As you can see in the picture, there are multiple Policies applied, some are disabled while most of them are enabled (Status) with remediation set to inform. We will get into the details later on.</p>
 </div>
-<div class="paragraph">
-<p>![Governance section](../images/rhacm_section_governance.png "Governance section")</p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="rhacm_section_governance.png" alt="Governance section">
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_policy_framework"><a class="anchor" href="#_policy_framework"></a>Policy framework</h2>
+<h2 id="policy-framework"><a class="anchor" href="#policy-framework"></a>Policy framework</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Policies are comprised into the Policy framework. The policy framework provides governance capability to gain visibility, and drive remediation for various security and configuration aspects to help meet such enterprise standards. Basically, it provides an extensible policy framework for enterprises to harden security for software engineering, secure engineering, and resiliency.</p>
@@ -322,8 +324,10 @@
 <div class="paragraph">
 <p>In the next picture you can see the communication flow and the multiple components involved in creating, propagating and applying policies:</p>
 </div>
-<div class="paragraph">
-<p>![Policy framework architecture](../images/policy-framework-architecture-diagram.jpg "Policy framework architecture")</p>
+<div class="imageblock unresolved">
+<div class="content">
+<img src="policy-framework-architecture-diagram.jpg" alt="Policy framework architecture">
+</div>
 </div>
 <div class="paragraph">
 <p>At a glance, once we create a Policy in the hub cluster, the Governance Policy framework is responsible for propagating it to the target managed cluster or clusters if it must be applied to multiple. Then, the policy rules are evaluated against the current state of the managed cluster. The results of this assessment are sent back to the hub cluster and depending on the needs, we can remediate the drift or just be informed.</p>
@@ -331,7 +335,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_policies"><a class="anchor" href="#_policies"></a>Policies</h2>
+<h2 id="policies"><a class="anchor" href="#policies"></a>Policies</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The Policy is the Custom Resource Definition (CRD), created for policy framework controllers to monitor. It acts as a vehicle to deliver policies to managed cluster and collect results to send to the hub cluster.</p>
@@ -342,7 +346,7 @@
 <div class="paragraph">
 <p>Note that the PlacementBinding connects the Policy to the PlacementRule, and the PlacementRule defines where the Policy should be active. View the following example specification of a Policy object:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
@@ -417,7 +421,7 @@ spec:
 <div class="paragraph">
 <p>The PlacementBinding CRD is used to bind the Policy with a PlacementRule. Only a bound Policy is distributed to a managed cluster by the policy framework. View the following example specification of a PlacementBinding object:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
@@ -437,7 +441,7 @@ subjects:
 <div class="paragraph">
 <p>The PlacementRule CRD is used to determine the target clusters to distribute policies to. View the following example specification of a PlacementRule object:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
@@ -460,7 +464,7 @@ spec:
 <p>Policies can be enabled or disabled by setting the disabled parameter value to true or false. By default they are enabled. With that, we have covered the basics of what a Policy in RHACM is, and how it works.</p>
 </div>
 <div class="sect2">
-<h3 id="_policy_remediation"><a class="anchor" href="#_policy_remediation"></a>Policy remediation</h3>
+<h3 id="policy-remediation"><a class="anchor" href="#policy-remediation"></a>Policy remediation</h3>
 <div class="paragraph">
 <p>As it will detailed in the following section [..] <code>PolicyGenTemplates</code> are by default set to inform mode. This value is then propagated to their respective <code>Policies</code>.</p>
 </div>
@@ -470,14 +474,12 @@ spec:
 <div class="paragraph">
 <p>This is important, since sometimes we just need to be informed about the drift between our desired state defined by the Policy and the current status of the spoke cluster or clusters. On the other hand, in case where we want to apply a configuration, such as installing an operator, replacing the existing configuration or adding a new set up to the cluster, the Policy should be set to enforce.</p>
 </div>
+<div id="rhacm-policies-takeaways" class="paragraph">
+<p>==Takeaways</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_takeaways"><a class="anchor" href="#_takeaways"></a>Takeaways</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>[1] <a href="https://github.com/stolostron/policy-collection" class="bare">https://github.com/stolostron/policy-collection</a></p>
+</div>
 </div>
 </div>
 </div>
