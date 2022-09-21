@@ -342,22 +342,46 @@ The workflow does not need any intervention, so ZTP automatically will configure
 </table>
 </div>
 <div class="paragraph">
-<p>You start the workflow by creating declarative configurations for the provisioning of your OpenShift clusters. This configuration is called <code>siteConfig</code> and it is understood by ZTP using an specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin">siteconfig-generator</a>. This CR contains all the necessary information for RHACM and Assisted Installer to provision your node or nodes. Basically, it will create ISO images with the the defined configuration that are delivered to the edge nodes to begin the installation process. The images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you keep up with requirements from the field for far edge nodes.</p>
+<p>You start the workflow by creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is described in a custom resource called <code>siteConfig</code>. Once the configuration is created you can push it to the Git repo where Argo CD is continuously looking to pull the new content:</p>
 </div>
 <div class="imageblock unresolved">
 <div class="content">
 <img src="ztp_workflow_0.png" alt="ZTP Workflow 0">
 </div>
 </div>
+<div class="paragraph">
+<p>Then, Argo CD pulls the siteConfig and uses a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin">siteconfig-generator</a> to transform it into custom resources understandable by the hub cluster (RHACM/MCE). A siteConfig contains all the necessary information to provision your node or nodes. Basically, it will create ISO images with the the defined configuration that are delivered to the edge nodes to begin the installation process. The images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you keep up with requirements from the field for far edge nodes.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+On telco use cases, clusters are mainly running on baremetal hosts. Therefore the created ISO images are mounted using remote virtual media features of the baseboard management controller (BMC).
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In the picture, these resulting manifests are called Cluster Installation CRs. Then, the provisioning process starts.</p>
+</div>
 <div class="imageblock unresolved">
 <div class="content">
 <img src="ztp_workflow_1.png" alt="ZTP Workflow 1">
 </div>
 </div>
+<div class="paragraph">
+<p>The provisioning process includes innstalling the host operating system (RHCOS) on a blank server and deploying OpenShift Container Platform. Notice in the picture how ZTP allow us to provision clusters at scale.</p>
+</div>
 <div class="imageblock unresolved">
 <div class="content">
 <img src="ztp_workflow_2.png" alt="ZTP Workflow 2">
 </div>
+</div>
+<div class="paragraph">
+<p>Once the clusters are provisioned, the day-2 configuration defined in multiple <code>PolicyGenTemplate</code> (PGTs) custom resources will be automatically applied. `PolicyGenTemplate`custom resource is understood by the ZTP using an specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin">policy-generator</a>. In telco RAN DU nodes, this configuration includes the installation of the common telco operators, common configuration for RAN and specific configuration (SR-IOV or performance settings) for each site since it is very dependant on the hardware.</p>
 </div>
 <div class="imageblock unresolved">
 <div class="content">
@@ -365,18 +389,10 @@ The workflow does not need any intervention, so ZTP automatically will configure
 </div>
 </div>
 <div class="paragraph">
-<p>Once a cluster is provisioned, the day-2 configuration defined in multiple <code>PolicyGenTemplate</code> custom resources will be automatically applied. `PolicyGenTemplate`custom resource is understood by the ZTP using an specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin">policy-generator</a>. In telco RAN DU nodes, this configuration includes the installation of the common telco operators, common configuration for RAN and specific configuration (SR-IOV or performance settings) for each site since it is very dependant on the hardware.</p>
-</div>
-<div class="paragraph">
 <p>Notice that if, later on, you want to apply a new configuration or replace an existing configuration  you must use a new <code>policyGenTemplate</code> to do that.</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/ztp_gitops_flow.png" alt="External Resource Reconciler">
-</div>
-</div>
 <div class="paragraph">
-<p>The deployment of the clusters includes:</p>
+<p>Summing up, the deployment of the clusters includes:</p>
 </div>
 <div class="ulist">
 <ul>
