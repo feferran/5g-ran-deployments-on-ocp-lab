@@ -232,7 +232,82 @@
 </ul>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="10-policygen-deepdive.html">PolicyGen Deepdive</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#policygen-implementation">PolicyGen Implementation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#kustomize-plugins">Kustomize Plugins</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#siteconfig-generator">SiteConfigGenerator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#policy-generator">Policy Generator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#5g-ran-profile">5G RAN Profile</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#workload-partitioning">Workload Partitioning</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#kubelet-tuning">Kubelet Tuning</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#sctp">SCTP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#hide-container-mount">Container Mount Hiding</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#recovery-optimization">Recovery Optimization</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#monitoring-footprint">Monitoring Operator Config</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#ocp-console">Console Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#networking-diags">Networking Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#operatorhub">OperatorHub</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#ptp-operator">PTP Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#sr-iov">SR-IOV</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#nto">Node Tuning Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#local-storage">Local Storage</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#logs">Log Collector and Forwarder</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#siteconfig-templating">SiteConfig Templating</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#policies-templating">Policies Templating</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#kustomize-plugins-localy">Running Kustomize Plugins Locally</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
@@ -317,53 +392,128 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">PolicyGen DeepDive</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>Red Hat Advanced Cluster Management for Kubernetes (RHACM) Governance provides an extensible framework for enterprises to introduce their own security and configuration policies that can be applied to managed OpenShift or Kubernetes clusters. For more information on RHACM policies, you can check its own :08-rhacm-policies.html[section] in this lab.</p>
+<p>As we saw in an earlier section of the lab, we can leverage RHACM policies to get our clusters configured the way we want. We also introduced the PolicyGen component which helps us to create a set of policies based on pre-backed templates crafted by the Red Hat CNF team.</p>
 </div>
 <div class="paragraph">
-<p>In order to assist in the creation and management of RHACM policies, use the policy generator tool. This tool, along with GitOps, greatly simplifies the distribution of Kubernetes resource objects to managed OpenShift or Kubernetes clusters through RHACM policies. In particular, the policy generator supports the following functionalities:</p>
+<p>In this section we are going to get into the implementation details of the PolicyGen tooling.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="policygen-implementation"><a class="anchor" href="#policygen-implementation"></a>PolicyGen Implementation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The policy generator is implemented as a Kustomize generator plugin. This allows for any Kustomize configuration (e.g. patches, common labels) to be applied to the generated policies. This also means that the policy generator can be integrated into existing GitOps processes that support Kustomize, such as RHACM Application Lifecycle Management and OpenShift GitOps (i.e. ArgoCD).</p>
 </div>
 <div class="paragraph">
-<p>Convert any Kubernetes manifest files to RHACM configuration policies.
-Patch the input Kubernetes manifests before they are inserted into a generated RHACM policy.
-Generate additional configuration policies to be able to report on Gatekeeper and Kyverno policy violations through RHACM.
-Be run locally so that generated RHACM policies can be stored directly in Git and applied using GitOps.
-Be run by GitOps tools so that only the manifests and the policy generator configuration need to be stored in Git.
-The policy generator is implemented as a Kustomize generator plugin. This allows for any Kustomize configuration (e.g. patches, common labels) to be applied to the generated policies. This also means that the policy generator can be integrated into existing GitOps processes that support Kustomize, such as RHACM Application Lifecycle Management and OpenShift GitOps (i.e. ArgoCD).</p>
+<p>There are two Kustomize plugins, we refer to them as PolicyGenTool, but each has its own name and mission:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>SiteConfig Generator</strong>. Reads the SiteConfig manifest and generates the required Kubernetes manifests to run a RAN-enabled OpenShift deployment using RHACM. Code is located <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/siteconfig-generator">here</a>.</p>
+</li>
+<li>
+<p><strong>Policy Generator</strong>. Reads the PolicyGenTemplate manifest and generates the required Kubernetes manifest to configure an RHACM Policy targetting a set of clusters. Code is located <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/policygenerator">here</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="kustomize-plugins"><a class="anchor" href="#kustomize-plugins"></a>Kustomize Plugins</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As we already said, PolicyGenTool is a collection of Kustomize plugins. Kustomize plugins work as described below.</p>
 </div>
 <div class="paragraph">
-<p>OpenShift GitOps, based on ArgoCD, can also be used to generate policies using the policy generator through GitOps. Since the policy generator does not come preinstalled in the OpenShift GitOps container image, some customization must take place. In order to follow along, it is expected that you have the OpenShift GitOps Operator installed on the RHACM hub cluster and be sure to log in to the hub cluster.</p>
+<p>The user has a path configured in Kustomize for plugins (defaults to <code>~/.config/kustomize/plugin/</code>), inside this path different folders are configured in a way that Kustomize can understand what plugin needs to be executed under which situation. Let&#8217;s explain this.</p>
 </div>
 <div class="paragraph">
-<p>In order for OpenShift GitOps to have access to the policy generator when you run Kustomize, an Init Container is required to copy the policy generator binary from the RHACM Application Subscription container image to the OpenShift GitOps container that runs Kustomize. Additionally, OpenShift GitOps must be configured to provide the --enable-alpha-plugins flag when you run Kustomize. Run the following command to configure OpenShift GitOps:</p>
+<p>If we look at this <code>kustomization.yaml</code>:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generators:
+  - ztp-sno-lab.yaml
+  - common-policies/common.yaml</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Now that OpenShift GitOps can use the policy generator, we must now give OpenShift GitOps access to create policies on the RHACM hub cluster. To do that, run the following command to create a ClusterRole called openshift-gitops-policy-admin, with access to create, read, update, and delete policies. Additionally, a ClusterRoleBinding is created to grant the OpenShift GitOps service account the openshift-gitops-policy-admin ClusterRole:</p>
+<p>We see that under <code>generators</code> section we have two yaml files, <em>generators</em> tell Kustomize that some plugin needs to be run to interpret these files. They way Kustomize knows which plugin needs to be executed is by looking at the <code>GroupVersionKind (GVK)</code> of the files. Following with above example we will see the following GVKs:</p>
 </div>
 <div class="paragraph">
-<p>Kustomize plug-ins</p>
+<p><strong>ztp-sno-lab.yaml</strong></p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1
+kind: SiteConfig</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>===siteGenerator</p>
+<p><strong>common-policies/common.yaml</strong></p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>show examples</p>
+<p>As we can see the group is <code>ran.openshift.io</code>, version is <code>v1</code> and kind are <code>SiteConfig</code> and <code>PolicyGenTemplate</code>.</p>
 </div>
 <div class="paragraph">
-<p>===policygenerator</p>
+<p>Earlier we talked about the Kustomzie plugins path, and how it is required to have a proper folder structure so Kustomize knows which plugin needs to be executed. Using the examples above we can explain what Kustomize will do for generating these two files.</p>
 </div>
 <div class="paragraph">
-<p>show examples</p>
+<p><strong>ztp-sno-lab.yaml</strong></p>
 </div>
 <div class="paragraph">
-<p>Templates (sourceCRs)</p>
+<p>Kustomize will get the GVK and after that will go to the plugins path and execute the plugin binary, the path for the binary is <code>$KUSTOMIZE_PLUGINS_PATH/&lt;group&gt;/&lt;version&gt;/&lt;kind&gt;/&lt;pluginbinary&gt;</code>. In this case Kustomize will execute the binary at <code>~/.config/kustomize/plugin/ran.openshift.io/v1/siteconfig/SiteConfig</code>.</p>
 </div>
 <div class="paragraph">
-<p>list all source and examples
-explain overrides Templates and extra-manifest folder</p>
+<p><strong>common-policies/common.yaml</strong></p>
 </div>
 <div class="paragraph">
-<p>vRAN DU profile</p>
+<p>Kustomize will get the GVK and after that will go to the plugins path and execute the plugin binary, the path for the binary is <code>$KUSTOMIZE_PLUGINS_PATH/&lt;group&gt;/&lt;version&gt;/&lt;kind&gt;/&lt;pluginbinary&gt;</code>. In this case Kustomize will execute the binary at <code>~/.config/kustomize/plugin/ran.openshift.io/v1/policygentemplate/PolicyGenTemplate</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="siteconfig-generator"><a class="anchor" href="#siteconfig-generator"></a>SiteConfigGenerator</h3>
+<div class="paragraph">
+<p>The SiteConfigGenerator reads the SiteConfig manifest and uses the information provided in that file to output a set of manifests that will be used for running a cluster installation. The manifests templates can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/siteconfig-generator/siteConfig/clusterCRs.go">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>Explain how it works (templates), put examples</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="policy-generator"><a class="anchor" href="#policy-generator"></a>Policy Generator</h3>
+<div class="paragraph">
+<p>The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different pourposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs">here</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="5g-ran-profile"><a class="anchor" href="#5g-ran-profile"></a>5G RAN Profile</h3>
+<div class="paragraph">
+<p>The Red Hat CNF team has crafted specific configurations to improve the performance on clusters running RAN workloads. All the configurations described below are expected to be present in a cluster where RAN workloads are expected to run.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Some of these configurations are configured at install time (through the use of extra-manifests during  the install) and others are configured as a day2ops automatically after the cluster joins the RHACM Hub.
+</td>
+</tr>
+</table>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -371,28 +521,352 @@ explain overrides Templates and extra-manifest folder</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Exaplin what is and the picture where all the pgts are applied</p>
+<p>Above picture describes what areas are covered by the 5G Ran profile. Red Hat covers all layers but the two on the top which are part of the application domain. Below the different 5G RAN profile configurations are described.</p>
 </div>
 <div class="paragraph">
-<p>===Speeded up pod start</p>
+<p>A more in-detail explanation of the 5G RAN Profile is covered in this <a href="https://videos.learning.redhat.com/media/CNF+RAN+validated+pattern/1_x32rfqrs/253048913">training material</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="workload-partitioning"><a class="anchor" href="#workload-partitioning"></a>Workload Partitioning</h4>
+<div class="paragraph">
+<p>Pins OCP platform and day2 operator pods that are part of the DU profile to the reserved cpuset.</p>
 </div>
 <div class="paragraph">
-<p>===Reduced footprint</p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/workload/03-workload-partitioning.yaml">Manifest</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="kubelet-tuning"><a class="anchor" href="#kubelet-tuning"></a>Kubelet Tuning</h4>
+<div class="paragraph">
+<p>Reduce frequency of kubelet housekeeping and eviction monitoring to reduce cpu usage.</p>
 </div>
 <div class="paragraph">
-<p>===Container mounts namespace</p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml">Manifest</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="sctp"><a class="anchor" href="#sctp"></a>SCTP</h4>
+<div class="paragraph">
+<p>Enable SCTP which is required by RAN applications but disabled by default in RHCOS.</p>
 </div>
 <div class="paragraph">
-<p>===etc.</p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/03-sctp-machine-config-master.yaml">Manifest</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="hide-container-mount"><a class="anchor" href="#hide-container-mount"></a>Container Mount Hiding</h4>
+<div class="paragraph">
+<p>In order to reduce system mount scanning overhead, creates a mount namespaces for container mounts visible to kubelet/crio.</p>
 </div>
 <div class="paragraph">
-<p>Link with the recording?</p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml">Manifest</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="recovery-optimization"><a class="anchor" href="#recovery-optimization"></a>Recovery Optimization</h4>
+<div class="paragraph">
+<p>Systemd service which will assign additional cpus to systemd services during reboot recovery.</p>
 </div>
 <div class="paragraph">
-<p>Local validation</p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/04-accelerated-container-startup-master.yaml">Manifest</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="monitoring-footprint"><a class="anchor" href="#monitoring-footprint"></a>Monitoring Operator Config</h4>
+<div class="paragraph">
+<p>Reduce footprint of the monitoring stack by:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Reducing the prometheus retention period, metrics are already being aggregated at the RHACM Hub.</p>
+</li>
+<li>
+<p>Disable local grafana and alertmanager</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Example of a local validation for site and pgts</p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/ReduceMonitoringFootprint.yaml">Manifest</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="ocp-console"><a class="anchor" href="#ocp-console"></a>Console Operator</h4>
+<div class="paragraph">
+<p>Since the DUs are being centrally managed from a RHACM Hub, disable the local console to reduce resource consumption.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/ConsoleOperatorDisable.yaml">Manifest</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="networking-diags"><a class="anchor" href="#networking-diags"></a>Networking Operator</h4>
+<div class="paragraph">
+<p>Disable Networking diags for SNO as it is not applicable.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/DisableSnoNetworkDiag.yaml">Manifest</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="operatorhub"><a class="anchor" href="#operatorhub"></a>OperatorHub</h4>
+<div class="paragraph">
+<p>A single catalog source is recommended that contains only the operators required for a RAN DU deployment.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/OperatorHub.yaml">Manifest 1</a></p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/DefaultCatsrc.yaml">Manifest 2</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="ptp-operator"><a class="anchor" href="#ptp-operator"></a>PTP Operator</h4>
+<div class="paragraph">
+<p>Configuration of precision time protocol. The DU can run in the following modes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ordinary clock sync to a GM or boundary clock</p>
+</li>
+<li>
+<p>In addition to the above optionally provide a boundary clock for RU</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This also includes an optional event notification service that applications can subscribe to for ptp events.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PtpConfigSlave.yaml">Ordinary Clock Manifest</a></p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PtpConfigMaster.yaml">Boundary Clock Manifest</a></p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PtpOperatorConfigForEvent.yaml">Event Notification Manifest</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="sr-iov"><a class="anchor" href="#sr-iov"></a>SR-IOV</h4>
+<div class="paragraph">
+<p>Provision and configure the SR-IOV CNI and device plugin. Both netdevice (kernel VFs) and vfio (DPDK) are supported.</p>
+</div>
+<div class="paragraph">
+<p>This will be customer specific.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/SriovOperatorConfig.yaml">Operator Config Manifest</a></p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/SriovNetworkNodePolicy.yaml">SriovNetworkPolicy Manifest</a></p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/SriovNetwork.yaml">SriovNetwork Manifest</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="nto"><a class="anchor" href="#nto"></a>Node Tuning Operator</h4>
+<div class="paragraph">
+<p>Performance Tuning interface including:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Enables RT kernel</p>
+</li>
+<li>
+<p>Enables kubelet feature (cpu manager, topology manager, memory manager)</p>
+</li>
+<li>
+<p>Configures huge pages</p>
+</li>
+<li>
+<p>Configures reserved and isolated cpusets</p>
+</li>
+<li>
+<p>Additional kernel args</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PerformanceProfile.yaml">Manifest</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="local-storage"><a class="anchor" href="#local-storage"></a>Local Storage</h4>
+<div class="paragraph">
+<p>Enables creation of persistent volumes which can be consumed as pvcs by applications. This will be customer specific.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/StorageClass.yaml">StorageClass Manifest</a>
+<a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/StorageLV.yaml">Storage Local Volume Manifest</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="logs"><a class="anchor" href="#logs"></a>Log Collector and Forwarder</h4>
+<div class="paragraph">
+<p>Enables collection and shipping of logs off the edge node for remote analysis.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/ClusterLogForwarder.yaml">Manifest</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="siteconfig-templating"><a class="anchor" href="#siteconfig-templating"></a>SiteConfig Templating</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The SiteConfig templating is pretty straightforward, whatever information we put into our SiteConfig manifest will be translated to the required manifests to quick off the cluster installation. You can find a SiteConfig example <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="policies-templating"><a class="anchor" href="#policies-templating"></a>Policies Templating</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Policies templating is a bit different, we have a set of policy templates that we can use. This set of policies can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>If you access this link you will see lots of files, like for example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>AcceleratorNS.yaml</p>
+</li>
+<li>
+<p>AmqInstance.yaml</p>
+</li>
+<li>
+<p>etc.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The way the templating works is a follows:</p>
+</div>
+<div class="paragraph">
+<p>We will have one or more PolicyGenTemplates where we will reference these policy templates. We can see an example <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/57a05afbe836e9210ad638f6abe65f72b569148a/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s use the following PolicyGenTemplate as example.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+ name: "test"
+ namespace: "test"
+spec:
+  bindingRules:
+    test: "true"
+  mcp: "master"
+  sourceFiles:
+    - fileName: SriovOperatorConfig.yaml
+      policyName: "config-policy"
+    - fileName: PerformanceProfile.yaml
+      policyName: "config-policy"
+      spec:
+        cpu:
+          isolated: "2-19,22-39"
+          reserved: "0-1,20-21"
+        hugepages:
+          defaultHugepagesSize: 1G
+          pages:
+            - size: 1G
+              count: 32</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can see that the PolicyGenTemplate is targetting two policy templates: <code>SriovOperatorConfig.yaml</code> and <code>PerformanceProfile.yaml</code>.</p>
+</div>
+<div class="paragraph">
+<p>The first template <code>SriovOperatorConfig.yaml</code> is not overriding any settings, we can tell this because we don&#8217;t have a <code>spec</code> or <code>metadata</code> section below the <code>policyName</code>. That means that the final policy will be configured as the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/SriovOperatorConfig.yaml">source template file</a>.</p>
+</div>
+<div class="paragraph">
+<p>The second template <code>PerformanceProfile.yaml</code> is overriding some of the parameters in the <code>spec</code>. That means that the final policy will be configured as a merge of the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PerformanceProfile.yaml">original template</a> plus the custom overrides we provided in the PolicyGenTemplate.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Inside the templates we can often see references to what may appear variables like <code>$size</code>, <code>$count</code>, etc. These are not vars, that tells the Kustomize plugin to remove that line from the output if no value was provided as an override. The only variable that is referenced and is actually substituted is the <code>$mcp</code> variable that will be replaced with the value of the same property defined in the PolicyGenTemplate.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="kustomize-plugins-localy"><a class="anchor" href="#kustomize-plugins-localy"></a>Running Kustomize Plugins Locally</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We have described how Argo CD makes use of the PolicyGenTool plugins to generate the required manifests for our 5G RAN deployments. In this section we are going to cover how to run these plugins locally which can be useful while troubleshooting or getting a preview of what the files will look like when generated via Argo CD.</p>
+</div>
+<div class="paragraph">
+<p>By running the steps below we will get the plugins installed in our system. Kustomize should be already installed, you can get it from the <a href="https://github.com/kubernetes-sigs/kustomize/releases/">releases page</a>.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/.config/kustomize/plugin
+podman cp $(podman create --name policgentool --rm quay.io/openshift-kni/ztp-site-generator:4.11):/kustomize/plugin/ran.openshift.io ~/.config/kustomize/plugin/
+podman rm -f policgentool</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now that we have the plugins locally we can run them:</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+We need to enable the alpha plugins by using the parameter <code>--enable-alpha-plugins</code>
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kustomize build site-configs/ --enable-alpha-plugins</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We will get the output (manifests that will be consumed by the RHACM Hub).</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+    ran.openshift.io/ztp-gitops-generated: '{}'
+  labels:
+    name: ztp-sno
+  name: ztp-sno
+---
+apiVersion: v1
+data:
+  03-workload-partitioning.yaml: |
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+        annotations:
+&lt;OUTPUT_OMITTED&gt;</code></pre>
+</div>
+</div>
+</div>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="09-talm.html">Topology Aware Lifecycle Manager (TALM)</a></span>
