@@ -488,9 +488,6 @@ kind: PolicyGenTemplate</code></pre>
 <div class="paragraph">
 <p>The SiteConfigGenerator reads the SiteConfig manifest and uses the information provided in that file to output a set of manifests that will be used for running a cluster installation. The manifests templates can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/siteconfig-generator/siteConfig/clusterCRs.go">here</a>.</p>
 </div>
-<div class="paragraph">
-<p>Explain how it works (templates), put examples</p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="policy-generator"><a class="anchor" href="#policy-generator"></a>Policy Generator</h3>
@@ -498,8 +495,11 @@ kind: PolicyGenTemplate</code></pre>
 <p>The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different pourposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs">here</a>.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="5g-ran-profile"><a class="anchor" href="#5g-ran-profile"></a>5G RAN Profile</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="5g-ran-profile"><a class="anchor" href="#5g-ran-profile"></a>5G RAN Profile</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The Red Hat CNF team has crafted specific configurations to improve the performance on clusters running RAN workloads. All the configurations described below are expected to be present in a cluster where RAN workloads are expected to run.</p>
 </div>
@@ -526,8 +526,8 @@ Some of these configurations are configured at install time (through the use of 
 <div class="paragraph">
 <p>A more in-detail explanation of the 5G RAN Profile is covered in this <a href="https://videos.learning.redhat.com/media/CNF+RAN+validated+pattern/1_x32rfqrs/253048913">training material</a>.</p>
 </div>
-<div class="sect3">
-<h4 id="workload-partitioning"><a class="anchor" href="#workload-partitioning"></a>Workload Partitioning</h4>
+<div class="sect2">
+<h3 id="workload-partitioning"><a class="anchor" href="#workload-partitioning"></a>Workload Partitioning</h3>
 <div class="paragraph">
 <p>Pins OCP platform and day2 operator pods that are part of the DU profile to the reserved cpuset.</p>
 </div>
@@ -535,8 +535,8 @@ Some of these configurations are configured at install time (through the use of 
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/workload/03-workload-partitioning.yaml">Manifest</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="kubelet-tuning"><a class="anchor" href="#kubelet-tuning"></a>Kubelet Tuning</h4>
+<div class="sect2">
+<h3 id="kubelet-tuning"><a class="anchor" href="#kubelet-tuning"></a>Kubelet Tuning</h3>
 <div class="paragraph">
 <p>Reduce frequency of kubelet housekeeping and eviction monitoring to reduce cpu usage.</p>
 </div>
@@ -544,8 +544,8 @@ Some of these configurations are configured at install time (through the use of 
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml">Manifest</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="sctp"><a class="anchor" href="#sctp"></a>SCTP</h4>
+<div class="sect2">
+<h3 id="sctp"><a class="anchor" href="#sctp"></a>SCTP</h3>
 <div class="paragraph">
 <p>Enable SCTP which is required by RAN applications but disabled by default in RHCOS.</p>
 </div>
@@ -553,8 +553,8 @@ Some of these configurations are configured at install time (through the use of 
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/03-sctp-machine-config-master.yaml">Manifest</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="hide-container-mount"><a class="anchor" href="#hide-container-mount"></a>Container Mount Hiding</h4>
+<div class="sect2">
+<h3 id="hide-container-mount"><a class="anchor" href="#hide-container-mount"></a>Container Mount Hiding</h3>
 <div class="paragraph">
 <p>In order to reduce system mount scanning overhead, creates a mount namespaces for container mounts visible to kubelet/crio.</p>
 </div>
@@ -562,8 +562,8 @@ Some of these configurations are configured at install time (through the use of 
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml">Manifest</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="recovery-optimization"><a class="anchor" href="#recovery-optimization"></a>Recovery Optimization</h4>
+<div class="sect2">
+<h3 id="recovery-optimization"><a class="anchor" href="#recovery-optimization"></a>Recovery Optimization</h3>
 <div class="paragraph">
 <p>Systemd service which will assign additional cpus to systemd services during reboot recovery.</p>
 </div>
@@ -571,8 +571,8 @@ Some of these configurations are configured at install time (through the use of 
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/04-accelerated-container-startup-master.yaml">Manifest</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="monitoring-footprint"><a class="anchor" href="#monitoring-footprint"></a>Monitoring Operator Config</h4>
+<div class="sect2">
+<h3 id="monitoring-footprint"><a class="anchor" href="#monitoring-footprint"></a>Monitoring Operator Config</h3>
 <div class="paragraph">
 <p>Reduce footprint of the monitoring stack by:</p>
 </div>
@@ -590,8 +590,8 @@ Some of these configurations are configured at install time (through the use of 
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/ReduceMonitoringFootprint.yaml">Manifest</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="ocp-console"><a class="anchor" href="#ocp-console"></a>Console Operator</h4>
+<div class="sect2">
+<h3 id="ocp-console"><a class="anchor" href="#ocp-console"></a>Console Operator</h3>
 <div class="paragraph">
 <p>Since the DUs are being centrally managed from a RHACM Hub, disable the local console to reduce resource consumption.</p>
 </div>
@@ -599,8 +599,8 @@ Some of these configurations are configured at install time (through the use of 
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/ConsoleOperatorDisable.yaml">Manifest</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="networking-diags"><a class="anchor" href="#networking-diags"></a>Networking Operator</h4>
+<div class="sect2">
+<h3 id="networking-diags"><a class="anchor" href="#networking-diags"></a>Networking Operator</h3>
 <div class="paragraph">
 <p>Disable Networking diags for SNO as it is not applicable.</p>
 </div>
@@ -608,8 +608,8 @@ Some of these configurations are configured at install time (through the use of 
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/DisableSnoNetworkDiag.yaml">Manifest</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="operatorhub"><a class="anchor" href="#operatorhub"></a>OperatorHub</h4>
+<div class="sect2">
+<h3 id="operatorhub"><a class="anchor" href="#operatorhub"></a>OperatorHub</h3>
 <div class="paragraph">
 <p>A single catalog source is recommended that contains only the operators required for a RAN DU deployment.</p>
 </div>
@@ -620,8 +620,8 @@ Some of these configurations are configured at install time (through the use of 
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/DefaultCatsrc.yaml">Manifest 2</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="ptp-operator"><a class="anchor" href="#ptp-operator"></a>PTP Operator</h4>
+<div class="sect2">
+<h3 id="ptp-operator"><a class="anchor" href="#ptp-operator"></a>PTP Operator</h3>
 <div class="paragraph">
 <p>Configuration of precision time protocol. The DU can run in the following modes:</p>
 </div>
@@ -648,8 +648,8 @@ Some of these configurations are configured at install time (through the use of 
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PtpOperatorConfigForEvent.yaml">Event Notification Manifest</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="sr-iov"><a class="anchor" href="#sr-iov"></a>SR-IOV</h4>
+<div class="sect2">
+<h3 id="sr-iov"><a class="anchor" href="#sr-iov"></a>SR-IOV</h3>
 <div class="paragraph">
 <p>Provision and configure the SR-IOV CNI and device plugin. Both netdevice (kernel VFs) and vfio (DPDK) are supported.</p>
 </div>
@@ -666,8 +666,8 @@ Some of these configurations are configured at install time (through the use of 
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/SriovNetwork.yaml">SriovNetwork Manifest</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="nto"><a class="anchor" href="#nto"></a>Node Tuning Operator</h4>
+<div class="sect2">
+<h3 id="nto"><a class="anchor" href="#nto"></a>Node Tuning Operator</h3>
 <div class="paragraph">
 <p>Performance Tuning interface including:</p>
 </div>
@@ -694,8 +694,8 @@ Some of these configurations are configured at install time (through the use of 
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PerformanceProfile.yaml">Manifest</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="local-storage"><a class="anchor" href="#local-storage"></a>Local Storage</h4>
+<div class="sect2">
+<h3 id="local-storage"><a class="anchor" href="#local-storage"></a>Local Storage</h3>
 <div class="paragraph">
 <p>Enables creation of persistent volumes which can be consumed as pvcs by applications. This will be customer specific.</p>
 </div>
@@ -704,14 +704,13 @@ Some of these configurations are configured at install time (through the use of 
 <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/StorageLV.yaml">Storage Local Volume Manifest</a></p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="logs"><a class="anchor" href="#logs"></a>Log Collector and Forwarder</h4>
+<div class="sect2">
+<h3 id="logs"><a class="anchor" href="#logs"></a>Log Collector and Forwarder</h3>
 <div class="paragraph">
 <p>Enables collection and shipping of logs off the edge node for remote analysis.</p>
 </div>
 <div class="paragraph">
 <p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/ClusterLogForwarder.yaml">Manifest</a></p>
-</div>
 </div>
 </div>
 </div>
