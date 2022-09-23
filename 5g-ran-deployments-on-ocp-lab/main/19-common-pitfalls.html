@@ -52,7 +52,16 @@
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="00-introduction.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="00-introduction.html#lab-aim">Who is this lab aimed at? </a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="00-introduction.html#lab-software-versions">Lab Software Versions</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
@@ -201,6 +210,9 @@
     <a class="nav-link" href="06-rhacm-policies.html#policies">Policies</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="06-rhacm-policies.html#policy-status">Policy Status</a>
+  </li>
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="06-rhacm-policies.html#policy-remediation">Policy Remediation</a>
   </li>
 </ul>
@@ -326,7 +338,7 @@
     <a class="nav-link" href="10-policygen-deepdive.html#policies-templating">Policies Templating</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="10-policygen-deepdive.html#kustomize-plugins-localy">Running Kustomize Plugins Locally</a>
+    <a class="nav-link" href="10-policygen-deepdive.html#kustomize-plugins-locally">Running Kustomize Plugins Locally</a>
   </li>
 </ul>
   </li>
@@ -385,7 +397,26 @@
     <a class="nav-link" href="18-troubleshooting-tips.html">Troubleshooting Tips</a>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="19-common-pitfalls.html">Common Pitfalls</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#exec-probes-cpu-pinning">Exec Probes and CPU Pinning</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#energy-saving-hw-profiles">Energy Saving Hardware Profiles</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#secure-boot-oot-unsigned-drivers">Secure Boot and Unsigned OoT Drivers</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#sriov-node-drain">SR-IOV Node Drain</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <span class="nav-text"><a href="/5g-ran-deployments-on-ocp-lab/main/19-common-pitfalls.html#pod-disruption-budgets" class="xref page">Pod Disruption Budgets
+</a></span>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="20-closing-thoughts.html">Closing Thoughts</a>
@@ -413,8 +444,73 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">Common Pitfalls</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>TBD</p>
+<p>In this section we are going to put some common pitfalls we have observed while working with Telco partners/customers.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="exec-probes-cpu-pinning"><a class="anchor" href="#exec-probes-cpu-pinning"></a>Exec Probes and CPU Pinning</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In 5G RAN environments is pretty common to do CPU pinning for the workload, which as you already know means that the application will only run on a subset of CPUs.</p>
+</div>
+<div class="paragraph">
+<p>When this workloads use exec probres we need to be extremely careful about what kind of workloads those are. We have seen nodes hanging when using exec probes on pods running DPDK workloads.</p>
+</div>
+<div class="paragraph">
+<p>DPDK applications run a polling thread which does not yield the CPU.</p>
+</div>
+<div class="paragraph">
+<p>If we look at the different Kubernetes liveness and readiness probes we can see that there are different kinds of probes, how they run differs a bit from each other. The important thing here is that the "exec" probes are scheduled in the same CPU that is being used by the POD, which means that eventually some of the probes will be scheduled to be executed on the CPU where the rt polling thread is running, leading to the system eventually crashing.</p>
+</div>
+<div class="paragraph">
+<p>In order to avoid this, you should use httpProbes instead of exec probes, which will avoid the probes being scheduled on the application cpuset.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="energy-saving-hw-profiles"><a class="anchor" href="#energy-saving-hw-profiles"></a>Energy Saving Hardware Profiles</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When running CPU exhaustive workloads we have seen from time to time a drastic decrease in terms of performance of these workloads. Most of the time the issues were caused by a hardware profile which was limiting the energy sent to the CPU.</p>
+</div>
+<div class="paragraph">
+<p>Make sure your nodes do not have an energy saving profile configured.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="secure-boot-oot-unsigned-drivers"><a class="anchor" href="#secure-boot-oot-unsigned-drivers"></a>Secure Boot and Unsigned OoT Drivers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When working with out-of-tree drivers which are unsigned, Secure Boot cannot be enabled, otherwise the boot process will fail when those unsigned drivers are loaded. If you plan to use or test these kind of drivers remember to disable the Secure Boot.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sriov-node-drain"><a class="anchor" href="#sriov-node-drain"></a>SR-IOV Node Drain</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, the SR-IOV Network Operator drains workloads from a node before every policy change. The Operator performs this action to ensure that there no workloads using the virtual functions before the reconfiguration.</p>
+</div>
+<div class="paragraph">
+<p>For installations on a single node, there are no other nodes to receive the workloads. As a result, the Operator must be configured not to drain the workloads from the single node.</p>
+</div>
+<div class="paragraph">
+<p>The CNF SR-IOV Policy templates already have this configuration in place.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pod-disruption-budgets"><a class="anchor" href="#pod-disruption-budgets"></a>Pod Disruption Budgets</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>PDBs will not be honored in single node OpenShift installations. You can read more about it <a href="https://github.com/openshift/machine-config-operator/blob/master/docs/SingleNodeOpenShift.md">here</a>.</p>
+</div>
+</div>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="18-troubleshooting-tips.html">Troubleshooting Tips</a></span>
