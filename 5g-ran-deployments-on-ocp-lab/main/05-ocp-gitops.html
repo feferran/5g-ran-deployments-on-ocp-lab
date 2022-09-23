@@ -138,13 +138,13 @@
     <a class="nav-link" href="#gitops-patterns-ocp">GitOps Patterns on OpenShift</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#directories-vs-branches">Directories vs Branches</a>
+  </li>
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="#direct-commit-to-main">Direct commit to main</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="#prs-review-cycles">Pull Requests and review cycles</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#directories-vs-branches">Directories vs Branches</a>
   </li>
 </ul>
   </li>
@@ -496,21 +496,58 @@ Red Hat OpenShift is a declarative Kubernetes platform that administrators can c
 </div>
 </div>
 <div class="sect2">
-<h3 id="direct-commit-to-main"><a class="anchor" href="#direct-commit-to-main"></a>Direct commit to main</h3>
-<div class="paragraph">
-<p>TBD</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="prs-review-cycles"><a class="anchor" href="#prs-review-cycles"></a>Pull Requests and review cycles</h3>
-<div class="paragraph">
-<p>TBD</p>
-</div>
-</div>
-<div class="sect2">
 <h3 id="directories-vs-branches"><a class="anchor" href="#directories-vs-branches"></a>Directories vs Branches</h3>
 <div class="paragraph">
-<p>TBD</p>
+<p>When doing GitOps we need to keep in mind that using branches is an anti-pattern. We have been using branches for a long time when developing our applications, but when doing GitOps we are no longer developing an application, but defining a configuration. If we look at the different tooling around Kubernetes for managing configurations like <code>Helm</code> or <code>Kustomize</code> you will soon enough see that they know nothing about Git branches, they use just files.</p>
+</div>
+<div class="paragraph">
+<p>We need to start defining our different environments using folders rather than branches, that will help us manage many environments at scale without having to deal with git merges that eventually will be hard to reconcile.</p>
+</div>
+<div class="paragraph">
+<p>One thing that we still need to keep in mind is that we want to have different repositories for the application code (where you can continue to use branches) and for the GitOps configuration.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="direct-commit-to-main"><a class="anchor" href="#direct-commit-to-main"></a>Direct Commit to Main</h3>
+<div class="paragraph">
+<p>Direct commit to main (or the branch the GitOps tooling monitor) in the upstream repository is strongly discouraged, instead users should work with forks and send PRs to the main branch.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="prs-review-cycles"><a class="anchor" href="#prs-review-cycles"></a>Pull Requests and Review Cycles</h3>
+<div class="paragraph">
+<p>Once a user sends a PR to a specific branch we should have some automated checks to make sure that the PR is safe, some of them could be:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Commits are signed by the user.</p>
+</li>
+<li>
+<p>No passwords/confidential information is present in the PR.</p>
+</li>
+<li>
+<p>Commits should have keywords that can be used to enforce some policies like for example putting the environment name and making sure the PR only changes files for that environment.</p>
+</li>
+<li>
+<p>etc.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Once the automatic checks have passed, we want a different user to review the content of the PR and approve it once it&#8217;s ready.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Review cycles for commits changing non-production environments can be automatic to reduce the time it take for a change to hit the non-productive environment.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
