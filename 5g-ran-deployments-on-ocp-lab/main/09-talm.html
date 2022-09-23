@@ -450,12 +450,12 @@ TALM enables us to select the timing and the clusters where the configuration is
 </div>
 </div>
 <div class="sect1">
-<h2 id="_cluster_group_upgrade_cgu"><a class="anchor" href="#_cluster_group_upgrade_cgu"></a>Cluster Group Upgrade (CGU)</h2>
+<h2 id="cgu"><a class="anchor" href="#cgu"></a>Cluster Group Upgrade (CGU)</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The Topology Aware Lifecycle Manager (TALM) builds the remediation plan from the <code>ClusterGroupUpgrade</code> CR for a group of clusters. You can define the following specifications in a ClusterGroupUpgrade CR. Note that this is a CGU CR that enforces a OpenShift release upgrade which was previously defined by a policy called <em>du-upgrade-platform-upgrade</em> defined by the managedPolicies spec.</p>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
@@ -481,7 +481,7 @@ spec:
 </div>
 </div>
 <div class="sect2">
-<h3 id="_auto_creation_of_cgu"><a class="anchor" href="#_auto_creation_of_cgu"></a>Auto creation of CGU</h3>
+<h3 id="autocreation-cgu"><a class="anchor" href="#autocreation-cgu"></a>Auto creation of CGU</h3>
 <div class="paragraph">
 <p>So far we have been talking of using TALM for our common day-2 operations. But, if a CGU must be created in order to enforce a previously applied policy,  how is it possible to run a fully automated ZTP workflow, e.g configure and even run our CNF workloads, on the target clusters?</p>
 </div>
@@ -532,7 +532,7 @@ TALM will basically enforce all existing policies targeting a cluster that has n
 </div>
 </div>
 <div class="sect1">
-<h2 id="_phase_labels"><a class="anchor" href="#_phase_labels"></a>Phase labels</h2>
+<h2 id="phase-labels"><a class="anchor" href="#phase-labels"></a>Phase labels</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The ClusterGroupUpgrade CR that is auto created for ZTP includes directives to annotate the ManagedCluster CR with labels at the start and end of the ZTP process. When ZTP configuration (post-installation) commences the ManagedCluster will have the ztp-running label applied. When all policies are remediated to the cluster (fully compliant) these directives will cause TALM to remove the ztp-running label and apply the ztp-done label.</p>
@@ -543,7 +543,7 @@ TALM will basically enforce all existing policies targeting a cluster that has n
 </div>
 </div>
 <div class="sect1">
-<h2 id="_waves"><a class="anchor" href="#_waves"></a>Waves</h2>
+<h2 id="waves"><a class="anchor" href="#waves"></a>Waves</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every <a href="10-policygen-deepdive#policies-templating">policy</a> generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/master/ztp/source-crs/SriovSubscriptionNS.yaml">SriovSubscriptionNS.yaml</a>:</p>
@@ -589,7 +589,7 @@ All CRs in the same policy must have the same setting for the ztp-deploy-wave an
 </div>
 </div>
 <div class="sect1">
-<h2 id="_precache"><a class="anchor" href="#_precache"></a>Precache</h2>
+<h2 id="talm-precache"><a class="anchor" href="#talm-precache"></a>Precaching</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Clusters might have limited bandwidth to access the container image registry, which can cause a timeout before the updates are completed. This feature help us to schedule cluster upgrades to newer OCP releases in an organized manner and within the maintenance window assigned. Notice in the following picture how the upgrade can be orchestrated depending on our requirements. See that in the first maintenance window not all clusters had time to precache all container images, then the precache process was postponed to a be finished in another agreed maintenance window. Finally, a new maintenance window was requested to actually execute the platform upgrade.</p>
@@ -642,7 +642,7 @@ If both policy and precaching are enabled, the upgrade will be executed immediat
 </div>
 </div>
 <div class="sect1">
-<h2 id="_backup_and_recovery"><a class="anchor" href="#_backup_and_recovery"></a>Backup and Recovery</h2>
+<h2 id="talm-backup"><a class="anchor" href="#talm-backup"></a>Backup and Recovery</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Backup &amp; Recovery feature creates a pre-upgrade backup and provides a procedure for rapid recovery of a SNO in the event of a failed upgrade. In case of an upgrade failure, this feature allows the SNO to be restored to a working state with the previous version of OCP without requiring a re-provision of the application(s).</p>
