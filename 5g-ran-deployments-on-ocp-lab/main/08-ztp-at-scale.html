@@ -506,8 +506,17 @@ The ZTP workflow starts when the site is connected to the network and ends with 
 <div class="paragraph">
 <p>The multicluster engine for Kubernetes (MCE) operator is a software operator that enhances cluster fleet management. The multicluster engine for Kubernetes operator supports Red Hat OpenShift Container Platform and Kubernetes cluster lifecycle management across clouds and data centers. MCE provides the tools and capabilities to address common challenges that administrators and site reliability engineers face as they work across a range of environments, including multiple datacenters, private clouds, and public clouds that run Kubernetes clusters.</p>
 </div>
-<div class="paragraph">
-<p>WARNING The new multicluster engine for Kubernetes operator will be entitled with OpenShift</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The new multicluster engine for Kubernetes operator will be entitled with OpenShift
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>MCE provides most of the functionality to provision OpenShift clusters, since they include the Assisted Installer operator, Hive and the management of the Klusterlet agents installed on the managed clusters. That&#8217;s why it cannot co-exist with Red Hat Advanced Cluster Management for Kubernetes on versions earlier than 2.5 because they provide some of the same management components.</p>
@@ -562,7 +571,7 @@ The ZTP workflow starts when the site is connected to the network and ends with 
 <p>Notice that Argo CD can pull and apply any Kubernetes custom resource, however, for ZTP we are mainly focusing on <code>SiteConfig</code> and <code>PolicyGenTemplates</code> manifests, but Argo CD is not restricted to them.</p>
 </div>
 <div class="paragraph">
-<p>We have been talking during this lab, that the a siteConfig manifest describes how the OpenShift cluster is going to be provisioned. While, usually multiples policyGenTemplates describes the configuration that will be applied to the provisioned cluster. However, certainly, both are high level manifests that are not understood by the hub cluster. There is something in between that will translate those high level definitions into something that RHACM (including MCE) recognizes. These are a couple of kustomize plugins called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin">SiteConfig generator kustomize plugin</a> and <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin">Policy generator kustomize plugin</a>.</p>
+<p>We have been talking during this lab how a siteConfig manifest describes the way OpenShift cluster is going to be provisioned. While, usually multiples policyGenTemplates describes the configuration that will be applied to the provisioned cluster. However, certainly, both are high level manifests that are not understood by the hub cluster. There is something in between that will translate those high level definitions into something that RHACM (including MCE) recognizes. These are a couple of kustomize plugins called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin">SiteConfig generator kustomize plugin</a> and <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin">Policy generator kustomize plugin</a>.</p>
 </div>
 <div class="paragraph">
 <p>In order to use both plugins we need to modify the OpenShift GitOps operator, specifically the openshift-gitops-repo-server deployment. The procedure is <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/gitops-subscriptions/argocd#preparation-of-hub-cluster-for-ztp">fully documented here</a>. Basically, it modifies the openshift-gitops-repo-server deployment to include an initContainer that will load both kustomize plugins. Then, everytime a siteConfig or PolicyGenTemplate is pulled from a Git repo the proper kustomize plugin will be used and transform the manifest into the proper custom resources.</p>
