@@ -91,6 +91,12 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#cpu-reduction-tuning">Tuning for CPU Reduction</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#vran-accelerators">vRAN Dedicated Accelerators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#ptp">PTP</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -576,6 +582,46 @@
 </div>
 <div class="paragraph">
 <p>On top of <em>workload partitioning</em>, the CNF team has tuned the OpenShift platform for RAN workloads by removing components that are not required in a RAN context such as Grafana Web Console, OpenShift Web Console, etc.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vran-accelerators"><a class="anchor" href="#vran-accelerators"></a>vRAN Dedicated Accelerators</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Hardware accelerator cards accelerate 4G/LTE and 5G Virtualized Radio Access Networks (vRAN) workloads. This in turn increases the overall compute capacity of the plataform.</p>
+</div>
+<div class="paragraph">
+<p>vRAN accelerators are designed to offload and accelerate the computing-intensive process of forward error correction (FEC) for 4G/LTE and 5G technology, freeing up processing power.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ptp"><a class="anchor" href="#ptp"></a>PTP</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Precision Time Protocol (PTP) is used to synchronize clocks in a network. When used in conjunction with hardware support, PTP is capable of sub-microsecond accuracy, and is more accurate than Network Time Protocol (NTP).</p>
+</div>
+<div class="paragraph">
+<p>PTP can work in three modes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>GrandMaster</code>: A PTP daemon connected to a hardware with PTP support to synchronize its clock. Other PTP daemons will connect to this PTP GrandMaster in order to sync their clocks.</p>
+</li>
+<li>
+<p><code>Ordinary Clock</code>: A PTP daemon connected to a GrandMaster to synchronize its clock.</p>
+</li>
+<li>
+<p><code>Boundary Clock</code>: A PTP daemon connected to a GrandMaster to synchronize its clock and being GrandMaster for other PTP daemons on the network.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ptp_diagram.png" alt="PTP Diagram">
+</div>
 </div>
 </div>
 </div>
