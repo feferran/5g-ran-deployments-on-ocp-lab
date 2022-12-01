@@ -399,7 +399,13 @@
     <a class="nav-link" href="#install-oc-kubectl">Install oc/kubectl CLIs</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#configure-disconnected-network">Configure Disconnected Network</a>
+  </li>
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="#configure-local-dns-dhcp-server">Configure Local DNS/DHCP Server</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#configure-local-dns-as-primary-server">Configure Local DNS as Primary Server</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="#disable-firewall">Disable Firewall</a>
@@ -412,9 +418,6 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="#configure-git-server">Configure Git Server</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#configure-disconnected-network">Configure Disconnected Network</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="#create-openshift-nodes-vms">Create OpenShift Nodes VMs</a>
@@ -481,7 +484,25 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="13-crafting-cluster-cnf-operators-configs.html">Crafting Cluster and CNF Operators Configs</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="13-crafting-cluster-cnf-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="13-crafting-cluster-cnf-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="13-crafting-cluster-cnf-operators-configs.html#crafting-zone-policies">Crafting Zone Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="13-crafting-cluster-cnf-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="13-crafting-cluster-cnf-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
@@ -605,7 +626,7 @@ All the steps in the below sections must be run as <code>root</code> user on the
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# dnf -y copr enable karmab/kcli
-[root@hypervisor ~]# dnf -y install kcli bash-completion vim jq</code></pre>
+[root@hypervisor ~]# dnf -y install kcli bash-completion vim jq tar</code></pre>
 </div>
 </div>
 </div>
@@ -613,10 +634,17 @@ All the steps in the below sections must be run as <code>root</code> user on the
 <h3 id="install-oc-kubectl"><a class="anchor" href="#install-oc-kubectl"></a>Install oc/kubectl CLIs</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# curl -L <a href="https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest-4.11/openshift-client-linux.tar.gz" class="bare">https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest-4.11/openshift-client-linux.tar.gz</a> -o openshift-client-linux.tar.gz
-[root@hypervisor ~]# tar xvfz openshift-client-linux.tar.gz kubectl oc
-[root@hypervisor ~]# mv kubectl oc /usr/bin/
-[root@hypervisor ~]# rm -f openshift-client-linux.tar.gz</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# kcli download oc -P version=stable -P tag='4.11'
+[root@hypervisor ~]# kcli download kubectl -P version=stable -P tag='4.11'
+[root@hypervisor ~]# mv kubectl oc /usr/bin/</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configure-disconnected-network"><a class="anchor" href="#configure-disconnected-network"></a>Configure Disconnected Network</h3>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# kcli create network -c 192.168.125.0/24 --nodhcp --domain 5g-deployment.lab 5gdeploymentlab</code></pre>
 </div>
 </div>
 </div>
@@ -639,6 +667,17 @@ All the steps in the below sections must be run as <code>root</code> user on the
 [root@hypervisor ~]# systemctl daemon-reload
 [root@hypervisor ~]# systemctl enable --now dnsmasq-virt
 [root@hypervisor ~]# systemctl mask dnsmasq</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configure-local-dns-as-primary-server"><a class="anchor" href="#configure-local-dns-as-primary-server"></a>Configure Local DNS as Primary Server</h3>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hypervisor/forcedns" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hypervisor/forcedns</a> -o /etc/NetworkManager/dispatcher.d/forcedns
+[root@hypervisor ~]# chmod +x /etc/NetworkManager/dispatcher.d/forcedns
+[root@hypervisor ~]# systemctl restart NetworkManager
+[root@hypervisor ~]# /etc/NetworkManager/dispatcher.d/forcedns</code></pre>
 </div>
 </div>
 </div>
@@ -696,14 +735,6 @@ All the steps in the below sections must be run as <code>root</code> user on the
 [root@hypervisor ~]# systemctl enable podman-gitea --now
 [root@hypervisor ~]# podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email <a href="mailto:student@5g-deployment.lab">student@5g-deployment.lab</a> --must-change-password=false --admin'
 [root@hypervisor ~]# curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' <a href="http://infra.5g-deployment.lab:3000/api/v1/repos/migrate" class="bare">http://infra.5g-deployment.lab:3000/api/v1/repos/migrate</a></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configure-disconnected-network"><a class="anchor" href="#configure-disconnected-network"></a>Configure Disconnected Network</h3>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# kcli create network -c 192.168.125.0/24 --nodhcp --domain 5g-deployment.lab 5gdeploymentlab</code></pre>
 </div>
 </div>
 </div>
@@ -780,7 +811,7 @@ This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# curl -L <a href="http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/main/lab-materials/helper-data/ssh-key" class="bare">http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/main/lab-materials/helper-data/ssh-key</a> -o /root/.ssh/snokey
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# curl -L <a href="http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/main/lab-materials/lab-env-data/hypervisor/ssh-key" class="bare">http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/main/lab-materials/lab-env-data/hypervisor/ssh-key</a> -o /root/.ssh/snokey
 [root@hypervisor ~]# chmod 400 /root/.ssh/snokey
 [root@hypervisor ~]# oc apply -f <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml</a></code></pre>
 </div>
