@@ -6,7 +6,7 @@
     <title>Monitoring the Deployment :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/15-monitoring-the-deployment.html">
     <link rel="prev" href="14-running-the-deployment.html">
-    <link rel="next" href="16-check-deployment-is-finished.html">
+    <link rel="next" href="24-managing-existing-clusters.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -456,6 +456,10 @@
   </li>
 </ul>
   </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="12-crafting-deployments-iaac.html">Crafting Deployment&#8217;s IaaC</a>
@@ -517,7 +521,19 @@
 </ul>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="15-monitoring-the-deployment.html">Monitoring the Deployment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="24-managing-existing-clusters.html">Managing Existing Clusters</a>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="16-check-deployment-is-finished.html">Check Deployment is finished</a>
@@ -575,12 +591,118 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">Monitoring the Deployment</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>TBD</p>
+<p>Once the ZTP GitOps Pipeline starts deploying our clusters we can follow the installation status via the WebUI or the CLI.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="monitoring-deployment-webui"><a class="anchor" href="#monitoring-deployment-webui"></a>Monitoring the Deployment via the WebUI</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Access the <a href="https://multicloud-console.apps.hub.5g-deployment.lab/">RHACM WebUI</a> and login with the OpenShift credentials.</p>
+</li>
+<li>
+<p>Once you&#8217;re in, click on <code>Infrastructure</code> &#8594; <code>Clusters</code>. You will see an screen like the one below:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm-clusterview.png" alt="RHACM Cluster View">
+</div>
+</div>
+</li>
+<li>
+<p>In order to check the deployment status of the <code>sno2</code> cluster, click on <code>sno2</code> and you will get presented this creen:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm-sno2-view.png" alt="RHACM sno2 Cluster View">
+</div>
+</div>
+</li>
+<li>
+<p>You can follow the progress here, if you want to get extra details you can click on <code>View Cluster Events</code> and you should see more information:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm-sno2-clusterevents.png" alt="RHACM sno2 Cluster Events">
+</div>
+</div>
+</li>
+<li>
+<p>Deployment will eventually finish:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm-sno2-install-completed.png" alt="RHACM sno2 Cluster Deployment Finished">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="monitoring-deployment-cli"><a class="anchor" href="#monitoring-deployment-cli"></a>Monitoring the Deployment via the CLI</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Access the Hub cluster as admin</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ oc login -u admin -p admin <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check the <code>AgentClusterInstall</code> for SNO2 cluster</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ oc -n sno2 get agentclusterinstall sno2
+
+NAME   CLUSTER   STATE
+sno2   sno2      finalizing</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>In case you want expanded information like we saw in the WebUI you can check the conditions of the <code>AgentClusterInstall</code> object. For example, while installing:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- lastProbeTime: "2022-12-01T17:53:42Z"
+  lastTransitionTime: "2022-12-01T17:53:42Z"
+  message: 'The installation is in progress: Finalizing cluster installation.
+    Cluster version status: available, message: Done applying 4.11.13'
+  reason: InstallationInProgress
+  status: "False"
+  type: Completed</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Once installed:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- lastProbeTime: "2022-12-01T18:00:00Z"
+  lastTransitionTime: "2022-12-01T18:00:00Z"
+  message: 'The installation has completed: Cluster is installed'
+  reason: InstallationCompleted
+  status: "True"
+  type: Completed</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>While the <code>SNO2</code> cluster installs, let&#8217;s move to the next section where we will learn how to add an existing cluster to RHACM and get it managed by the ZTP GitOps Pipeline.</p>
+</div>
+</div>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="14-running-the-deployment.html">Running the Deployment</a></span>
-  <span class="next"><a href="16-check-deployment-is-finished.html">Check Deployment is finished</a></span>
+  <span class="next"><a href="24-managing-existing-clusters.html">Managing Existing Clusters</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

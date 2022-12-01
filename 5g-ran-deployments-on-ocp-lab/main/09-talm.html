@@ -456,6 +456,10 @@
   </li>
 </ul>
   </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="12-crafting-deployments-iaac.html">Crafting Deployment&#8217;s IaaC</a>
@@ -517,7 +521,19 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="15-monitoring-the-deployment.html">Monitoring the Deployment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="15-monitoring-the-deployment.html#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="15-monitoring-the-deployment.html#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="24-managing-existing-clusters.html">Managing Existing Clusters</a>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="16-check-deployment-is-finished.html">Check Deployment is finished</a>
@@ -847,21 +863,21 @@ It is highly recommended to create a recovery partition at install time if opted
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
 metadata:
-  name: du-upgrade-41018
-  namespace: ztp-group-du-sno
+  name: du-upgrade-41018
+  namespace: ztp-group-du-sno
 spec:
-  preCaching: true #precache was done
+  preCaching: true #precache was done
   backup: true #backup feature enabled
-  deleteObjectsOnCompletion: true
-  clusters:
-  - cnfdb1
-  - cnfdb2
-  enable: true #backup is triggered when CGU is enabled
-  managedPolicies:
-  - du-upgrade-platform-upgrade
-  remediationStrategy:
-    maxConcurrency: 2
-    timeout: 240</code></pre>
+  deleteObjectsOnCompletion: true
+  clusters:
+  - cnfdb1
+  - cnfdb2
+  enable: true #backup is triggered when CGU is enabled
+  managedPolicies:
+  - du-upgrade-platform-upgrade
+  remediationStrategy:
+    maxConcurrency: 2
+    timeout: 240</code></pre>
 </div>
 </div>
 <div class="paragraph">

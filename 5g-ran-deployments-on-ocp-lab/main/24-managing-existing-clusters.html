@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Troubleshooting Tips :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/18-troubleshooting-tips.html">
-    <link rel="prev" href="17-using-talm-to-update-clusters.html">
-    <link rel="next" href="19-common-pitfalls.html">
+    <title>Managing Existing Clusters :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/24-managing-existing-clusters.html">
+    <link rel="prev" href="15-monitoring-the-deployment.html">
+    <link rel="next" href="16-check-deployment-is-finished.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -532,7 +532,7 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <a class="nav-link" href="24-managing-existing-clusters.html">Managing Existing Clusters</a>
   </li>
   <li class="nav-item" data-depth="1">
@@ -541,7 +541,7 @@
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="17-using-talm-to-update-clusters.html">Using TALM to update clusters</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="1">
+  <li class="nav-item" data-depth="1">
     <a class="nav-link" href="18-troubleshooting-tips.html">Troubleshooting Tips</a>
   </li>
   <li class="nav-item" data-depth="1">
@@ -583,20 +583,23 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="18-troubleshooting-tips.html">Troubleshooting Tips</a></li>
+    <li><a href="24-managing-existing-clusters.html">Managing Existing Clusters</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/18-troubleshooting-tips.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/24-managing-existing-clusters.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Troubleshooting Tips</h1>
+<h1 class="page">Managing Existing Clusters</h1>
 <div class="paragraph">
-<p>TBD</p>
+<p>If we have clusters that have been provisioned outside the ZTP GitOps Pipeline, we still can get them added to RHACM and start managing them with the pipeline.</p>
+</div>
+<div class="paragraph">
+<p>In the lab environment we have a SNO cluster <code>SNO1</code> that was deployed outside the ZTP GitOps Pipeline, in this section we will get it added to RHACM and make it load the policies we have for SNO clusters.</p>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="17-using-talm-to-update-clusters.html">Using TALM to update clusters</a></span>
-  <span class="next"><a href="19-common-pitfalls.html">Common Pitfalls</a></span>
+  <span class="prev"><a href="15-monitoring-the-deployment.html">Monitoring the Deployment</a></span>
+  <span class="next"><a href="16-check-deployment-is-finished.html">Check Deployment is finished</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
