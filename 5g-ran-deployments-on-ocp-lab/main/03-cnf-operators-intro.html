@@ -611,7 +611,7 @@
 <h2 id="node-tuning-operator"><a class="anchor" href="#node-tuning-operator"></a>Node Tuning Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Helps you manage node-level tuning by orchestrating the TuneD daemon and achieves low latency performance by using the Performance Profile controller.</p>
+<p>Helps you manage node-level tuning by orchestrating the TuneD daemon and other OS level tuning. In the context of RAN deployments it is used to achieve low latency performance by using the Performance Profile controller.</p>
 </div>
 <div class="paragraph">
 <p>In RAN environments we will leverage the PerformanceProfile API in order to:</p>
@@ -644,7 +644,7 @@
 <p>Helps you manage SR-IOV network devices and network attachments. You can think of an SR-IOV NIC like a hypervisor for NICs, you have a physical NIC and you can create (a limited number of) virtualized NICs out of it.</p>
 </div>
 <div class="paragraph">
-<p>We usually refer to this virtualized NICs as virtual functions (VFs), and these are exposed in the containers in order to provide extra networks to workloads.</p>
+<p>We usually refer to this virtualized NICs as virtual functions (VFs), and these are exposed in the containers in order to provide extra networks to workloads. These VFs are "slices" of the underlying NIC which are passed into the container as hardware devices. This allows the container direct access to that "slice" of the NIC and is typically used to provide high performance access to networking.</p>
 </div>
 <div class="paragraph">
 <p>You can read more about the SR-IOV operator <a href="https://docs.openshift.com/container-platform/4.11/networking/hardware_networks/about-sriov.html">here</a>.</p>
@@ -669,10 +669,10 @@
 <h2 id="accelerators-operators"><a class="anchor" href="#accelerators-operators"></a>Accelerators Operators</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Hardware accelerator cards can be used to accelerate 4G/LTE and 5G virtualized radio access networks (vRAN) workloads. The use of these cards increases the overall compute capacity of a commercial, off-the-shelf platform.</p>
+<p>Specialized hardware devices can be used to accelerate 4G/LTE and 5G virtualized radio access networks (vRAN) workloads. The use of these devices increases the overall compute capacity of a commercial, off-the-shelf platform by offloading compute intensive tasks to dedicated hardware.</p>
 </div>
 <div class="paragraph">
-<p>In order to manage these cards, there are multiple accelerator operators that we may need to deploy in our OpenShift clusters.</p>
+<p>In order to manage these devices, there are multiple accelerator operators that we may need to deploy in our OpenShift clusters.</p>
 </div>
 </div>
 </div>

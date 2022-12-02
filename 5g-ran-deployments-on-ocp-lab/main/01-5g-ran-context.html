@@ -674,7 +674,7 @@
 <p>Physical memory is managed in fixed-size chunks called pages. On the x86_64 architecture, the default size of a memory page is <code>4 KB</code>. This default page size has proved to be suitable for general-purpose operating systems which supports many kinds of workloads.</p>
 </div>
 <div class="paragraph">
-<p>However, specific applications can benefit from using larger page sizes in certain cases. In order to reduce the overhead in the O.S and CPU we can pre-allocate memory pages with a fixed size that can later be consumed by our workloads.</p>
+<p>However, specific applications can benefit from using larger page sizes in certain cases. In order to reduce the overhead in the O.S and CPU we can pre-allocate memory pages with a larger fixed size that can later be consumed by our workloads.</p>
 </div>
 <div class="paragraph">
 <p>You can learn more about huge pages in Linux <a href="https://kerneltalks.com/services/what-is-huge-pages-in-linux/">here</a>.</p>
@@ -685,7 +685,7 @@
 <h2 id="cpu-pinning"><a class="anchor" href="#cpu-pinning"></a>CPU Pinning</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>When running workloads in Linux these processes can be executed in multiple CPUs, the scheduler will assign CPUs to get the job done. While this may be good enough for general-purpose workloads, in Telco environments that&#8217;s not usually the case. With CPU pinning we can restrict our workload to a given set of CPUs that will be dedicated to run our workload and nothing else, avoiding noisy neighbors and having access to the same compute power at any given time.</p>
+<p>When running workloads in Linux these processes can be executed on any of multiple CPUs, the scheduler will assign CPUs to get the job done. While this may be good enough for general-purpose workloads, in latency sensitive environments that&#8217;s not usually the case. With CPU pinning we can restrict our workload to a given set of CPUs that will be dedicated to run our workload and nothing else, avoiding noisy neighbors and having access to the same compute power at any given time.</p>
 </div>
 </div>
 </div>
@@ -693,7 +693,7 @@
 <h2 id="irq-load-balancing"><a class="anchor" href="#irq-load-balancing"></a>IRQ Load Balancing</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><em>Interrupt Requests (IRQ)</em> need to be handled by the CPUs, in Telco environments we want to limit the IRQs to a given set of CPUs in order to avoid taking compute power from workloads running on pinned CPUs for example. IRQs can be run in pinned CPUs otherwise specified.</p>
+<p><em>Interrupt Requests (IRQ)</em> need to be handled by the CPUs, in latency sensitive environments we want to limit the IRQs to a given set of CPUs in order to avoid taking compute power from workloads running on pinned CPUs for example. IRQs can be run in pinned CPUs otherwise specified.</p>
 </div>
 </div>
 </div>
@@ -717,18 +717,10 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="oot-drivers"><a class="anchor" href="#oot-drivers"></a>OoT Drivers</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>In Red Hat Enterprise Linux CoreOS releases we get a bunch of drivers for the different hardware components, we call in-tree drivers to those that come pre-packaged in a given release, on the other hand drivers that need to be layered on top of a given release are called out-of-tree (OoT) drivers. In Telco environments we usually need to work with OoT NIC drivers for the most recent cards in the market.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
 <h2 id="cpu-reduction-tuning"><a class="anchor" href="#cpu-reduction-tuning"></a>Tuning for CPU Reduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In RAN environments the CPU usage by the platform must be reduced to the bare minimum so RAN workloads can benefit from as much CPU as possible. In order to accomplish that, the OpenShift platform will be limited to run their infrastructure components on a limited set of CPUs. This is what we call <em>workload partitioning</em>, OCP components will be allowed to run in a sub set of the available CPUs, leaving the rest of CPUs available for the RAN workloads.</p>
+<p>In RAN environments, on Single-Node OpenShift (SNO) the CPU usage by the platform must be reduced to the bare minimum so RAN workloads can benefit from as much CPU as possible. In order to accomplish that, the OpenShift platform will be limited to run their infrastructure components on a limited set of CPUs. This is what we call <em>workload partitioning</em>, OCP components will be allowed to run in a sub set of the available CPUs, leaving the rest of CPUs available for the RAN workloads.</p>
 </div>
 <div class="paragraph">
 <p>On top of <em>workload partitioning</em>, the CNF team has tuned the OpenShift platform for RAN workloads by removing components that are not required in a RAN context such as Grafana Web Console, OpenShift Web Console, etc.</p>

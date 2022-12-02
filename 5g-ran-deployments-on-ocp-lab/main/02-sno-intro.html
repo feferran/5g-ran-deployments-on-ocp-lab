@@ -603,7 +603,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Edge computing is everywhere. While many organizations look to take advantage of deploying applications at the edge, the physical nature of many of these edge sites can cause challenges to the architects who need to deploy hardware in confined spaces or where network connectivity back to the central data center may be intermittent. To help solve this problem, we have been working to make our Red Hat OpenShift footprint smaller to fit into these more constrained environments by putting both control and worker capabilities into a single node. As of OpenShift 4.9, we now have a full OpenShift deployment in a single node called Single Node OpenShift (SNO).</p>
+<p>Edge computing is everywhere. While many organizations look to take advantage of deploying applications at the edge, the physical nature of many of these edge sites can cause challenges to the architects who need to deploy hardware in confined spaces, with reduced cost, with limited power budgets, or where network connectivity back to the central data center may be intermittent. To help solve this problem, we have been working to make our Red Hat OpenShift footprint smaller to fit into these more constrained environments by putting both control and worker capabilities into a Single Node. As of OpenShift 4.9, we now have a full OpenShift deployment in a Single Node called Single Node OpenShift (SNO).</p>
 </div>
 </div>
 </div>
@@ -611,16 +611,16 @@
 <h2 id="5g-ran"><a class="anchor" href="#5g-ran"></a>5G Radio Access Network</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>SNO&#8217;s primary use case is for edge computing workloads, including intermittent connectivity, portable clouds, and 5G radio access networks (RAN) close to a base station. The major tradeoff with an installation on a single node is the lack of high availability. In this lab, we are going to focus in telecommunication service providers' implementation of a Radio Access Network (RAN) use case as part of a 5G mobile network.</p>
+<p>SNO&#8217;s primary use case is for edge computing workloads, including intermittent connectivity, portable clouds, and 5G radio access networks (RAN) close to a base station. The major tradeoff with an installation on a Single Node is the lack of high availability. In this lab, we are going to focus in telecommunication service providers' implementation of a Radio Access Network (RAN) use case as part of a 5G mobile network.</p>
 </div>
 <div class="paragraph">
-<p>Notice that in the context of telecommunications service providers' 5G RANs, it is increasingly common to see "cloud native" implementations of the 5G Distributed Unit (DU) components. Due to latency constraints, the DU needs to be deployed very close to the Radio Units (RUs), for which it is responsible. In practice, this can mean running the DU on anything from a single server at the base of a cell tower to a more datacenter-like environment serving several RUs.</p>
+<p>Notice that in the context of telecommunications service providers' 5G RANs, it is increasingly common to see "cloud native" implementations of the 5G RAN application, including the Distributed Unit (DU) components. Due to latency constraints, the DU needs to be deployed very close to the Radio Units (RUs), for which it is responsible. In practice, this can mean running the DU on anything from a single server at the base of a cell tower to a more datacenter-like environment serving several RUs.</p>
 </div>
 <div class="paragraph">
-<p>A typical DU example is a resource-intensive workload, requiring 6 dedicated cores per DU and several DUs packed on the server, with 16-24 GB of RAM per DU (consumed as huge pages), multiple single route I/O virtualization (SR-IOV) NICs, FPGA, or GPU acceleration cards  carrying several Gbps of traffic each.</p>
+<p>A typical DU example is a resource-intensive workload, requiring multiple dedicated cores per DU and several DUs packed on the server. For performance the DU requires dedicated memory configured as huge pages, multiple single route I/O virtualization (SR-IOV) NICs, FPGA, or GPU acceleration cards  carrying several Gbps of traffic each.</p>
 </div>
 <div class="paragraph">
-<p>One crucial detail of this use case is ensuring that this workload can be "autonomous" so that it can continue operating with its existing configuration, even when any centralized management functionality is unavailable. This is where single node OpenShift comes in.</p>
+<p>One crucial detail of this use case is ensuring that this workload can be "autonomous" so that it can continue operating with its existing configuration, even when any centralized management functionality is unavailable. This is where Single Node OpenShift comes in.</p>
 </div>
 </div>
 </div>
@@ -628,12 +628,12 @@
 <h2 id="things-keep-mind"><a class="anchor" href="#things-keep-mind"></a>Things to keep in mind</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Single node OpenShift offers both control and worker node capabilities in a single server and provides users with a consistent experience across the sites where OpenShift is deployed, regardless of the size of the deployment. Keep in mind a single node OpenShift deployment differs from the default self-managed/highly-available cluster profile in couple of ways:</p>
+<p>Single Node OpenShift offers both control and worker node capabilities in a single server and provides users with a consistent experience across the sites where OpenShift is deployed, regardless of the size of the deployment. Keep in mind a Single Node OpenShift deployment differs from the default self-managed/highly-available cluster profile in a couple of ways:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>To optimize system resource usage, many operators are configured to reduce the footprint of their operands when running on a single node OpenShift. This is even more visible when deploying the Telco 5G RAN QE validated pattern which establishes a base platform for RAN DU workloads.</p>
+<p>To optimize system resource usage, many operators are configured to reduce the footprint (cpu use) of their operands when running on a Single Node OpenShift. This is even more visible when deploying the Telco 5G RAN QE validated pattern which establishes a base platform for RAN DU workloads.</p>
 </li>
 <li>
 <p>In environments that require high availability, it is recommended that the architecture be configured in a way in which if the hardware was to fail, those workloads are transitioned to other sites or nodes while the impacted node is recovered. This is where Red Hat Advanced Cluster Management can really help us controlling our fleet of clusters.</p>
@@ -649,7 +649,7 @@
 <p>OpenShift installs typically require a temporary bootstrap machine, which is usually a separate machine, but edge deployments are often performed in environments where there are no extra nodes. However, for these use-cases, the new functionality provided by OpenShift’s “Bootstrap-in-Place” option eliminates the separate bootstrap node requirement for single-node deployments. So when installing single-node OpenShift, you only need the node you wish to install onto.</p>
 </div>
 <div class="paragraph">
-<p>OpenShift Container Platform on a single node is a specialized installation that requires the creation of a special ignition configuration ISO. It is supported on bare metal, vSphere, Red Hat OpenStack, and Red Hat Virtualization platforms as today.</p>
+<p>OpenShift Container Platform on a Single Node is a specialized installation that requires the creation of a special ignition configuration ISO. It is supported on bare metal, vSphere, Red Hat OpenStack, and Red Hat Virtualization platforms as today. When using ACM&#8217;s Assisted Service for installation this ISO is automatically created as part of the installation process.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -675,7 +675,7 @@ The use of OpenShiftSDN with single-node OpenShift is not supported. OVN-Kuberne
 <p>Single-node OpenShift isn’t highly-available. It explicitly does not assume zero downtime of the Kubernetes API.</p>
 </li>
 <li>
-<p>The server must have access to the internet or access to a local registry if it is not connected to a routable network.</p>
+<p>The server must have access to the internet or access to a local (disconnected) registry if it is not connected to an externally routable network.</p>
 </li>
 <li>
 <p>The server must have a DHCP reservation or a static IP address for the Kubernetes API, ingress route, and cluster node domain names. You must configure the DNS to resolve the IP address to each of the following fully qualified domain names (FQDN)</p>
@@ -689,7 +689,7 @@ The use of OpenShiftSDN with single-node OpenShift is not supported. OVN-Kuberne
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-You can now add workers to a Single-Node OpenShift (SNO) when using OpenShift 4.11
+As of OpenShift 4.11, you can now add workers to a Single-Node OpenShift (SNO)
 </td>
 </tr>
 </table>
@@ -700,7 +700,7 @@ You can now add workers to a Single-Node OpenShift (SNO) when using OpenShift 4.
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Red Hat Advanced Cluster Management for Kubernetes</strong> - allows provisioning single-node OpenShift using kube-native APIs. This is the method that we are going to use in this lab, well, actually it is not 100% accurate, we are going to use Zero Touch Provisioning (ZTP) for provisioning and configuring the SNO which is leveraging RHACM under the hood.</p>
+<p><strong>Red Hat Advanced Cluster Management for Kubernetes</strong> - allows provisioning single-node OpenShift using kube-native APIs. In this lab we will use a GitOps Zero Touch Provisioning (ZTP) method for installing clusters which leverages RHACM under the hood.</p>
 </li>
 <li>
 <p><strong>Web-based Assisted Installer</strong> and a discovery ISO that you generate using the Assisted Installer. Basically, you need to follow the web-based Assisted Installer wizard from <a href="https://console.redhat.com/openshift/assisted-installer/clusters">the Red Hat OpenShift Cluster Manager</a> that will guide you through the process and manage the installation. Once the discovery ISO is created, attach the image to the target host and  boot your server from the attached discovery ISO. Detailed information can be found <a href="https://docs.openshift.com/container-platform/latest/installing/installing_sno/install-sno-installing-sno.html#installing-single-node-openshift-using-the-assisted-installer">here</a>.</p>
