@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Check Deployment is Finished :: LAB - 5G RAN Deployments on OpenShift</title>
+    <title>Check SNO Deployment is Finished :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/16-check-deployment-is-finished.html">
-    <link rel="prev" href="24-managing-existing-clusters.html">
-    <link rel="next" href="17-using-talm-to-update-clusters.html">
+    <link rel="prev" href="17-using-talm-to-update-clusters.html">
+    <link rel="next" href="18-troubleshooting-tips.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -535,11 +535,20 @@
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="24-managing-existing-clusters.html">Managing Existing Clusters</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="1">
-    <a class="nav-link" href="16-check-deployment-is-finished.html">Check Deployment is finished</a>
-  </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="17-using-talm-to-update-clusters.html">Using TALM to update clusters</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="16-check-deployment-is-finished.html">Check SNO Deployment is finished</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#check-sno-deployment-webui">Check SNO Deployment has Finished via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="18-troubleshooting-tips.html">Troubleshooting Tips</a>
@@ -583,20 +592,106 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="16-check-deployment-is-finished.html">Check Deployment is finished</a></li>
+    <li><a href="16-check-deployment-is-finished.html">Check SNO Deployment is finished</a></li>
   </ul>
 </nav>
   <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/16-check-deployment-is-finished.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Check Deployment is Finished</h1>
+<h1 class="page">Check SNO Deployment is Finished</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>TBD</p>
+<p>In the previous section we have learned how to follow the cluster deployment process, but the cluster finished its deployment doesn&#8217;t mean that the SNO deployment is complete.</p>
+</div>
+<div class="paragraph">
+<p>We say that the SNO deployment finished when the SNO cluster has been deployed <strong>and</strong> day2 configurations has been applied. In this section we will learn how to verify that the configs have been applied and our SNO is ready to run 5G RAN workloads.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="check-sno-deployment-webui"><a class="anchor" href="#check-sno-deployment-webui"></a>Check SNO Deployment has Finished via the WebUI</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Access the <a href="https://multicloud-console.apps.hub.5g-deployment.lab/">RHACM WebUI</a> and login with the OpenShift credentials.</p>
+</li>
+<li>
+<p>Once you&#8217;re in, click on <code>Infrastructure</code> &#8594; <code>Clusters</code>. You will see an screen like the one below, notice how there is a label saying <code>ztp-done</code> (that means ztp pipeline has finished):</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm-sno2-ztp-done.png" alt="RHACM SNO2 ztp-done">
+</div>
+</div>
+</li>
+<li>
+<p>Additionally we can verify that all policies are compliant for our SNO cluster. On the RHACM WebUI go to <code>Governance</code> &#8594; <code>Policies</code> and you will see the following screen where we can see all policies are green:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm-sno2-policies-done.png" alt="RHACM SNO2 policies done">
+</div>
+</div>
+</li>
+<li>
+<p>At this point the SNO is ready ro tun 5G RAN workloads.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="check-sno-deployment-cli"><a class="anchor" href="#check-sno-deployment-cli"></a>Check SNO Deployment has Finished via the CLI</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Access the Hub cluster as admin</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ oc login -u admin -p admin <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check the <code>ManagedCluster</code> for SNO2 cluster (including its labels). You should see the <code>ztp-done</code> label, just as we saw in the WebUI</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ oc get managedcluster sno2 --show-labels
+
+NAME   HUB ACCEPTED   MANAGED CLUSTER URLS                      JOINED   AVAILABLE   AGE    LABELS
+sno2   true           <a href="https://api.sno2.5g-deployment.lab:6443" class="bare">https://api.sno2.5g-deployment.lab:6443</a>   True     True        122m   &lt;OMITTED_LABELS&gt;,ztp-done=</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Check the policies are compliant for our SNO cluster.</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ oc -n sno2 get policies
+
+NAME                                           REMEDIATION ACTION   COMPLIANCE STATE   AGE
+ztp-policies.common-operator-catalog-411       inform               Compliant          123m
+ztp-policies.group-du-sno-du-profile-wave1     inform               Compliant          123m
+ztp-policies.group-du-sno-du-profile-wave10    inform               Compliant          123m
+ztp-policies.site-sno2-performance-policy      inform               Compliant          123m
+ztp-policies.site-sno2-storage-configuration   inform               Compliant          123m
+ztp-policies.site-sno2-tuned-policy            inform               Compliant          123m
+ztp-policies.zone-europe-storage-operator      inform               Compliant          123m</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>At this point the SNO is ready ro tun 5G RAN workloads.</p>
+</li>
+</ol>
+</div>
+</div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="24-managing-existing-clusters.html">Managing Existing Clusters</a></span>
-  <span class="next"><a href="17-using-talm-to-update-clusters.html">Using TALM to update clusters</a></span>
+  <span class="prev"><a href="17-using-talm-to-update-clusters.html">Using TALM to update clusters</a></span>
+  <span class="next"><a href="18-troubleshooting-tips.html">Troubleshooting Tips</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
