@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/index.html">
-    <link rel="next" href="introduction.html">
+    <title>Introduction :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/introduction.html">
+    <link rel="prev" href="index.html">
+    <link rel="next" href="5g-ran-context.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -50,15 +51,15 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="introduction.html">Introduction</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="introduction.html#lab-aim">Who is this lab aimed at? </a>
+    <a class="nav-link" href="#lab-aim">Who is this lab aimed at? </a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
+    <a class="nav-link" href="#lab-software-versions">Lab Software Versions</a>
   </li>
 </ul>
   </li>
@@ -583,71 +584,65 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="index.html">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</a></li>
+    <li><a href="introduction.html">Introduction</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/introduction.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</h1>
-<div class="sect1 text-center strong">
-<h2>Red Hat Lab - 5G RAN Deployments on OpenShift</h2>
+<h1 class="page">Introduction</h1>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This lab will guide you throught the deployment of a RAN ready infrastructure.</p>
+<p>Welcome to this 5G RAN Deployments on OpenShift Lab.</p>
 </div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>The first part of this lab is an introduction to the required concepts that one needs to know when planning and running a 5G RAN Deployment on OpenShift. The second part is a practical scenario where we will run RAN-enabled OCP deployments by using the ZTP deployment technologies and methodologies.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2>Contributors</h2>
+<h2 id="lab-aim"><a class="anchor" href="#lab-aim"></a>Who is this lab aimed at?</h2>
 <div class="sectionbody">
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Role</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alberto Losada</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ian Miller</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Contributor / CNF Developer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mario Vázquez</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>The lab is aimed to technical profiles working with OpenShift who are interested in any of these areas:
+* interested in GitOps management of a fleet of clusters
+* working with telecom customers/partners in projects involving RAN workloads</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="lab-software-versions"><a class="anchor" href="#lab-software-versions"></a>Lab Software Versions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The lab is based on the following software versions.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>OpenShift vTBD</p>
+</li>
+<li>
+<p>TALM vTBD</p>
+</li>
+<li>
+<p>PolicyGenTool vTBD</p>
+</li>
+<li>
+<p>TBD&#8230;&#8203;</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="next"><a href="introduction.html">Introduction</a></span>
+  <span class="prev"><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></span>
+  <span class="next"><a href="5g-ran-context.html">5G Ran Context</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

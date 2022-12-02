@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/index.html">
-    <link rel="next" href="introduction.html">
+    <title>Introduction to Zero Touch Provisioning (ZTP) :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/ztp-intro.html">
+    <link rel="prev" href="cnf-operators-intro.html">
+    <link rel="next" href="ocp-gitops.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -134,7 +135,7 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <a class="nav-link" href="ztp-intro.html">Introduction to Zero Touch Provisioning (ZTP)</a>
   </li>
   <li class="nav-item" data-depth="1">
@@ -583,23 +584,26 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="index.html">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</a></li>
+    <li><a href="ztp-intro.html">Introduction to Zero Touch Provisioning (ZTP)</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/ztp-intro.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</h1>
-<div class="sect1 text-center strong">
-<h2>Red Hat Lab - 5G RAN Deployments on OpenShift</h2>
-<div class="sectionbody">
+<h1 class="page">Introduction to Zero Touch Provisioning (ZTP)</h1>
 <div class="paragraph">
-<p>This lab will guide you throught the deployment of a RAN ready infrastructure.</p>
+<p>Edge deployments of clusters are typically characterized by a large number of clusters that must be managed with a high degree of reliability and service uptime. These deployments may include tens of clusters or tens of thousands of clusters which must be organized and managed across their lifetimes, from initial deployment through upgrades, configuration updates, and when necessary hardware replacement. Typically the services being provided on these clusters must meet a high level of service availability, for example 5G services, which drives requirements on controlled access to the authoritative network description and carefully managing disruptive changes.</p>
+</div>
+<div class="paragraph">
+<p>The <strong>GitOps Zero Touch Provisioning (ZTP)</strong> methodology is designed to provide a highly reliabile way to manage a fleet of Edge deployed clusters that meets these requirements across the full lifecycle of the clusters. ZTP allows you to provision new edge sites using declarative specifications for the configuration of bare-metal equipment at remote sites following a GitOps deployment set of practices. Ongoing management of configuration is also managed through the declarative specifications in Git. The ZTP methodology leverages Red Hat Advanced Cluster Management (RHACM) to fully automate ("zero touch") the initial deployment and configuration of the clustes as well as to provide ongoing cluster management and observability.</p>
+</div>
+<div class="paragraph">
+<p>ZTP is a project to deploy and deliver OpenShift 4 in a hub-and-spoke architecture (in a relation of 1-N), where a single hub cluster manages many spoke clusters. The hub and the spokes will be based on OpenShift 4 but with the difference that the hub cluster will manage, deploy and control the lifecycle of the spokes using Red Hat Advanced Cluster Management (RHACM). So, hub clusters running RHACM apply radio access network (RAN) policies from predefined custom resources (CRs) and provision and deploy the spoke clusters using multiple products. We will take a closer look at these components in <a href="08-ztp-at-scale.html">ZTP components</a> section.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -608,46 +612,22 @@
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
+ZTP can operate in both connected and disconnected environments. In the connected case clusters have direct access to the Internet. The disconnected case, which uses a private registry accessible within the customer&#8217;s network, is most common in the telecom environment and will be used in this lab.
 </td>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>ZTP provides support for deploying single node clusters, three-node clusters, and standard OpenShift clusters. This includes the installation of OpenShift and deployment of the distributed units (DUs) at scale. In this lab, we will focus on SNO clusters which was a topic discussed in <a href="02-sno-intro.html">Introduction to Single Node OpenShift (SNO)</a>.</p>
 </div>
-</div>
-<div class="sect1">
-<h2>Contributors</h2>
-<div class="sectionbody">
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Role</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alberto Losada</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ian Miller</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Contributor / CNF Developer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mario Vázquez</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-</tbody>
-</table>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ztp_edge_framework.png" alt="ZTP Edge Framework">
 </div>
 </div>
 <nav class="pagination">
-  <span class="next"><a href="introduction.html">Introduction</a></span>
+  <span class="prev"><a href="cnf-operators-intro.html">Introduction to CNF Operators</a></span>
+  <span class="next"><a href="ocp-gitops.html">OpenShift GitOps</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/index.html">
-    <link rel="next" href="introduction.html">
+    <title>Deployment Considerations :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/deployment-considerations.html">
+    <link rel="prev" href="policygen-deepdive.html">
+    <link rel="next" href="lab-environment.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -347,36 +348,36 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="deployment-considerations.html#hardware-configurations">Hardware configurations</a>
+    <a class="nav-link" href="#hardware-configurations">Hardware configurations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="deployment-considerations.html#bios-settings">Bios Settings</a>
+    <a class="nav-link" href="#bios-settings">Bios Settings</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="deployment-considerations.html#networking">Networking</a>
+    <a class="nav-link" href="#networking">Networking</a>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="deployment-considerations.html#disconnected-environments">Disconnected Environments</a>
+    <a class="nav-link" href="#disconnected-environments">Disconnected Environments</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="deployment-considerations.html#connected-proxy">Connected through proxy</a>
+    <a class="nav-link" href="#connected-proxy">Connected through proxy</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="deployment-considerations.html#fully-disconnected">Fully disconnected</a>
+    <a class="nav-link" href="#fully-disconnected">Fully disconnected</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="deployment-considerations.html#git-repo-structure">Git Repository Structure</a>
+    <a class="nav-link" href="#git-repo-structure">Git Repository Structure</a>
   </li>
 </ul>
   </li>
@@ -583,71 +584,177 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="index.html">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</a></li>
+    <li><a href="deployment-considerations.html">Deployment Considerations</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/deployment-considerations.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</h1>
-<div class="sect1 text-center strong">
-<h2>Red Hat Lab - 5G RAN Deployments on OpenShift</h2>
+<h1 class="page">Deployment Considerations</h1>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This lab will guide you throught the deployment of a RAN ready infrastructure.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
-</td>
-</tr>
-</table>
+<p>A RAN deployment requires of multiple pieces of the stack being properly configured, in this section we will present the most common ones.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2>Contributors</h2>
+<h2 id="hardware-configurations"><a class="anchor" href="#hardware-configurations"></a>Hardware configurations</h2>
 <div class="sectionbody">
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
+<div class="paragraph">
+<p>RAN deployments usually run on top of baremetal servers, and as such is of vital importance have a proper configuration at the hardware level to meet the required expectations of the RAN workloads.</p>
+</div>
+<div class="sect2">
+<h3 id="bios-settings"><a class="anchor" href="#bios-settings"></a>Bios Settings</h3>
+<div class="admonitionblock note">
+<table>
 <tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Role</th>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Depending on your hardware vendor the naming of the following features may vary.
+</td>
 </tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alberto Losada</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ian Miller</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Contributor / CNF Developer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mario Vázquez</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-</tbody>
 </table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>CPU Power and Performance Policy must be set to <code>Performance</code>.</p>
+</li>
+<li>
+<p>Energy efficiency settings must be set to <code>Disabled</code>.</p>
+</li>
+<li>
+<p>SR-IOV and VT-D must be set to <code>Enabled</code>.</p>
+</li>
+<li>
+<p>Boot Mode must be set to <code>UEFI</code>.</p>
+</li>
+<li>
+<p>Storage should be configured with a <code>RAID1</code> at least.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="networking"><a class="anchor" href="#networking"></a>Networking</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>IPv4 and IPv6 are both supported for RAN deployments, when using IPv6 only disconnected mode will be supported.</p>
+</div>
+<div class="paragraph">
+<p>You can have different networks for your different DUs, but keep in mind that these networks need to have connectivity to the network where the RHACM Hub is running.</p>
+</div>
+<div class="paragraph">
+<p>When using IPv6, SLAAC addressing is discouraged.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="disconnected-environments"><a class="anchor" href="#disconnected-environments"></a>Disconnected Environments</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We define as <em>disconnected</em> environment, an environment where there is no direct connectivity to the Internet.</p>
+</div>
+<div class="paragraph">
+<p>There are two kinds of disconnected environments that we have identified.</p>
+</div>
+<div class="sect2">
+<h3 id="connected-proxy"><a class="anchor" href="#connected-proxy"></a>Connected through proxy</h3>
+<div class="paragraph">
+<p>Connected through proxy environments do not require extra infrastructure components to complete the installation since the proxy will provide access to the Internet and the installer will be able to grab all the required bits. If we want to speed up the installation or consume artifacts local to the environment we are installing we can deploy the infrastructure components described in the section below.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="fully-disconnected"><a class="anchor" href="#fully-disconnected"></a>Fully disconnected</h3>
+<div class="paragraph">
+<p>When there is no connection to the Internet we need to mirror the required artifacts to run an OpenShift installation in our infrastructure. The required infrastructure components will be:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>HTTP Server to store RHCOS artifacts (images, rootfs, etc.)</p>
+</li>
+<li>
+<p>Container Registry to store OCP and OLM images</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In a future section we will cover the deployment and mirroring of the required bits.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="git-repo-structure"><a class="anchor" href="#git-repo-structure"></a>Git Repository Structure</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When preparing a Git repository for running ZTP deployments we identified two potential ways of structuring the repository for GitOps, using branches or using folders. At this point, we can say that while branches have been used for structuring the different environments in the past, today, the preferred approach is using folders.</p>
+</div>
+<div class="paragraph">
+<p>In our Git repository we will have the following folder structure:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">.
+├── site-configs
+│   └── pre-reqs
+│       └── ztp-sno
+└── site-policies
+    ├── common-policies
+    ├── group-policies
+    ├── site-policies
+    └── zone-policies</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>site-configs</code>: This folder is used to store the different SiteConfigs describing the environments we will deploy through ZTP.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>pre-reqs</code>: This folder is used to store the different configurations that are required for the deployment of the environments, things like: pull secrets, bmc credentials, etc.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>site-policies</code>: This folder has different sub-folders storing different sets of PolicyGenTemplates.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>common-policies</code>: This folder is used to store PolicyGenTemplates that apply to all clusters.</p>
+</li>
+<li>
+<p><code>group-policies</code>: This folder is used to store PolicyGenTemplates that apply to a group of clusters.</p>
+</li>
+<li>
+<p><code>site-policies</code>: This folder is used to store PolicyGenTemplates that apply to specific clusters.</p>
+</li>
+<li>
+<p><code>zone-policies</code>: This folder is used to store PolicyGenTemplates that apply to clusters in a specific zone.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="next"><a href="introduction.html">Introduction</a></span>
+  <span class="prev"><a href="policygen-deepdive.html">PolicyGen Deepdive</a></span>
+  <span class="next"><a href="lab-environment.html">Lab Environment</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

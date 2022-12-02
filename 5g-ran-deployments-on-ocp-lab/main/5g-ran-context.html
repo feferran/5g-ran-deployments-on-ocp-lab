@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/index.html">
-    <link rel="next" href="introduction.html">
+    <title>5G RAN Context :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/5g-ran-context.html">
+    <link rel="prev" href="introduction.html">
+    <link rel="next" href="sno-intro.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -62,39 +63,39 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="5g-ran-context.html">5G Ran Context</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#low-latency">Low Latency</a>
+    <a class="nav-link" href="#low-latency">Low Latency</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#numa-nodes">NUMA Nodes</a>
+    <a class="nav-link" href="#numa-nodes">NUMA Nodes</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#huge-pages">Huge Pages</a>
+    <a class="nav-link" href="#huge-pages">Huge Pages</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#cpu-pinning">CPU Pinning</a>
+    <a class="nav-link" href="#cpu-pinning">CPU Pinning</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#irq-load-balancing">IRQ Load Balancing</a>
+    <a class="nav-link" href="#irq-load-balancing">IRQ Load Balancing</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#dpdk">DPDK</a>
+    <a class="nav-link" href="#dpdk">DPDK</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#oot-drivers">OoT Drivers</a>
+    <a class="nav-link" href="#oot-drivers">OoT Drivers</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#cpu-reduction-tuning">Tuning for CPU Reduction</a>
+    <a class="nav-link" href="#cpu-reduction-tuning">Tuning for CPU Reduction</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#vran-accelerators">vRAN Dedicated Accelerators</a>
+    <a class="nav-link" href="#vran-accelerators">vRAN Dedicated Accelerators</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#ptp">PTP</a>
+    <a class="nav-link" href="#ptp">PTP</a>
   </li>
 </ul>
   </li>
@@ -583,71 +584,191 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="index.html">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</a></li>
+    <li><a href="5g-ran-context.html">5G Ran Context</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/5g-ran-context.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</h1>
-<div class="sect1 text-center strong">
-<h2>Red Hat Lab - 5G RAN Deployments on OpenShift</h2>
+<h1 class="page">5G RAN Context</h1>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This lab will guide you throught the deployment of a RAN ready infrastructure.</p>
+<p>Before we start introducing specific concepts about Radio Access Network (RAN) deployments on OpenShift we first need to set the context around them:</p>
 </div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
-</td>
-</tr>
-</table>
+<div class="ulist">
+<ul>
+<li>
+<p>Common configurations on almost any RAN deployment.</p>
+</li>
+<li>
+<p>Linux features that are not commonly used outside RAN, but that are very important for RAN workloads.</p>
+</li>
+<li>
+<p>Etc.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We won&#8217;t be covering these in many details, since that will require a lab of its own, we just need you to have basic knowledge and know the surrounding basics.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2>Contributors</h2>
+<h2 id="low-latency"><a class="anchor" href="#low-latency"></a>Low Latency</h2>
 <div class="sectionbody">
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Role</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alberto Losada</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ian Miller</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Contributor / CNF Developer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mario Vázquez</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>RAN workloads usually require low latencies and deterministic behaviors, in Red Hat Enterprise Linux CoreOS we can make use of the real-time Kernel.</p>
+</div>
+<div class="paragraph">
+<p>The real-time Kernel is not superior or better than the standard Kernel, instead it meets different business or system requirements.</p>
+</div>
+<div class="paragraph">
+<p>This kernel is designed to maintain low latency, consistent response time, and determinism.</p>
+</div>
+<div class="paragraph">
+<p>You can learn more about RT Kernel <a href="https://www.redhat.com/sysadmin/real-time-kernel">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="numa-nodes"><a class="anchor" href="#numa-nodes"></a>NUMA Nodes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Historically, all memory on AMD64 and Intel64 systems was equally accessible by all CPUs, that is known as <em>Uniform Memory Access (UMA)</em>. This behavior is no longer the case with recent AMD64 and Intel64 processors.</p>
+</div>
+<div class="paragraph">
+<p>In <em>Non-Uniform Memory Access (NUMA)</em>, system memory is divided across NUMA nodes, which correspond to sockets or to a particular set of CPUs that have identical access latency to the local subset of system memory.</p>
+</div>
+<div class="paragraph">
+<p>There are three policies when memory needs to be allocated:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Strict</code>: Memory allocation will fail if the memory cannot be allocated on the target NUMA node.</p>
+</li>
+<li>
+<p><code>Interleave</code>: Memory is allocated across NUMA nodes in a round-robin fashion.</p>
+</li>
+<li>
+<p><code>Preferred</code>: Memory will be allocated in the preferred NUMA node if there is room, otherwise will be allocated in another NUMA node.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="huge-pages"><a class="anchor" href="#huge-pages"></a>Huge Pages</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Physical memory is managed in fixed-size chunks called pages. On the x86_64 architecture, the default size of a memory page is <code>4 KB</code>. This default page size has proved to be suitable for general-purpose operating systems which supports many kinds of workloads.</p>
+</div>
+<div class="paragraph">
+<p>However, specific applications can benefit from using larger page sizes in certain cases. In order to reduce the overhead in the O.S and CPU we can pre-allocate memory pages with a larger fixed size that can later be consumed by our workloads.</p>
+</div>
+<div class="paragraph">
+<p>You can learn more about huge pages in Linux <a href="https://kerneltalks.com/services/what-is-huge-pages-in-linux/">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cpu-pinning"><a class="anchor" href="#cpu-pinning"></a>CPU Pinning</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When running workloads in Linux these processes can be executed on any of multiple CPUs, the scheduler will assign CPUs to get the job done. While this may be good enough for general-purpose workloads, in latency sensitive environments that&#8217;s not usually the case. With CPU pinning we can restrict our workload to a given set of CPUs that will be dedicated to run our workload and nothing else, avoiding noisy neighbors and having access to the same compute power at any given time.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="irq-load-balancing"><a class="anchor" href="#irq-load-balancing"></a>IRQ Load Balancing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><em>Interrupt Requests (IRQ)</em> need to be handled by the CPUs, in latency sensitive environments we want to limit the IRQs to a given set of CPUs in order to avoid taking compute power from workloads running on pinned CPUs for example. IRQs can be run in pinned CPUs otherwise specified.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dpdk"><a class="anchor" href="#dpdk"></a>DPDK</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <em>Data Plane Development Kit (DPDK)</em> is an open source software project that provides a set of data plane libraries and network interface controller polling-mode drivers for offloading TCP packet processing from the operating system kernel to processes running in user space.</p>
+</div>
+<div class="paragraph">
+<p>DPDK libraries offer to free up the Kernel space from interrupts by processing the work in User space instead. This is possible thanks to the DPDK libraries and the DPDK poll mode driver (PMD). This driver is responsible for the communication between the application and network card, listening in a loop avoiding as much as possible interrupts while forwarding packets. The following diagram streamlines the idea:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/kernel-user-space.webp" alt="DPDK">
+</div>
+</div>
+<div class="paragraph">
+<p>In OpenShift, it is possible to use the DPDK libraries and attach a network interface (SR-IOV virtual function) directly to the Pod. To ease the application building process, we can leverage <a href="https://catalog.redhat.com/software/containers/openshift4/dpdk-base-rhel8/5e32be6cdd19c77896004a41?container-tabs=dockerfile">Red Hat&#8217;s DPDK builder image</a> available from Red Hat&#8217;s official registry. This base or builder image is intended to build applications powered by DPDK and also work with multiple CNI plugins.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cpu-reduction-tuning"><a class="anchor" href="#cpu-reduction-tuning"></a>Tuning for CPU Reduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In RAN environments, on Single-Node OpenShift (SNO) the CPU usage by the platform must be reduced to the bare minimum so RAN workloads can benefit from as much CPU as possible. In order to accomplish that, the OpenShift platform will be limited to run their infrastructure components on a limited set of CPUs. This is what we call <em>workload partitioning</em>, OCP components will be allowed to run in a sub set of the available CPUs, leaving the rest of CPUs available for the RAN workloads.</p>
+</div>
+<div class="paragraph">
+<p>On top of <em>workload partitioning</em>, the CNF team has tuned the OpenShift platform for RAN workloads by removing components that are not required in a RAN context such as Grafana Web Console, OpenShift Web Console, etc.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="vran-accelerators"><a class="anchor" href="#vran-accelerators"></a>vRAN Dedicated Accelerators</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Hardware accelerator cards accelerate 4G/LTE and 5G Virtualized Radio Access Networks (vRAN) workloads. This in turn increases the overall compute capacity of the plataform.</p>
+</div>
+<div class="paragraph">
+<p>vRAN accelerators are designed to offload and accelerate the computing-intensive process of forward error correction (FEC) for 4G/LTE and 5G technology, freeing up processing power.</p>
+</div>
+<div class="paragraph">
+<p>As of OpenShift v4.11 the only accelerator supported is the Intel® vRAN Dedicated Accelerator ACC100, which can be managed through the use of an operator.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ptp"><a class="anchor" href="#ptp"></a>PTP</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Precision Time Protocol (PTP) is used to synchronize clocks in a network. When used in conjunction with hardware support, PTP is capable of sub-microsecond accuracy, and is more accurate than Network Time Protocol (NTP).</p>
+</div>
+<div class="paragraph">
+<p>PTP can work in three modes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>GrandMaster</code>: A PTP daemon connected to a hardware with PTP support to synchronize its clock. Other PTP daemons will connect to this PTP GrandMaster in order to sync their clocks.</p>
+</li>
+<li>
+<p><code>Ordinary Clock</code>: A PTP daemon connected to a GrandMaster to synchronize its clock.</p>
+</li>
+<li>
+<p><code>Boundary Clock</code>: A PTP daemon connected to a GrandMaster to synchronize its clock and being master for other PTP daemons on the network.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ptp_diagram.png" alt="PTP Diagram">
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="next"><a href="introduction.html">Introduction</a></span>
+  <span class="prev"><a href="introduction.html">Introduction</a></span>
+  <span class="next"><a href="sno-intro.html">Introduction to Single Node OpenShift (SNO)</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

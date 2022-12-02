@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/index.html">
-    <link rel="next" href="introduction.html">
+    <title>RHACM Governance Policy framework :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/rhacm-policies.html">
+    <link rel="prev" href="ztp-workflow.html">
+    <link rel="next" href="managing-at-scale.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -203,22 +204,22 @@
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="ztp-workflow.html">ZTP Workflow</a>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="rhacm-policies.html">RHACM Policies</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="rhacm-policies.html#policy-framework">Policy Framework</a>
+    <a class="nav-link" href="#policy-framework">Policy Framework</a>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="rhacm-policies.html#policies">Policies</a>
+    <a class="nav-link" href="#policies">Policies</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="rhacm-policies.html#policy-status">Policy Status</a>
+    <a class="nav-link" href="#policy-status">Policy Status</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="rhacm-policies.html#policy-remediation">Policy Remediation</a>
+    <a class="nav-link" href="#policy-remediation">Policy Remediation</a>
   </li>
 </ul>
   </li>
@@ -583,71 +584,227 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="index.html">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</a></li>
+    <li><a href="rhacm-policies.html">RHACM Policies</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/rhacm-policies.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</h1>
-<div class="sect1 text-center strong">
-<h2>Red Hat Lab - 5G RAN Deployments on OpenShift</h2>
+<h1 class="page">RHACM Governance Policy framework</h1>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This lab will guide you throught the deployment of a RAN ready infrastructure.</p>
+<p>As we mentioned in the <a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/main/content/4.md#ztp-workflow">ZTP Workflow</a> section, the Red Hat Advanced Cluster Management (RHACM) for Kubernetes allows us to <em>provision</em> and <em>configure</em> multiple clusters in a declarative way and can be easily coupled with GitOps. ZTP makes intensive use of RHACM Policies for managing the configuration of deployed clusters. In our telco use case, creation of these <code>Policies</code> is simplified with the ZTP policyGen kustomize plugin. This plugin translates the vRAN DU profile based on <code>PolicyGenTemplates</code> into multiple <code>Policies</code> that are understood by the Hub cluster and applied to the managed clusters.</p>
 </div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>In this section we provide an introduction to the concepts behind the RHACM “Governance" pillar (section). Furthermore, we are going to introduce the concept of a Policy, which is key for managing the configuration lifecycle of our managed clusters.</p>
+</div>
+<div class="paragraph">
+<p>In the RHACM console you can find the governance section in the bottom left part of the menu bar. As you can see in the picture, there are multiple Policies applied, some are disabled while most of them are enabled (Status) with remediation set to inform. We will get into the details later on.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rhacm_section_governance.png" alt="Governance section">
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2>Contributors</h2>
+<h2 id="policy-framework"><a class="anchor" href="#policy-framework"></a>Policy framework</h2>
 <div class="sectionbody">
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Role</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alberto Losada</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ian Miller</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Contributor / CNF Developer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mario Vázquez</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>Policies are comprised into the Policy framework. The policy framework provides governance capability to gain visibility, and drive remediation for various security and configuration aspects to help meet such enterprise standards. Basically, it provides an extensible policy framework for enterprises to harden security for software engineering, secure engineering, and resiliency.</p>
+</div>
+<div class="paragraph">
+<p>Below are the functions of the policy framework:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Distributes policies to managed clusters from hub cluster.</p>
+</li>
+<li>
+<p>Collects policy execution results from managed cluster to hub cluster.</p>
+</li>
+<li>
+<p>Supports multiple policy engines and policy languages.</p>
+</li>
+<li>
+<p>Provides an extensible mechanism to bring your own policy.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In the next picture you can see the communication flow and the multiple components involved in creating, propagating and applying policies:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/policy-framework-architecture-diagram.jpg" alt="Policy framework architecture">
+</div>
+</div>
+<div class="paragraph">
+<p>At a glance, once we create a Policy in the hub cluster, the Governance Policy framework is responsible for propagating it to set of target managed clusters based on a set of binding rules for the Policy. Then, the policy rules are evaluated against the current state of the managed cluster. The results of this assessment are sent back to the hub cluster and depending on the needs, we can remediate the drift or just be informed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="policies"><a class="anchor" href="#policies"></a>Policies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Policy CRs, as defined by the Policy Custom Resource Definition (CRD), are created on the hub cluster and act as a vehicle to deliver policies to managed cluster and collect results to send to the hub cluster.</p>
+</div>
+<div class="paragraph">
+<p>Each <code>Policy</code> can contain one or multiple policy rules that will be evaluated against cluster(s) that they are bound to. Policy binding is determined by the RHACM placement APIs which include the <code>PlacementBinding</code> and the <code>PlacementRule</code> CRs.</p>
+</div>
+<div class="paragraph">
+<p>Note that the PlacementBinding connects the Policy to the PlacementRule, and the PlacementRule defines where (on what clusters) the Policy should be active. View the following example specification of a Policy object:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  annotations:
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+  labels:
+    app.kubernetes.io/instance: policies
+  name: sno-worker-0-performance-policy
+  namespace: ztp-sno-worker-0-policies
+spec:
+  remediationAction: inform         # [inform/enforce] If set, it defines the remediationAction globally.
+  disabled: false                   # [true/false] If true, the policy will not be distributed to the managed cluster.
+  policy-templates:
+  - objectDefinition: # Use `objectDefinition` to wrap the policy resource to be distributed to the managed cluster
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: ConfigurationPolicy
+      metadata:
+        name: sno-worker-0-performance-policy-config
+      spec:
+        evaluationInterval:
+          compliant: 10m
+          noncompliant: 10s
+        namespaceselector:
+          exclude:
+          - kube-*
+          include:
+          - '*'
+        object-templates:
+        - complianceType: musthave
+          objectDefinition:
+            apiVersion: performance.openshift.io/v2
+            kind: PerformanceProfile
+            metadata:
+              name: openshift-node-performance-profile
+            spec:
+              additionalKernelArgs:
+                - rcupdate.rcu_normal_after_boot=0
+                - efi=runtime
+              cpu:
+                isolated: 2-39,42-79
+                reserved: 0-1,40-41
+              hugepages:
+                defaultHugepagesSize: 1G
+                pages:
+                  - count: 32
+                    size: 1G
+              machineConfigPoolSelector:
+                pools.operator.machineconfiguration.openshift.io/master: ""
+              nodeSelector:
+                node-role.kubernetes.io/master: ""
+              numa:
+                topologyPolicy: restricted
+              realTimeKernel:
+                enabled: true
+        remediationAction: inform
+        severity: low</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The PlacementBinding CRD is used to bind the Policy with a PlacementRule. Only a bound Policy is distributed to a managed cluster by the policy framework. View the following example specification of a PlacementBinding object:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: sno-worker-0-placementbinding
+  namespace: ztp-sno-worker-0-policies
+placementRef:
+  apiGroup: apps.open-cluster-management.io
+  kind: PlacementRule
+  name: sno-worker-0-placementrules
+subjects:
+- apiGroup: policy.open-cluster-management.io
+  kind: Policy
+  name: sno-worker-0-performance-policy</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The PlacementRule CRD is used to determine the target clusters to distribute policies to. The PlacementRule can match clusters based on labels applied to the ManagedCluster CR on the hub cluster. Each target (spoke) cluster under management by RHACM on the hub cluster will have a corresponding ManagedCluster CR. View the following example specification of a PlacementRule object:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: sno-worker-0-placementrules
+  namespace: ztp-sno-worker-0-policies
+spec:
+  clusterSelector:
+    matchExpressions:
+    - key: name
+      operator: In
+      values:
+      - sno-worker-0
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="policy-status"><a class="anchor" href="#policy-status"></a>Policy Status</h3>
+<div class="paragraph">
+<p>Policies can be enabled or disabled by setting the <em>disabled</em> parameter value to true or false. By default they are enabled.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="policy-remediation"><a class="anchor" href="#policy-remediation"></a>Policy Remediation</h3>
+<div class="paragraph">
+<p>As we will detail in the following section [..] <code>PolicyGenTemplates</code> are by default set to generate Policies set to inform mode.</p>
+</div>
+<div class="paragraph">
+<p>Policy controllers periodically (as set by evaluationInterval) check policies against the current state of CRs on the target clusters. This check sets the Policy to either the Compliant or NonCompliant state. When the policy is set to inform, a report of the violations is created. However, when the controller is set to enforce a report is created <em>and</em> violations are remediated as specified in the policy.</p>
+</div>
+<div class="paragraph">
+<p>The difference in behavior between inform and enforce is used by the GitOps ZTP flow to provide users continuous visibility into the state of clusters in their fleet (inform mode). When a violation (drift) is observed Policies may be converted to enforce mode (more on this in later sections) to bring the cluster(s) into compliance. This enforcement is used to apply initial configuration such as installing and configuring an operator as well as "day-n" changes to the configuration.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="rhacm-policies-takeaways"><a class="anchor" href="#rhacm-policies-takeaways"></a>Takeaways</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With that, we have covered the basics of what a Policy in RHACM is, and how it works.</p>
+</div>
+<div class="paragraph">
+<p>A more in-detail explanation of the RHACM policies is covered in this training recording <a href="https://videos.learning.redhat.com/media/GitOps%20and%20policy%20manifests%20-%20How%20policies%20work/1_pi42cmgb">GitOps and policy manifests - How policies work</a></p>
+</div>
+<div class="paragraph">
+<p>[1] <a href="https://github.com/stolostron/policy-collection" class="bare">https://github.com/stolostron/policy-collection</a></p>
+</div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="next"><a href="introduction.html">Introduction</a></span>
+  <span class="prev"><a href="ztp-workflow.html">ZTP Workflow</a></span>
+  <span class="next"><a href="managing-at-scale.html">Managing at Scale</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

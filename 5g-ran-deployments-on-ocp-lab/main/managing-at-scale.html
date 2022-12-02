@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/index.html">
-    <link rel="next" href="introduction.html">
+    <title>Managing at Scale :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/managing-at-scale.html">
+    <link rel="prev" href="rhacm-policies.html">
+    <link rel="next" href="talm.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -224,18 +225,18 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="managing-at-scale.html">Managing at Scale</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="managing-at-scale.html#inform-policies">Inform Policies</a>
+    <a class="nav-link" href="#inform-policies">Inform Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="managing-at-scale.html#olm-subscriptions">OLM Subscriptions</a>
+    <a class="nav-link" href="#olm-subscriptions">OLM Subscriptions</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="managing-at-scale.html#cluster-policies">Cluster Policies</a>
+    <a class="nav-link" href="#cluster-policies">Cluster Policies</a>
   </li>
 </ul>
   </li>
@@ -583,71 +584,72 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="index.html">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</a></li>
+    <li><a href="managing-at-scale.html">Managing at Scale</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/managing-at-scale.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</h1>
-<div class="sect1 text-center strong">
-<h2>Red Hat Lab - 5G RAN Deployments on OpenShift</h2>
+<h1 class="page">Managing at Scale</h1>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This lab will guide you throught the deployment of a RAN ready infrastructure.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
-</td>
-</tr>
-</table>
+<p>In the previous section we described RHACM policies, in this section we are going to explain a bit more how we leverage some of their capabilities, plus other APIs to manage cluster configurations at scale.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2>Contributors</h2>
+<h2 id="inform-policies"><a class="anchor" href="#inform-policies"></a>Inform Policies</h2>
 <div class="sectionbody">
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Role</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alberto Losada</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ian Miller</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Contributor / CNF Developer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mario Vázquez</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>In RHACM as we saw in the previous section we can configure our policies in two modes, <em>inform</em> and <em>enforce</em>.</p>
+</div>
+<div class="paragraph">
+<p>When using <em>inform</em> mode no changes will be done in the clusters targeted by the policy, whereas <em>enforce</em> mode will make the required changes to clusters targeted by the policy have the required configuration described in the policy.</p>
+</div>
+<div class="paragraph">
+<p>In Edge deployments where potentially disruptive events must be carefully managed with respect to timing and rollout we must have control over when changes to our clusters happen. With all Policies in <em>inform</em> mode we have visibility into the compliance of all clusters but the enforcement (changes to clustes) will occur only when the Policies are switched to enforce mode. On top of these policies we have another component named Topology Aware Lifecycle Manager (TALM) which controls when a policy gets enforced based on a configuration created by the cluster admins. TALM will be introduced in a future section.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="olm-subscriptions"><a class="anchor" href="#olm-subscriptions"></a>OLM Subscriptions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Additional functionality for OpenShift clusters can be provided through use of optional Operators installed on the cluster. These Operators are installed and managed through use of an OLM Subscription CR. Operators are stored in a registry which is periodically updated with new versions of the Operator. The Subscription CR may be set to automatically install new versions as they become available, or to a <em>manual</em> mode which requires approval before new versions are installed.</p>
+</div>
+<div class="paragraph">
+<p>For the same reasons described earlier the reference configurations for RAN 5G deployments sets Subscription CRs to <em>manual</em> mode to ensure that Operator updates occur only when cluster administrators explicitly allow them. Similar to the way in which Policies can be scheduled for enforcement, TALM gives cluster administrators the tools to automatically approve Operator Updates on selected clusters at specified times.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cluster-policies"><a class="anchor" href="#cluster-policies"></a>Cluster Policies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHACM Policies and bindings provide the tools to simplify management of a large fleet of clusters by allowing one Policy to define configuration across multiple target (spoke) clusters. In the GitOps ZTP flow these policies are maintained in Git and synchronized to the hub cluster where RHACM makes use of them.</p>
+</div>
+<div class="paragraph">
+<p>In most Edge deployments there is a large amount of configuration that is common to all clusters. The set of installed day-2 Operators is one such example. These "common" configurations can be captured into a single policy that is then bound to all clusters in the fleet. This ensures that the clusters are consistently configured, simplifies management of the configuration, and improves the overall scalability of the solution.</p>
+</div>
+<div class="paragraph">
+<p>In some cases subsets of clusters may have significant commonality based on things like regionality, hardware type, etc. There may be a relatively small number of these "groups" of clusters within the fleet. By defining one policy per group users can realize the same benefits of consistency, ease of management, etc. Some examples of policies that can fit this group will be: SRI-OV deployment on clusters with SRI-OV cards, accelerator operator deployment on clusters with accelerator cards.</p>
+</div>
+<div class="paragraph">
+<p>Where clusters have configuration which is truly cluster specific (different on every cluster in the fleet) the user must provide unique content on a per-cluster basis. In a RAN deployment some examples of site specific configuration may include specific VLAN settings for SR-IOV virtual functions. There are multiple options for handling site specific configuration using Policy:
+* <strong>Site Sepecific Policies</strong>. Each site may have a Policy defined which maintains the unique CRs for that site
+* <strong>Hub side templating</strong>. RHACM supports hub-side templating in which one Policy may be defined with one or more templates included. The site-specific values for these templates are pulled from a ConfigMap on the hub cluster prior to the Policy being evaluated for compliance and/or remediated.</p>
+</div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="next"><a href="introduction.html">Introduction</a></span>
+  <span class="prev"><a href="rhacm-policies.html">RHACM Policies</a></span>
+  <span class="next"><a href="talm.html">Topology Aware Lifecycle Manager (TALM)</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

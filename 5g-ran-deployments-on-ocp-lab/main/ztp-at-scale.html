@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/index.html">
-    <link rel="next" href="introduction.html">
+    <title>ZTP Components :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/ztp-at-scale.html">
+    <link rel="prev" href="ocp-gitops.html">
+    <link rel="next" href="ztp-workflow.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -167,36 +168,36 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="ztp-at-scale.html">ZTP Components</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="ztp-at-scale.html#rhacm">Red Hat Advanced Cluster Management</a>
+    <a class="nav-link" href="#rhacm">Red Hat Advanced Cluster Management</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="ztp-at-scale.html#mce">Multicluster Engine</a>
+    <a class="nav-link" href="#mce">Multicluster Engine</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="ztp-at-scale.html#ai">Infrastructure Operator</a>
+    <a class="nav-link" href="#ai">Infrastructure Operator</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="ztp-at-scale.html#gitops-operator">GitOps Operator</a>
+    <a class="nav-link" href="#gitops-operator">GitOps Operator</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="ztp-at-scale.html#sitegen">SiteGen</a>
+    <a class="nav-link" href="#sitegen">SiteGen</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="ztp-at-scale.html#policygen">PolicyGen</a>
+    <a class="nav-link" href="#policygen">PolicyGen</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="ztp-at-scale.html#talm">Topology Aware Lifecycle Manager</a>
+    <a class="nav-link" href="#talm">Topology Aware Lifecycle Manager</a>
   </li>
 </ul>
   </li>
@@ -583,23 +584,46 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="index.html">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</a></li>
+    <li><a href="ztp-at-scale.html">ZTP Components</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/ztp-at-scale.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</h1>
-<div class="sect1 text-center strong">
-<h2>Red Hat Lab - 5G RAN Deployments on OpenShift</h2>
+<h1 class="page">ZTP Components</h1>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This lab will guide you throught the deployment of a RAN ready infrastructure.</p>
+<p><strong>Zero Touch Provisioning</strong> is built by different independent components that work together to provide an automate workflow to provision and configure remote OpenShift clusters. In the following picture we can see the different moving pieces involved:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A <strong>Git repository</strong> that declares the <code>SiteConfig</code>, e.g. how the cluster is going to be provisioned, and one or multiple `PolicyGenTemplates that defines how the node is configured. This includes, the operators that are going to be installed, the configuration to be applied and the applications to be deployed. Notice that this is a must in any GitOps methodology.</p>
+</li>
+<li>
+<p><strong>Red Hat Advanced Cluster Management</strong> installed at the hub cluster, at the heart of the architecture.</p>
+</li>
+<li>
+<p>The <strong>OpenShift GitOps</strong> operator which needs to be patched to include a couple of required kustomize plugins: <code>siteconfig-generator</code> and <code>policy-generator</code> .</p>
+</li>
+<li>
+<p>The <strong>Assisted Service</strong> Operator, now called Infrastructure Operator. In previous releases it was required to be installed indidually, but now it is part of the Multicluster Engine operator which is a prerequisite for RHACM.</p>
+</li>
+<li>
+<p>The <strong>Topology Aware Lifecycle Manager</strong> (TALM), previously known as TALO.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ztp_gitops_flow.png" alt="External Resource Reconciler">
+</div>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -608,7 +632,7 @@
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
+The ZTP workflow starts when the site is connected to the network and ends with the CNF workload deployed and running on the site nodes
 </td>
 </tr>
 </table>
@@ -616,38 +640,222 @@ This is not an official Red Hat Training. Please, contact with your Red Hat repr
 </div>
 </div>
 <div class="sect1">
-<h2>Contributors</h2>
+<h2 id="rhacm"><a class="anchor" href="#rhacm"></a>Red Hat Advanced Cluster Management</h2>
 <div class="sectionbody">
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
+<div class="paragraph">
+<p>Red Hat Advanced Cluster Management for Kubernetes (RHACM) provides the multicluster hub, a central management console for managing multiple Kubernetes-based clusters across data centers, public clouds, and private clouds. You can use the hub to create Red Hat OpenShift Container Platform clusters on selected providers, or import existing Kubernetes-based clusters. After the clusters are managed, you can set compliance requirements to ensure that the clusters maintain the specified security requirements. You can also deploy business applications across your clusters.</p>
+</div>
+<div class="paragraph">
+<p>From ACM 2.5 on, there has been a major re-archictecture in RHACM. Part of the functionality that was included has been moved to the Multicluster Engine (MCE), which is required piece for RHACM. Actually, when installing RHACM the MCE bits are also installed automatically.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/arch_acm_mce.png" alt="ACM architecture">
+</div>
+</div>
+<div class="sect2">
+<h3 id="mce"><a class="anchor" href="#mce"></a>Multicluster Engine</h3>
+<div class="paragraph">
+<p>The multicluster engine for Kubernetes (MCE) operator is a software operator that enhances cluster fleet management. The multicluster engine for Kubernetes operator supports Red Hat OpenShift Container Platform and Kubernetes cluster lifecycle management across clouds and data centers. MCE provides the tools and capabilities to address common challenges that administrators and site reliability engineers face as they work across a range of environments, including multiple datacenters, private clouds, and public clouds that run Kubernetes clusters.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
 <tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Role</th>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The new multicluster engine for Kubernetes operator will be entitled with OpenShift
+</td>
 </tr>
-</thead>
-<tbody>
+</table>
+</div>
+<div class="paragraph">
+<p>MCE provides most of the functionality to provision OpenShift clusters, since they include the Assisted Installer operator, Hive and the management of the Klusterlet agents installed on the managed clusters. That&#8217;s why it cannot co-exist with Red Hat Advanced Cluster Management for Kubernetes on versions earlier than 2.5 because they provide some of the same management components.</p>
+</div>
+<div class="paragraph">
+<p>It is recommended that you install multicluster engine for Kubernetes on a cluster that has never previously installed Red Hat Advanced Cluster Management. If you are using Red Hat Advanced Cluster Management for Kubernetes at version 2.5.0 or later then multicluster engine for Kubernetes will already be installed on the cluster with it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ai"><a class="anchor" href="#ai"></a>Infrastructure Operator</h3>
+<div class="paragraph">
+<p>The Infrastructure operator for Red Hat OpenShift, formerly known as Assisted Service operator, is responsible for managing the deployment of the Assisted Service. Assisted Service is used to orchestrate baremetal OpenShift installations. Basically, it is the piece that will help us to automatically provision OpenShift clusters in a declarative manner. Notice that it exposes a UI and a REST API for creating new clusters.</p>
+</div>
+<div class="paragraph">
+<p>A high overview of the basic flow is as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a new Cluster resource with the minimal required properties.</p>
+</li>
+<li>
+<p>Generate and download a bootable image which is customized for that cluster. This image is based on RHCOS and is customized to automatically run an agent upon boot.</p>
+</li>
+<li>
+<p>Boot the hosts that will form the cluster with the image from the previous step. The boot method is left to the user (e.g., USB drive, virtual media, PXE, etc.).</p>
+</li>
+<li>
+<p>The agent running on each host contacts the Assisted Service via REST API and performs discovery (sends hardware inventory and connectivity information).</p>
+</li>
+<li>
+<p>The UI guides the user through the installation, with the service performing validations along the way. Alternatively, this can be done via API.</p>
+</li>
+<li>
+<p>Once all validations pass, the user may initiate the installation. Progress may be viewed via the UI or API, and logs are made available for download directly from the service.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The Assisted Service can currently install clusters with highly-available control planes (3 hosts and above) and can also install Single-Node OpenShift (SNO).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="gitops-operator"><a class="anchor" href="#gitops-operator"></a>GitOps Operator</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Red Hat OpenShift uses Argo CD to maintain cluster resources. Argo CD is an open-source declarative tool for the continuous integration and continuous deployment (CI/CD) of applications. So, in a ZTP workflow, Argo CD is reponsible for pulling the custom resources definitions that are stored in a Git repository and apply them to the hub cluster. In ZTP, the definitions are applied into the hub cluster, where all the components defined in this section are running. Then, RHACM will be in charge of performing the necessary actions to the managed clusters and distributing those policies accordingly.</p>
+</div>
+<div class="paragraph">
+<p>Notice that Argo CD can pull and apply any Kubernetes custom resource, however, for ZTP we are mainly focusing on <code>SiteConfig</code> and <code>PolicyGenTemplates</code> manifests, but Argo CD is not restricted to them.</p>
+</div>
+<div class="paragraph">
+<p>We have been talking during this lab how a siteConfig manifest describes the way OpenShift cluster is going to be provisioned. While, usually multiples policyGenTemplates describes the configuration that will be applied to the provisioned cluster. However, certainly, both are high level manifests that are not understood by the hub cluster. There is something in between that will translate those high level definitions into something that RHACM (including MCE) recognizes. These are a couple of kustomize plugins called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin">SiteConfig generator kustomize plugin</a> and <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin">Policy generator kustomize plugin</a>.</p>
+</div>
+<div class="paragraph">
+<p>In order to use both plugins we need to modify the OpenShift GitOps operator, specifically the openshift-gitops-repo-server deployment. The procedure is <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/gitops-subscriptions/argocd#preparation-of-hub-cluster-for-ztp">fully documented here</a>. Basically, it modifies the openshift-gitops-repo-server deployment to include an initContainer that will load both kustomize plugins. Then, everytime a siteConfig or PolicyGenTemplate is pulled from a Git repo the proper kustomize plugin will be used and transform the manifest into the proper custom resources.</p>
+</div>
+<div class="sect2">
+<h3 id="sitegen"><a class="anchor" href="#sitegen"></a>SiteGen</h3>
+<div class="paragraph">
+<p>The siteConfig generator kustomize plugin consume the siteconfig-generator library as a kustomize plugin. The siteconfig-generator library makes cluster deployment easier by generating the following CRs based on a SiteConfig CR instance;</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>AgentClusterInstall</p>
+</li>
+<li>
+<p>ClusterDeployment</p>
+</li>
+<li>
+<p>NMStateConfig</p>
+</li>
+<li>
+<p>KlusterletAddonConfig</p>
+</li>
+<li>
+<p>ManagedCluster</p>
+</li>
+<li>
+<p>InfraEnv</p>
+</li>
+<li>
+<p>BareMetalHost</p>
+</li>
+<li>
+<p>HostFirmwareSettings</p>
+</li>
+<li>
+<p>ConfigMap for extra-manifest configurations</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alberto Losada</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The SiteConfig is a Custom Resource created to facilitate the creation of those CRs and avoid repeating the configuration names.
+</td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ian Miller</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Contributor / CNF Developer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mario Vázquez</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-</tbody>
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="policygen"><a class="anchor" href="#policygen"></a>PolicyGen</h3>
+<div class="paragraph">
+<p>The policy generator kustomize plugin consumes the policygenerator library and PolicyGenTemplate as a kustomize plugin.  The PolicyGen library is used to facilitate creating ACM policies based on a set of provided source CRs (custom resources) and PolicyGenTemplate CR which describe how to customize those source CRs. The plugin helps to generate:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Policy (RHACM)</p>
+</li>
+<li>
+<p>placementrules</p>
+</li>
+<li>
+<p>PlacementBinding</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="talm"><a class="anchor" href="#talm"></a>TALM operator</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Topology Aware Lifecycle Manager operator is a Kubernetes operator that facilitates software lifecycle management of fleets of clusters. It uses Red Hat Advanced Cluster Management (RHACM) for performing changes on target clusters, in particular by using RHACM policies. TALM Operator uses the following CRDs:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ClusterGroupUpgrade</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Topology Aware Lifecycle Manager is a Technology Preview feature only.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>TALM manages the deployment of Red Hat Advanced Cluster Management (RHACM) policies for one or more OpenShift Container Platform clusters. Using TALM in a large network of clusters allows the phased rollout of policies to the clusters in limited batches. This helps to minimize possible service disruptions when updating. With TALM, you can control the following actions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The timing of the update</p>
+</li>
+<li>
+<p>The number of RHACM-managed clusters</p>
+</li>
+<li>
+<p>The subset of managed clusters to apply the policies to</p>
+</li>
+<li>
+<p>The update order of the clusters</p>
+</li>
+<li>
+<p>The set of policies remediated to the cluster</p>
+</li>
+<li>
+<p>The order of policies remediated to the cluster</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>TALM supports the orchestration of the OpenShift Container Platform y-stream and z-stream updates, and day-two operations on y-streams and z-streams.</p>
+</div>
+</div>
+</div>
 <nav class="pagination">
-  <span class="next"><a href="introduction.html">Introduction</a></span>
+  <span class="prev"><a href="ocp-gitops.html">OpenShift GitOps</a></span>
+  <span class="next"><a href="ztp-workflow.html">ZTP Workflow</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

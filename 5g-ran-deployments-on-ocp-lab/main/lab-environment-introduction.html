@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/index.html">
-    <link rel="next" href="introduction.html">
+    <title>Introduction to the lab environment :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/lab-environment-introduction.html">
+    <link rel="prev" href="lab-environment.html">
+    <link rel="next" href="crafting-deployments-iaac.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -440,18 +441,18 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="lab-environment-introduction.html">Introduction to the Lab Environment</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="lab-environment-introduction.html#git-server">Git Server</a>
+    <a class="nav-link" href="#git-server">Git Server</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="lab-environment-introduction.html#container-registry">Container Registry</a>
+    <a class="nav-link" href="#container-registry">Container Registry</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="lab-environment-introduction.html#openshift-hub-cluster">OpenShift Hub Cluster</a>
+    <a class="nav-link" href="#openshift-hub-cluster">OpenShift Hub Cluster</a>
   </li>
 </ul>
   </li>
@@ -583,71 +584,91 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="index.html">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</a></li>
+    <li><a href="lab-environment-introduction.html">Introduction to the Lab Environment</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/lab-environment-introduction.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</h1>
-<div class="sect1 text-center strong">
-<h2>Red Hat Lab - 5G RAN Deployments on OpenShift</h2>
+<h1 class="page">Introduction to the lab environment</h1>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This lab will guide you throught the deployment of a RAN ready infrastructure.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
-</td>
-</tr>
-</table>
+<p>Before jumping into the hands-on sections let&#8217;s get familiar with the lab environment we have deployed.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2>Contributors</h2>
+<h2 id="git-server"><a class="anchor" href="#git-server"></a>Git Server</h2>
 <div class="sectionbody">
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Role</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alberto Losada</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ian Miller</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Contributor / CNF Developer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mario Vázquez</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>A <a href="https://github.com/go-gitea/gitea">gitea</a> server is running on the infrastructure host, you can reach it out at <a href="http://infra.5g-deployment.lab:3000/" class="bare">http://infra.5g-deployment.lab:3000/</a>.</p>
+</div>
+<div class="paragraph">
+<p>Credentials for the git server:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>student</code></p>
+</li>
+<li>
+<p>Password: <code>student</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="container-registry"><a class="anchor" href="#container-registry"></a>Container Registry</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A container registry is running on the infrastructure host, you can reach it out at <a href="https://infra.5g-deployment.lab:8443/" class="bare">https://infra.5g-deployment.lab:8443/</a>.</p>
+</div>
+<div class="paragraph">
+<p>Credentials for the container registry:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>admin</code></p>
+</li>
+<li>
+<p>Password: <code>r3dh4t1!</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="openshift-hub-cluster"><a class="anchor" href="#openshift-hub-cluster"></a>OpenShift Hub Cluster</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An OpenShift cluster is running on the infrastructure host, you can reach it out at <a href="https://console-openshift-console.apps.hub.5g-deployment.lab" class="bare">https://console-openshift-console.apps.hub.5g-deployment.lab</a> and <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a></p>
+</div>
+<div class="paragraph">
+<p>Credentials for the OCP cluster (htpassidp provider):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>admin</code></p>
+</li>
+<li>
+<p>Password: <code>admin</code></p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="next"><a href="introduction.html">Introduction</a></span>
+  <span class="prev"><a href="lab-environment.html">Lab Environment</a></span>
+  <span class="next"><a href="crafting-deployments-iaac.html">Crafting Deployment&#8217;s IaaC</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

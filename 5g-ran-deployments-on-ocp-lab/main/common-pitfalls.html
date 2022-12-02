@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/index.html">
-    <link rel="next" href="introduction.html">
+    <title>Common Pitfalls :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/common-pitfalls.html">
+    <link rel="prev" href="troubleshooting-tips.html">
+    <link rel="next" href="closing-thoughts.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -548,24 +549,24 @@
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="troubleshooting-tips.html">Troubleshooting Tips</a>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="common-pitfalls.html">Common Pitfalls</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="common-pitfalls.html#exec-probes-cpu-pinning">Exec Probes and CPU Pinning</a>
+    <a class="nav-link" href="#exec-probes-cpu-pinning">Exec Probes and CPU Pinning</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="common-pitfalls.html#energy-saving-hw-profiles">Energy Saving Hardware Profiles</a>
+    <a class="nav-link" href="#energy-saving-hw-profiles">Energy Saving Hardware Profiles</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="common-pitfalls.html#secure-boot-oot-unsigned-drivers">Secure Boot and Unsigned OoT Drivers</a>
+    <a class="nav-link" href="#secure-boot-oot-unsigned-drivers">Secure Boot and Unsigned OoT Drivers</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="common-pitfalls.html#sriov-node-drain">SR-IOV Node Drain</a>
+    <a class="nav-link" href="#sriov-node-drain">SR-IOV Node Drain</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="common-pitfalls.html#pod-disruption-budgets">Pod Disruption Budgets</a>
+    <a class="nav-link" href="#pod-disruption-budgets">Pod Disruption Budgets</a>
   </li>
 </ul>
   </li>
@@ -583,71 +584,89 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="index.html">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</a></li>
+    <li><a href="common-pitfalls.html">Common Pitfalls</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/common-pitfalls.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift</h1>
-<div class="sect1 text-center strong">
-<h2>Red Hat Lab - 5G RAN Deployments on OpenShift</h2>
+<h1 class="page">Common Pitfalls</h1>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>This lab will guide you throught the deployment of a RAN ready infrastructure.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
-</td>
-</tr>
-</table>
+<p>In this section we are going to put some common pitfalls we have observed while working with Telco partners/customers.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2>Contributors</h2>
+<h2 id="exec-probes-cpu-pinning"><a class="anchor" href="#exec-probes-cpu-pinning"></a>Exec Probes and CPU Pinning</h2>
 <div class="sectionbody">
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Role</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Alberto Losada</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ian Miller</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Contributor / CNF Developer</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Mario Vázquez</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Lab Developer / Maintainer</p></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>In 5G RAN environments is pretty common to do CPU pinning for the workload, which as you already know means that the application will only run on a subset of CPUs.</p>
+</div>
+<div class="paragraph">
+<p>When this workloads use exec probres we need to be extremely careful about what kind of workloads those are. We have seen nodes hanging when using exec probes on pods running DPDK workloads.</p>
+</div>
+<div class="paragraph">
+<p>DPDK applications run a polling thread which does not yield the CPU.</p>
+</div>
+<div class="paragraph">
+<p>If we look at the different Kubernetes liveness and readiness probes we can see that there are different kinds of probes, how they run differs a bit from each other. The important thing here is that the "exec" probes are scheduled in the same CPU that is being used by the POD, which means that eventually some of the probes will be scheduled to be executed on the CPU where the rt polling thread is running, leading to the system eventually crashing.</p>
+</div>
+<div class="paragraph">
+<p>In order to avoid this, you should use httpProbes instead of exec probes, which will avoid the probes being scheduled on the application cpuset.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="energy-saving-hw-profiles"><a class="anchor" href="#energy-saving-hw-profiles"></a>Energy Saving Hardware Profiles</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When running CPU exhaustive workloads we have seen from time to time a drastic decrease in terms of performance of these workloads. Most of the time the issues were caused by a hardware profile which was limiting the energy sent to the CPU.</p>
+</div>
+<div class="paragraph">
+<p>Make sure your nodes do not have an energy saving profile configured.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="secure-boot-oot-unsigned-drivers"><a class="anchor" href="#secure-boot-oot-unsigned-drivers"></a>Secure Boot and Unsigned OoT Drivers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When working with out-of-tree drivers which are unsigned, Secure Boot cannot be enabled, otherwise the boot process will fail when those unsigned drivers are loaded. If you plan to use or test these kind of drivers remember to disable the Secure Boot.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sriov-node-drain"><a class="anchor" href="#sriov-node-drain"></a>SR-IOV Node Drain</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, the SR-IOV Network Operator drains workloads from a node before every policy change. The Operator performs this action to ensure that there no workloads using the virtual functions before the reconfiguration.</p>
+</div>
+<div class="paragraph">
+<p>For installations on a single node, there are no other nodes to receive the workloads. As a result, the Operator must be configured not to drain the workloads from the single node.</p>
+</div>
+<div class="paragraph">
+<p>The CNF SR-IOV Policy templates already have this configuration in place.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pod-disruption-budgets"><a class="anchor" href="#pod-disruption-budgets"></a>Pod Disruption Budgets</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>PDBs will not be honored in single node OpenShift installations. You can read more about it <a href="https://github.com/openshift/machine-config-operator/blob/master/docs/SingleNodeOpenShift.md">here</a>.</p>
+</div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="next"><a href="introduction.html">Introduction</a></span>
+  <span class="prev"><a href="troubleshooting-tips.html">Troubleshooting Tips</a></span>
+  <span class="next"><a href="closing-thoughts.html">Closing Thoughts</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
