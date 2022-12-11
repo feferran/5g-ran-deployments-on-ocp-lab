@@ -611,11 +611,44 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">Managing Existing Clusters</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
 <p>If we have clusters that have been provisioned outside the ZTP GitOps Pipeline, we still can get them added to RHACM and start managing them with the pipeline.</p>
 </div>
 <div class="paragraph">
 <p>In the lab environment we have a SNO cluster <code>SNO1</code> that was deployed outside the ZTP GitOps Pipeline, in this section we will get it added to RHACM and make it load the policies we have for SNO clusters.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_importcluster"><a class="anchor" href="#_importcluster"></a>Importcluster</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Actually, everything can be done from the Red Hat ACM multicloud console. Therefore, browse to <a href="https://multicloud-console.apps.hub.5g-deployment.lab" class="bare">https://multicloud-console.apps.hub.5g-deployment.lab</a>, click on Infrastructure &#8594; Clusters and then click on the three dots of our SNO1 cluster. Notice that the status of the cluster is <strong>detached</strong>. Now, click on Import cluster:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/import_cluster_sno1.png" alt="Import Cluster">
+</div>
+</div>
+<div class="paragraph">
+<p>Click on Import again.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/import_cluster_sno1_01.png" alt="Import Cluster 1">
+</div>
+</div>
+<div class="paragraph">
+<p>Once done, you must wait a couple of minutes to see the status of the cluster as Ready.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/import_cluster_sno1_02.png" alt="Import Cluster 2">
+</div>
+</div>
+</div>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="monitoring-the-deployment.html">Monitoring the Deployment</a></span>
