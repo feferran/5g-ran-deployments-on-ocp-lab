@@ -6,7 +6,7 @@
     <title>Using TALM to Update Clusters :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/using-talm-to-update-clusters.html">
     <link rel="prev" href="managing-existing-clusters.html">
-    <link rel="next" href="check-deployment-is-finished.html">
+    <link rel="next" href="#using-talm-to-update-clusters.html#verify-talm">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -547,7 +547,28 @@
     <a class="nav-link" href="managing-existing-clusters.html">Managing Existing Clusters</a>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#using-talm-to-update-clusters.html#verify-talm">Verifing the TALM state</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the upgrade PGT</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#using-talm-to-update-clusters.html#upgrade-cgu-creation">Applying the upgrade</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#using-talm-to-update-clusters.html#talm-backup-precache">Backup and pre-cache</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#using-talm-to-update-clusters.html#talm-upgrade">Triggering the upgrade</a>
+  </li>
+</ul>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
@@ -625,7 +646,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="verify-talm"><a class="anchor" href="#verify-talm"></a>Verify TALM state</h2>
+<h2 id="verify-talm"><a class="anchor" href="#verify-talm"></a>Verifying the TALM state</h2>
 <div class="sectionbody">
 <div class="listingblock console-input">
 <div class="content">
@@ -674,7 +695,7 @@ ztp-install   sno2   UpgradeCompleted   14h</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="upgrade-policy-creation"><a class="anchor" href="#upgrade-policy-creation"></a>Create the upgrade PGT</h2>
+<h2 id="upgrade-policy-creation"><a class="anchor" href="#upgrade-policy-creation"></a>Creating the upgrade PGT</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Create an upgrade PGT in inform mode, as usual, that will applied and upgrade both SNO1 and SNO2 clusters. This file needs to be created in the ztp-repository Git repo that we have created.</p>
@@ -733,9 +754,9 @@ resources:
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ztp-repository]# git add site-policies/zone-policies/upgrade-411-17.yaml site-policies/kustomization.yaml
-[user@workstation ztp-repository]# git commit -m "adds upgrade policy"
-[user@workstation ztp-repository]# git push origin main</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ztp-repository]$ git add site-policies/zone-policies/upgrade-411-17.yaml site-policies/kustomization.yaml
+[user@workstation ztp-repository]$ git commit -m "adds upgrade policy"
+[user@workstation ztp-repository]$ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -751,7 +772,7 @@ resources:
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@workstation site-policies]# oc label managedcluster sno1 du-zone=europe
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation site-policies]$ oc label managedcluster sno1 du-zone=europe
 managedcluster.cluster.open-cluster-management.io/sno1 labeled</code></pre>
 </div>
 </div>
@@ -778,7 +799,7 @@ There is an extra violation in the zone-europe-storage-operator since this PGT w
 </div>
 </div>
 <div class="sect1">
-<h2 id="upgrade-cgu-creation"><a class="anchor" href="#upgrade-cgu-creation"></a>Apply the upgrade</h2>
+<h2 id="upgrade-cgu-creation"><a class="anchor" href="#upgrade-cgu-creation"></a>Applying the upgrade</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>At this point we need to create a CGU resource that will start the upgrade process. In our case, the process will be divided into two stages:</p>
@@ -855,8 +876,8 @@ ztp-policies   telco-ops   BackupNotDone      15s</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# export KUBECONFIG=~/sno2-kubeconfig
-[root@hypervisor ~]# oc get jobs -A
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig
+[root@hypervisor ~]$ oc get jobs -A
 NAMESPACE                              NAME                                                              COMPLETIONS   DURATION   AGE
 assisted-installer                     assisted-installer-controller                                     1/1           42m        17h
 openshift-image-registry               image-pruner-27846720                                             1/1           13s        9h
@@ -872,8 +893,8 @@ openshift-talo-backup                  backup-agent                             
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# export KUBECONFIG=~/sno2-kubeconfig
-[root@hypervisor ~]# oc logs backup-agent-glwxq -n openshift-talo-backup
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig
+[root@hypervisor ~]$ oc logs backup-agent-glwxq -n openshift-talo-backup
 INFO[0018] {"hash":206408152,"revision":336652,"totalKey":7146,"totalSize":78827520}
 INFO[0018] snapshot db and kube resources are successfully saved to /var/recovery/cluster
 INFO[0026] Command succeeded: rsync -a /etc/ /var/recovery/etc/
@@ -889,8 +910,8 @@ INFO[0043] backup has successfully finished ...</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor site-policies]# export KUBECONFIG=~/hub-kubeconfig
-[root@hypervisor site-policies]# oc get cgu -A
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor site-policies]$ export KUBECONFIG=~/hub-kubeconfig
+[root@hypervisor site-policies]$ oc get cgu -A
 NAMESPACE      NAME        UPGRADE STATE              AGE
 ztp-install    sno2        UpgradeCompleted           16h
 ztp-policies   telco-ops   PrecacheSpecIsWellFormed   3m46s</code></pre>
@@ -901,8 +922,8 @@ ztp-policies   telco-ops   PrecacheSpecIsWellFormed   3m46s</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# export KUBECONFIG=~/sno2-kubeconfig
-[root@hypervisor ~]# oc get jobs -A
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig
+[root@hypervisor ~]$ oc get jobs -A
 NAMESPACE                              NAME                                                              COMPLETIONS   DURATION   AGE
 assisted-installer                     assisted-installer-controller                                     1/1           42m        17h
 openshift-image-registry               image-pruner-27846720                                             1/1           13s        9h
@@ -919,8 +940,8 @@ openshift-talo-pre-cache               pre-cache                                
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# export KUBECONFIG=~/sno2-kubeconfig
-[root@hypervisor ~]# oc logs pre-cache-mzbns -n openshift-talo-pre-cache -f
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig
+[root@hypervisor ~]$ oc logs pre-cache-mzbns -n openshift-talo-pre-cache -f
 upgrades.pre-cache 2022-12-12T09:52:06+00:00 DEBUG Release index image processing done
 a778fa0a77a59ef64f76bc52991be761ab3abe3fa4ab29ffd3f66c0e302acbae
 upgrades.pre-cache 2022-12-12T09:52:06+00:00 DEBUG Operators index is not specified. Operators wont be pre-cached
@@ -953,7 +974,7 @@ ztp-policies   telco-ops   UpgradeNotStarted   37m</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="talm-upgrade"><a class="anchor" href="#talm-upgrade"></a>Trigger the upgrade</h3>
+<h3 id="talm-upgrade"><a class="anchor" href="#talm-upgrade"></a>Triggering the upgrade</h3>
 <div class="paragraph">
 <p>Now, we have our backup done in case of upgrade failure and all the images required to perform the upgrade process locally store to each spoke cluster. Notice that this will improve the time needed to fulfill the process, since there is no need to pull down all the gigabytes of container images again. Let&#8217;s start the upgrade process by enabling the CGU:</p>
 </div>
@@ -978,8 +999,8 @@ ztp-policies   telco-ops   UpgradeNotCompleted   50m</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# export KUBECONFIG=~/sno2-kubeconfig
-[root@hypervisor ~]# oc get clusterversion,nodes                                                                                                                   hypervisor: Mon Dec 12 10:38:43 2022
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig
+[root@hypervisor ~]$ oc get clusterversion,nodes                                                                                                                   hypervisor: Mon Dec 12 10:38:43 2022
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.11.13   True        True          11s	 Working towards 4.11.17: 9 of 803 done (1% complete)
 
@@ -1008,16 +1029,16 @@ node/sno2.5g-deployment.lab   Ready    master,worker   17h   v1.24.6+5157800</co
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# export KUBECONFIG=~/sno2-kubeconfig
-[root@hypervisor ~]# oc get clusterversion,nodes                                                                                                                   hypervisor: Mon Dec 12 11:49:05 2022
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig
+[root@hypervisor ~]$ oc get clusterversion,nodes                                                                                                                   hypervisor: Mon Dec 12 11:49:05 2022
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.11.17   True        False         6m41s   Cluster version is 4.11.17
 
 NAME                          STATUS   ROLES           AGE   VERSION
 node/sno2.5g-deployment.lab   Ready    master,worker   18h   v1.24.6+5658434
 
-[root@hypervisor ~]# export KUBECONFIG=~/sno1-kubeconfig
-[root@hypervisor site-policies]# oc get clusterversion,nodes
+[root@hypervisor ~]$ export KUBECONFIG=~/sno1-kubeconfig
+[root@hypervisor site-policies]$ oc get clusterversion,nodes
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.11.17   True        False         21m     Cluster version is 4.11.17
 
@@ -1038,7 +1059,7 @@ node/openshift-master-0   Ready    master,worker   2d18h   v1.24.6+5658434</code
 </div>
 <nav class="pagination">
   <span class="prev"><a href="managing-existing-clusters.html">Managing Existing Clusters</a></span>
-  <span class="next"><a href="check-deployment-is-finished.html">Check SNO Deployment is finished</a></span>
+  <span class="next"><a href="#using-talm-to-update-clusters.html#verify-talm">Verifing the TALM state</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
