@@ -549,7 +549,7 @@
     <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifing the TALM state</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying the TALM state</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the upgrade PGT</a>
@@ -633,7 +633,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>As we saw in an earlier section of the lab, we can leverage <a href="06-rhacm-policies">RHACM policies</a> to get our clusters configured the way we want. We also introduced the <a href="08-ztp-at-scale#policygen">PolicyGen component</a> which helps us to create a set of policies based on pre-backed templates crafted by the Red Hat CNF team.</p>
+<p>As we saw in an earlier section of the lab, we can leverage <a href="rhacm-policies">RHACM policies</a> to get our clusters configured the way we want. We also introduced the <a href="ztp-at-scale#policygen">PolicyGen component</a> which helps us to create a set of policies based on pre-backed templates crafted by the Red Hat CNF team.</p>
 </div>
 <div class="paragraph">
 <p>In this section we are going to get into the implementation details of the PolicyGen tooling.</p>
@@ -655,7 +655,7 @@
 <p><strong>SiteConfig Generator</strong>. Reads the SiteConfig manifest and generates the required Kubernetes manifests to run a RAN-enabled OpenShift deployment using RHACM. Code is located <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/siteconfig-generator">here</a>.</p>
 </li>
 <li>
-<p><strong>Policy Generator</strong>. Reads the PolicyGenTemplate manifest and generates the required Kubernetes manifest to configure an RHACM Policy targetting a set of clusters. Code is located <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/policygenerator">here</a>.</p>
+<p><strong>Policy Generator</strong>. Reads the PolicyGenTemplate manifest and generates the required Kubernetes manifest to configure an RHACM Policy targeting a set of clusters. Code is located <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/policygenerator">here</a>.</p>
 </li>
 </ul>
 </div>
@@ -730,7 +730,7 @@ kind: PolicyGenTemplate</code></pre>
 <div class="sect2">
 <h3 id="policy-generator"><a class="anchor" href="#policy-generator"></a>Policy Generator</h3>
 <div class="paragraph">
-<p>The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different pourposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs">here</a>.</p>
+<p>The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different purposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs">here</a>.</p>
 </div>
 </div>
 </div>
@@ -748,7 +748,7 @@ kind: PolicyGenTemplate</code></pre>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Some of these configurations are configured at install time (through the use of extra-manifests during  the install) and others are configured as a day2ops automatically after the cluster joins the RHACM Hub.
+Some of these configurations are configured at install time (through the use of extra-manifests during the installation) and others are configured as a day2ops automatically after the cluster joins the RHACM Hub.
 </td>
 </tr>
 </table>
@@ -1020,13 +1020,13 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>We can see that the PolicyGenTemplate is targetting two policy templates: <code>SriovOperatorConfig.yaml</code> and <code>PerformanceProfile.yaml</code>.</p>
+<p>We can see that the PolicyGenTemplate is targeting two policy templates: <code>SriovOperatorConfig.yaml</code> and <code>PerformanceProfile.yaml</code>.</p>
 </div>
 <div class="paragraph">
 <p>The first template <code>SriovOperatorConfig.yaml</code> is not overriding any settings, we can tell this because we don&#8217;t have a <code>spec</code> or <code>metadata</code> section below the <code>policyName</code>. That means that the final policy will be configured as the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/SriovOperatorConfig.yaml">source template file</a>.</p>
 </div>
 <div class="paragraph">
-<p>The second template <code>PerformanceProfile.yaml</code> is overriding some of the parameters in the <code>spec</code>. That means that the final policy will be configured as a merge of the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PerformanceProfile.yaml">original template</a> plus the custom overrides we provided in the PolicyGenTemplate.</p>
+<p>The second template <code>PerformanceProfile.yaml</code> is overriding some parameters in the <code>spec</code>. That means that the final policy will be configured as a merge of the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PerformanceProfile.yaml">original template</a> plus the custom overrides we provided in the PolicyGenTemplate.</p>
 </div>
 <div class="admonitionblock caution">
 <table>

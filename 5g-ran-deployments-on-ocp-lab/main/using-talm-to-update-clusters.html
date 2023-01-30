@@ -549,7 +549,7 @@
     <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#verify-talm">Verifing the TALM state</a>
+    <a class="nav-link" href="#verify-talm">Verifying the TALM state</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#upgrade-policy-creation">Creating the upgrade PGT</a>
@@ -681,7 +681,7 @@ deployment.apps/gitops-operator-controller-manager          1/1     1           
 </div>
 </div>
 <div class="paragraph">
-<p>Finally, let&#8217;s take a look at the cluster group upgrade (CGU) CRD managed by TALM. If we pay a closer look we will notice that an already completed CGU was applied to SNO2. As we mentioned in <a href="09-talm.html#inform-policies">inform policies</a> section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.</p>
+<p>Finally, let&#8217;s take a look at the cluster group upgrade (CGU) CRD managed by TALM. If we pay a closer look we will notice that an already completed CGU was applied to SNO2. As we mentioned in <a href="talm.html#inform-policies">inform policies</a> section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -696,7 +696,7 @@ ztp-install   sno2   UpgradeCompleted   14h</code></pre>
 <h2 id="upgrade-policy-creation"><a class="anchor" href="#upgrade-policy-creation"></a>Creating the upgrade PGT</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Create an upgrade PGT in inform mode, as usual, that will applied and upgrade both SNO1 and SNO2 clusters. This file needs to be created in the ztp-repository Git repo that we have created.</p>
+<p>Create an upgrade PGT in inform mode, as usual, that will apply and upgrade both SNO1 and SNO2 clusters. This file needs to be created in the ztp-repository Git repo that we have created.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -730,7 +730,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Modify the kustomization.yaml inside the site-policies folder so it includes this new PGT and eventually will be applied by ArgoCD. The kustomization file should look like this:</p>
+<p>Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD. The kustomization file should look like this:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -758,7 +758,7 @@ resources:
 </div>
 </div>
 <div class="paragraph">
-<p>Once commited, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-upgrade-version-411-17 has a violation. However, only one. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That&#8217;s because the SNO1 cluster does not have the label zone-europe that the PGT is targeting in its binding rule.</p>
+<p>Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-upgrade-version-411-17 has a violation. However, only one. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That&#8217;s because the SNO1 cluster does not have the label zone-europe that the PGT is targeting in its binding rule.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -784,7 +784,7 @@ managedcluster.cluster.open-cluster-management.io/sno1 labeled</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-There is an extra violation in the zone-europe-storage-operator since this PGT was created previously to adding the label to SNO1. That&#8217;s because that policy is binded to du-zone=europe as well. However, we have the choice to apply it (enforce) or not using the TALM operator.
+There is an extra violation in the zone-europe-storage-operator since this PGT was created previously to adding the label to SNO1. That&#8217;s because that policy is bound to du-zone=europe as well. However, we have the choice to apply it (enforce) or not using the TALM operator.
 </td>
 </tr>
 </table>
@@ -805,7 +805,7 @@ There is an extra violation in the zone-europe-storage-operator since this PGT w
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Run a backup prior to start the upgrade process. Once successfully TALO will pre-cache all container images required for upgrade</p>
+<p>Run a backup prior to start the upgrade process. Once successfully TALM will pre-cache all container images required for upgrade</p>
 </li>
 <li>
 <p>Start the upgrade process</p>
@@ -818,7 +818,7 @@ There is an extra violation in the zone-europe-storage-operator since this PGT w
 <p>Let&#8217;s create the CGU. In this case, we will apply the managed policy (europe-upgrade-version-411-17) to both clusters at the same time (maxConcurrency is 2). Notice that the CGU is disabled, this is suggested if we are going to run the precaching feature. This means, that once the precaching process is done we are ready to start the upgrade process. This idea is related to the compliance of a maintenance window in an enterprise.</p>
 </div>
 <div class="paragraph">
-<p>Remember that several gigabytes of artifacts needs to be downloaded to the spoke for a full upgrade. SNO spoke clusters may have limited bandwidth to the hub cluster hosting the registry, which will make it difficult for the upgrade to complete within the required time. In order to ensure the upgrade can fit within the maintenance window, the required artifacts need to be present on the spoke cluster prior to the upgrade. Therefore the process is splitted up into two stages as mentioned.</p>
+<p>Remember that several gigabytes of artifacts needs to be downloaded to the spoke for a full upgrade. SNO spoke clusters may have limited bandwidth to the hub cluster hosting the registry, which will make it difficult for the upgrade to complete within the required time. In order to ensure the upgrade can fit within the maintenance window, the required artifacts need to be present on the spoke cluster prior to the upgrade. Therefore, the process is split up into two stages as mentioned.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1007,7 +1007,7 @@ node/sno2.5g-deployment.lab   Ready    master,worker   17h   v1.24.6+5157800</co
 </div>
 </div>
 <div class="paragraph">
-<p>Meanwhile the clusters are upgrading we can take a look at the multicloud console and see that there is a new policy in enforce mode</p>
+<p>Meanwhile, the clusters are upgrading we can take a look at the multicloud console and see that there is a new policy in enforce mode</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1023,7 +1023,7 @@ node/sno2.5g-deployment.lab   Ready    master,worker   17h   v1.24.6+5157800</co
 </div>
 </div>
 <div class="paragraph">
-<p>Finally our clusters are upgraded:</p>
+<p>Finally, our clusters are upgraded:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">

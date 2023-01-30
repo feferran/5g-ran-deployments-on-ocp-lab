@@ -549,7 +549,7 @@
     <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifing the TALM state</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying the TALM state</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the upgrade PGT</a>
@@ -644,7 +644,7 @@
 <h2 id="crafting-common-policies"><a class="anchor" href="#crafting-common-policies"></a>Crafting Common Policies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The common policies apply to every cluster in our infrastructure that matches our binding rule. This policies are often used to configure things like CatalogSources, Operator Deployments, etc. that are common to all our clusters.</p>
+<p>The common policies apply to every cluster in our infrastructure that matches our binding rule. These policies are often used to configure things like CatalogSources, Operator Deployments, etc. that are common to all our clusters.</p>
 </div>
 <div class="paragraph">
 <p>These configs may vary from release to release, that&#8217;s why we create a <code>common-411.yaml</code> file. We will likely have a common configuration profile for each release we deploy.</p>
@@ -700,7 +700,7 @@ EOF</code></pre>
 <h2 id="crafting-group-policies"><a class="anchor" href="#crafting-group-policies"></a>Crafting Group Policies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The group policies apply to a group of clusters that typicall have something in common, for example they are SNOs or they have SR-IOV cards, etc.</p>
+<p>The group policies apply to a group of clusters that typically have something in common, for example they are SNOs, or they have SR-IOV cards, etc.</p>
 </div>
 <div class="paragraph">
 <p>The CNF team has prepared some common tuning configurations that should be applied on every SNO DU deployed. In this section we will be crafting these configurations.</p>
@@ -800,7 +800,7 @@ EOF</code></pre>
 <h2 id="crafting-site-policies"><a class="anchor" href="#crafting-site-policies"></a>Crafting Site Policies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Site policies apply to a specific cluster/s in our site, they usually configure stuff that is very specific to a single cluster or to a small subset of clusters. For example we could configure storage for a group of clusters if those share the same hardware, disks configurations, etc. otherwise we will need to have different bindings for different clusters.</p>
+<p>Site policies apply to a specific cluster/s in our site, they usually configure stuff that is very specific to a single cluster or to a small subset of clusters. For example, we could configure storage for a group of clusters if those share the same hardware, disks configurations, etc. otherwise we will need to have different bindings for different clusters.</p>
 </div>
 <div class="paragraph">
 <p>We are going to create the <code>PerformanceProfile</code> and storage configurations for our SNO2 cluster.</p>
@@ -894,7 +894,7 @@ EOF</code></pre>
 <h2 id="configure-kustomization-for-policies"><a class="anchor" href="#configure-kustomization-for-policies"></a>Configure Kustomization for Policies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We need to create the required kustomization as we did for SiteConfigs, in this case policies also require a namespace where these will be created so we will create the required namespace and the kustomization.</p>
+<p>We need to create the required kustomization as we did for SiteConfigs, in this case policies also require a namespace where these will be created, so we will create the required namespace and the kustomization.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">

@@ -549,7 +549,7 @@
     <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifing the TALM state</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying the TALM state</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the upgrade PGT</a>
@@ -633,7 +633,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>As mentioned, Zero Touch Provisioning (ZTP) leverages multiple products or <a href="08-ztp-at-scale.html">components</a> to deploy OpenShift Container Platform clusters using a GitOps approach. While the workflow starts when the site is connected to the network and ends with the CNF workload deployed and running on the site nodes, it can be logically divided into two different stages: provisioning of the SNO and applying the desired configuration, which in our case is applying the validated RAN DU profile.</p>
+<p>As mentioned, Zero Touch Provisioning (ZTP) leverages multiple products or <a href="ztp-at-scale.html">components</a> to deploy OpenShift Container Platform clusters using a GitOps approach. While the workflow starts when the site is connected to the network and ends with the CNF workload deployed and running on the site nodes, it can be logically divided into two different stages: provisioning of the SNO and applying the desired configuration, which in our case is applying the validated RAN DU profile.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -680,13 +680,13 @@ Depending on your specific environment, you might need a couple of extra service
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-On telco use cases, clusters are mainly running on baremetal hosts. Therefore the produced ISO images are mounted using remote virtual media features of the baseboard management controller (BMC).
+On telco use cases, clusters are mainly running on baremetal hosts. Therefore, the produced ISO images are mounted using remote virtual media features of the baseboard management controller (BMC).
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>In the picture, these resulting manifests are called Cluster Installation CRs but you can find them detailed in the previous <a href="08-ztp-at-scale.html#sitegen">siteGen section</a>. Finally, the provisioning process starts.</p>
+<p>In the picture, these resulting manifests are called Cluster Installation CRs, but you can find them detailed in the previous <a href="ztp-at-scale.html#sitegen">siteGen section</a>. Finally, the provisioning process starts.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -694,7 +694,7 @@ On telco use cases, clusters are mainly running on baremetal hosts. Therefore th
 </div>
 </div>
 <div class="paragraph">
-<p>The provisioning process includes installing the host operating system (RHCOS) on a blank server and deploying OpenShift Container Platform. This stage is managed mainly by the Infrastructure Operator. In the previous <a href="08-ztp-at-scale.html#ai">Infrastructure operator</a> section there is detailed information of the worklow controlled by this piece of software.</p>
+<p>The provisioning process includes installing the host operating system (RHCOS) on a blank server and deploying OpenShift Container Platform. This stage is managed mainly by the Infrastructure Operator. In the previous <a href="ztp-at-scale.html#ai">Infrastructure operator</a> section there is detailed information of the workflow controlled by this piece of software.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -714,7 +714,7 @@ Notice, in the picture, how ZTP allows us to provision clusters at scale.
 </div>
 </div>
 <div class="paragraph">
-<p>Once the clusters are provisioned, the day-2 configuration defined in multiple <code>PolicyGenTemplate</code> (PGTs) custom resources will be automatically applied. <code>PolicyGenTemplate</code> custom resource is understood by the ZTP using an specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin">policy-generator</a>. In telco RAN DU nodes, this configuration includes the installation of the common telco operators, common configuration for RAN and specific configuration (SR-IOV or performance settings) for each site since it is very dependant on the hardware.</p>
+<p>Once the clusters are provisioned, the day-2 configuration defined in multiple <code>PolicyGenTemplate</code> (PGTs) custom resources will be automatically applied. <code>PolicyGenTemplate</code> custom resource is understood by the ZTP using a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin">policy-generator</a>. In telco RAN DU nodes, this configuration includes the installation of the common telco operators, common configuration for RAN and specific configuration (SR-IOV or performance settings) for each site since it is very dependent on the hardware.</p>
 </div>
 <div class="imageblock">
 <div class="content">

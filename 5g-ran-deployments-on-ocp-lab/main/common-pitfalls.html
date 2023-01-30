@@ -549,7 +549,7 @@
     <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifing the TALM state</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying the TALM state</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the upgrade PGT</a>
@@ -644,13 +644,13 @@
 <p>In 5G RAN environments is pretty common to do CPU pinning for the workload, which as you already know means that the application will only run on a subset of CPUs.</p>
 </div>
 <div class="paragraph">
-<p>When this workloads use exec probres we need to be extremely careful about what kind of workloads those are. We have seen nodes hanging when using exec probes on pods running DPDK workloads.</p>
+<p>When this workloads use exec probes we need to be extremely careful about what kind of workloads those are. We have seen nodes hanging when using exec probes on pods running DPDK workloads.</p>
 </div>
 <div class="paragraph">
 <p>DPDK applications run a polling thread which does not yield the CPU.</p>
 </div>
 <div class="paragraph">
-<p>If we look at the different Kubernetes liveness and readiness probes we can see that there are different kinds of probes, how they run differs a bit from each other. The important thing here is that the "exec" probes are scheduled in the same CPU that is being used by the POD, which means that eventually some of the probes will be scheduled to be executed on the CPU where the rt polling thread is running, leading to the system eventually crashing.</p>
+<p>If we look at the different Kubernetes liveness and readiness probes we can see that there are different kinds of probes, how they run differs a bit from each other. The important thing here is that the "exec" probes are scheduled in the same CPU that is being used by the POD, which means that eventually some probes will be scheduled to be executed on the CPU where the rt polling thread is running, leading to the system eventually crashing.</p>
 </div>
 <div class="paragraph">
 <p>In order to avoid this, you should use httpProbes instead of exec probes, which will avoid the probes being scheduled on the application cpuset.</p>
