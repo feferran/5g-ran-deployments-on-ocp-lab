@@ -662,7 +662,7 @@
 <h2 id="container-registry"><a class="anchor" href="#container-registry"></a>Container Registry</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A container registry is running on the infrastructure host, you can reach it out at <a href="https://infra.5g-deployment.lab:8443/" class="bare">https://infra.5g-deployment.lab:8443/</a>.</p>
+<p>A <a href="https://docs.openshift.com/container-platform/4.11/installing/disconnected_install/installing-mirroring-creating-registry.html">container registry</a> is running on the infrastructure host, you can reach it out at <a href="https://infra.5g-deployment.lab:8443/" class="bare">https://infra.5g-deployment.lab:8443/</a>.</p>
 </div>
 <div class="paragraph">
 <p>Credentials for the container registry:</p>
@@ -676,6 +676,18 @@
 <p>Password: <code>r3dh4t1!</code></p>
 </li>
 </ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you receive an error message regarding the certificate please re-run update-ca-trust on the hypervisor or add <code>--tls-verify=false</code> to the command line.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>

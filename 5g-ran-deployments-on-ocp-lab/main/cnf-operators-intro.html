@@ -641,7 +641,7 @@
 <h2 id="node-tuning-operator"><a class="anchor" href="#node-tuning-operator"></a>Node Tuning Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Helps you manage node-level tuning by orchestrating the TuneD daemon and other OS level tuning. In the context of RAN deployments it is used to achieve low latency performance by using the Performance Profile controller.</p>
+<p>The Node Tuning Operator helps you manage node-level tuning by orchestrating the TuneD daemon and other OS level tuning. In the context of RAN deployments it is used to achieve low latency performance by using the Performance Profile controller.</p>
 </div>
 <div class="paragraph">
 <p>In RAN environments we will leverage the PerformanceProfile API in order to:</p>
@@ -671,7 +671,7 @@
 <h2 id="sriov-operator"><a class="anchor" href="#sriov-operator"></a>SR-IOV Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Helps you manage SR-IOV network devices and network attachments. You can think of an SR-IOV NIC like a hypervisor for NICs, you have a physical NIC and you can create (a limited number of) virtualized NICs out of it.</p>
+<p>This Operator helps you manage SR-IOV network devices and network attachments. You can think of an SR-IOV NIC like a hypervisor for NICs, you have a physical NIC and you can create (a limited number of) virtualized NICs out of it.</p>
 </div>
 <div class="paragraph">
 <p>We usually refer to this virtualized NICs as virtual functions (VFs), and these are exposed in the containers in order to provide extra networks to workloads. These VFs are "slices" of the underlying NIC which are passed into the container as hardware devices. This allows the container direct access to that "slice" of the NIC and is typically used to provide high performance access to networking.</p>
@@ -685,7 +685,7 @@
 <h2 id="ptp-operator"><a class="anchor" href="#ptp-operator"></a>PTP Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Precision Time Protocol (PTP) is used to synchronize clocks in a network. When used in conjunction with hardware support, PTP is capable of sub-microsecond accuracy, and is more accurate than Network Time Protocol (NTP).</p>
+<p>Precision Time Protocol (PTP) is used to synchronize clocks in a network, as discussed <a href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/5g-ran-context.html#ptp">prevously</a>. When used in conjunction with hardware support, PTP is capable of sub-microsecond accuracy, and is more accurate than Network Time Protocol (NTP).</p>
 </div>
 <div class="paragraph">
 <p>The PTP Operator can be used to configure PTP on OpenShift nodes.</p>
