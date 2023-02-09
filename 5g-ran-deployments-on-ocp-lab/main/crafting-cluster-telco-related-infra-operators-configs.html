@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Introduction :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/introduction.html">
-    <link rel="prev" href="index.html">
-    <link rel="next" href="5g-ran-context.html">
+    <title>Crafting the Cluster Telco Related Infrastructure Operators Configs :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/crafting-cluster-telco-related-infra-operators-configs.html">
+    <link rel="prev" href="crafting-deployments-iaac.html">
+    <link rel="next" href="running-the-deployment.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -58,15 +58,15 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item is-current-page" data-depth="1">
+  <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="introduction.html">Introduction</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#lab-aim">Who is this lab aimed at? </a>
+    <a class="nav-link" href="introduction.html#lab-aim">Who is this lab aimed at? </a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#lab-software-versions">Lab Software Versions</a>
+    <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
   </li>
 </ul>
   </li>
@@ -496,24 +496,24 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
+    <a class="nav-link" href="#crafting-common-policies">Crafting Common Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
+    <a class="nav-link" href="#crafting-group-policies">Crafting Group Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-zone-policies">Crafting Zone Policies</a>
+    <a class="nav-link" href="#crafting-zone-policies">Crafting Zone Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
+    <a class="nav-link" href="#crafting-site-policies">Crafting Site Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
+    <a class="nav-link" href="#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
   </li>
 </ul>
   </li>
@@ -622,66 +622,348 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="introduction.html">Introduction</a></li>
+    <li><a href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/introduction.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/crafting-cluster-telco-related-infra-operators-configs.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Introduction</h1>
+<h1 class="page">Crafting the Cluster Telco Related Infrastructure Operators Configs</h1>
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Welcome to this 5G RAN Deployments on OpenShift Lab.</p>
+<p>In the previous section we created the infrastructure as code (IaC) for our <code>SNO2</code> cluster using the <code>SiteConfig</code> object. In this section we are going to create the configuration as code (CaC) for our clusters by using the <code>PolicyGenTemplate</code> object.</p>
 </div>
 <div class="paragraph">
-<p>The first part of this lab is an introduction to the required concepts that one needs to know when planning and running a 5G RAN Deployment on OpenShift. The second part is a practical scenario where we will run RAN-enabled OCP deployments by using the ZTP deployment technologies and methodologies.</p>
+<p>We described how <code>PolicyGenTemplate</code> works in detail <a href="policygen-deepdive.html#policies-templating" class="xref page">here</a>, so let&#8217;s jump directly to the creation of the different templates.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Below commands must be executed from the workstation host if not specified otherwise.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="lab-aim"><a class="anchor" href="#lab-aim"></a>Who is this lab aimed at?</h2>
+<h2 id="crafting-common-policies"><a class="anchor" href="#crafting-common-policies"></a>Crafting Common Policies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The lab is aimed to technical profiles working with OpenShift who are interested in any of these areas:</p>
+<p>The common policies apply to every cluster in our infrastructure that matches our binding rule. These policies are often used to configure things like CatalogSources, Operator Deployments, etc. that are common to all our clusters.</p>
 </div>
-<div class="ulist">
-<ul>
+<div class="paragraph">
+<p>These configs may vary from release to release, that&#8217;s why we create a <code>common-411.yaml</code> file. We will likely have a common configuration profile for each release we deploy.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+If you check the binding rules you can see that we are targeting clusters labeled with <code>common: "ocp411"</code>. This label was set in the <code>InstallConfig</code> in the previous section.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>Interested in GitOps management of a fleet of clusters</p>
+<p>Create the <code>common</code> PolicyGenTemplate for 4.11 SNOs:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/common-policies/common-411.yaml
+---
+apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+  name: "common"
+  namespace: "ztp-policies"
+spec:
+  bindingRules:
+    common: "ocp411"
+  mcp: master
+  remediationAction: inform
+  sourceFiles:
+    - fileName: OperatorHub.yaml
+      policyName: operator-catalog-411
+    - fileName: DefaultCatsrc.yaml
+      metadata:
+        name: redhat-operator-index
+      spec:
+        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.11
+      policyName: operator-catalog-411
+EOF</code></pre>
+</div>
+</div>
 </li>
-<li>
-<p>Working with telecom customers/partners in projects involving RAN workloads</p>
-</li>
-</ul>
+</ol>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="lab-software-versions"><a class="anchor" href="#lab-software-versions"></a>Lab Software Versions</h2>
+<h2 id="crafting-group-policies"><a class="anchor" href="#crafting-group-policies"></a>Crafting Group Policies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The lab is based on the following software versions.</p>
+<p>The group policies apply to a group of clusters that typically have something in common, for example they are SNOs, or they have SR-IOV cards, etc.</p>
 </div>
-<div class="ulist">
-<ul>
+<div class="paragraph">
+<p>The CNF team has prepared some common tuning configurations that should be applied on every SNO DU deployed. In this section we will be crafting these configurations.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+If you check the binding rules you can see that we are targeting clusters labeled with <code>group-du-sno: ""</code>. This label was set in the <code>InstallConfig</code> in the previous section.
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>HUB Cluster OpenShift v4.11.13</p>
+<p>Create the <code>group</code> PolicyGenTemplate for SNOs:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/group-policies/group-du-sno.yaml
+---
+apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+  name: "group-du-sno"
+  namespace: "ztp-policies"
+spec:
+  bindingRules:
+    group-du-sno: ""
+  mcp: master
+  remediationAction: inform
+  sourceFiles:
+    - fileName: ReduceMonitoringFootprint.yaml
+      policyName: du-profile-wave1
+    - fileName: ConsoleOperatorDisable.yaml
+      policyName: du-profile-wave10
+    - fileName: DisableSnoNetworkDiag.yaml
+      policyName: du-profile-wave10
+EOF</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="crafting-zone-policies"><a class="anchor" href="#crafting-zone-policies"></a>Crafting Zone Policies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Zone policies apply to a group of clusters that share a specific zone. Zone can mean multiple things to different people, it can be a region, a city, a physical location, etc.</p>
+</div>
+<div class="paragraph">
+<p>We are going to create some policies that apply to our clusters located in <code>Europe</code>. For example, all our clusters in <code>Europe</code> use the Local Storage Operator to configure their storage, let&#8217;s craft that policy:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create the <code>zone</code> PolicyGenTemplate for clusters in Europe:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/zone-policies/zone-europe.yaml
+---
+apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+  name: "zone-europe"
+  namespace: "ztp-policies"
+spec:
+  bindingRules:
+    du-zone: "europe"
+  mcp: master
+  remediationAction: inform
+  sourceFiles:
+    - fileName: StorageNS.yaml
+      policyName: storage-operator
+    - fileName: StorageOperGroup.yaml
+      policyName: storage-operator
+    - fileName: StorageSubscription.yaml
+      spec:
+        source: redhat-operator-index
+      policyName: storage-operator
+    - fileName: StorageOperatorStatus.yaml
+      policyName: storage-operator
+EOF</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="crafting-site-policies"><a class="anchor" href="#crafting-site-policies"></a>Crafting Site Policies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Site policies apply to a specific cluster/s in our site, they usually configure stuff that is very specific to a single cluster or to a small subset of clusters. For example, we could configure storage for a group of clusters if those share the same hardware, disks configurations, etc. otherwise we will need to have different bindings for different clusters.</p>
+</div>
+<div class="paragraph">
+<p>We are going to create the <code>PerformanceProfile</code> and storage configurations for our SNO2 cluster.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create the <code>sno2</code> PolicyGenTemplate for the <code>SNO2</code> cluster in our <code>5glab</code> site:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/site-policies/site-sno2.yaml
+---
+apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+  name: "site-sno2"
+  namespace: "ztp-policies"
+spec:
+  bindingRules:
+    du-site: "sno2"
+  mcp: master
+  remediationAction: inform
+  sourceFiles:
+    - fileName: StorageLV.yaml
+      spec:
+        storageClassDevices:
+          - storageClassName: "lso-fs"
+            volumeMode: Filesystem
+            fsType: xfs
+            devicePaths:
+              - /dev/vdb
+      policyName: storage-configuration
+    - fileName: StorageClass.yaml
+      metadata:
+        name: lso-fs
+      policyName: storage-configuration
+    - fileName: PerformanceProfile.yaml
+      policyName: "performance-policy"
+      metadata:
+        annotations:
+          kubeletconfig.experimental: |
+            {"topologyManagerScope": "pod",
+             "systemReserved": {"memory": "3Gi"}
+            }
+      spec:
+        additionalKernelArgs:
+        - "firmware_class.path=/var/lib/firmware/"
+        - "nohz_full=4-11"
+        - "crashkernel=1024M"
+        - "efi=runtime"
+        cpu:
+          isolated: "4-11"
+          reserved: "0-3"
+        hugepages:
+          defaultHugepagesSize: 1G
+          pages:
+          - count: 4
+            size: 1G
+        numa:
+          topologyPolicy: single-numa-node
+        realTimeKernel:
+          enabled: false
+        globallyDisableIrqLoadBalancing: false
+    - fileName: TunedPerformancePatch.yaml
+      policyName: "tuned-policy"
+      spec:
+        profile:
+          - name: performance-patch
+            data: |
+              [main]
+              summary=Configuration changes profile inherited from performance created tuned
+              include=openshift-node-performance-openshift-node-performance-profile
+              [bootloader]
+              cmdline_crash=nohz_full=4-11
+              [sysctl]
+              kernel.timer_migration=1
+              [scheduler]
+              group.ice-ptp=0:f:10:*:ice-ptp.*
+              [service]
+              service.stalld=start,enable
+              service.chronyd=stop,disable
+EOF</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="configure-kustomization-for-policies"><a class="anchor" href="#configure-kustomization-for-policies"></a>Configure Kustomization for Policies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We need to create the required kustomization as we did for SiteConfigs, in this case policies also require a namespace where these will be created, so we will create the required namespace and the kustomization.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Policies need to live in a namespace, let&#8217;s add it to the repo:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/policies-namespace.yaml
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ztp-policies
+  labels:
+    name: ztp-policies
+EOF</code></pre>
+</div>
+</div>
 </li>
 <li>
-<p>SNO Cluster OpenShift v4.11.13 and 4.11.17</p>
+<p>Create the required Kustomization files</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/kustomization.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generators:
+  - common-policies/common-411.yaml
+  - group-policies/group-du-sno.yaml
+  - zone-policies/zone-europe.yaml
+  - site-policies/site-sno2.yaml
+resources:
+  - policies-namespace.yaml
+EOF</code></pre>
+</div>
+</div>
 </li>
 <li>
-<p>PolicyGenTool v4.11</p>
+<p>At this point we can push the changes to the repo and continue to the next section.</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository
+git add --all
+git commit -m 'Added policies information'
+git push origin main
+cd ~</code></pre>
+</div>
+</div>
 </li>
-</ul>
+</ol>
 </div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="index.html">Welcome</a></span>
-  <span class="next"><a href="5g-ran-context.html">5G Ran Context</a></span>
+  <span class="prev"><a href="crafting-deployments-iaac.html">Crafting Deployment&#8217;s IaaC</a></span>
+  <span class="next"><a href="running-the-deployment.html">Running the Deployment</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

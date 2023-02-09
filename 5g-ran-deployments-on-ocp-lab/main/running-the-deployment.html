@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Running the Deployment :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/running-the-deployment.html">
-    <link rel="prev" href="crafting-cluster-cnf-operators-configs.html">
+    <link rel="prev" href="crafting-cluster-telco-related-infra-operators-configs.html">
     <link rel="next" href="monitoring-the-deployment.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
@@ -126,19 +126,19 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="cnf-operators-intro.html">Introduction to CNF Operators</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html">Introduction to Telco Related Infrastructure Operators</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#sriov-operator">SR-IOV Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#sriov-operator">SR-IOV Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#ptp-operator">PTP Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#ptp-operator">PTP Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#accelerators-operators">Accelerators Operators</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
   </li>
 </ul>
   </li>
@@ -433,6 +433,9 @@
     <a class="nav-link" href="lab-environment.html#configure-git-server">Configure Git Server</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
+  </li>
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#create-openshift-nodes-vms">Create OpenShift Nodes VMs</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -446,9 +449,6 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
   </li>
 </ul>
   </li>
@@ -498,22 +498,22 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html">Crafting Cluster and CNF Operators Configs</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-zone-policies">Crafting Zone Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-zone-policies">Crafting Zone Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
   </li>
 </ul>
   </li>
@@ -638,6 +638,18 @@
 <div class="paragraph">
 <p>We already have the git repository that will be used for storing our Infrastructure as Code (IaC) and Configuration as Code (CaC). Next step is deploying the ZTP GitOps Pipeline, let&#8217;s do it.</p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Below commands must be executed from the workstation host if not specified otherwise.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -648,9 +660,9 @@
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ mkdir -p ~/5g-deployment-lab/ztp-pipeline/
-[user@workstation ~]$ podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1!
-[user@workstation ~]$ podman run --log-driver=none --rm infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.11 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/5g-deployment-lab/ztp-pipeline/
+podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1!
+podman run --log-driver=none --rm infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.11 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -662,7 +674,7 @@
 <p>Login into the hub cluster</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ oc login -u admin -p admin <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login -u admin -p admin <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a></code></pre>
 </div>
 </div>
 </li>
@@ -674,8 +686,8 @@
 <p>Change the repository url for the two ArgoApps</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ sed -i "s|repoURL: .*|repoURL: <a href="http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"" class="bare">http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"</a> ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
-[user@workstation ~]$ sed -i "s|repoURL: .*|repoURL: <a href="http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"" class="bare">http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"</a> ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|repoURL: .*|repoURL: <a href="http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"" class="bare">http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"</a> ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i "s|repoURL: .*|repoURL: <a href="http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"" class="bare">http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"</a> ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
 </div>
 </div>
 </li>
@@ -683,8 +695,8 @@
 <p>Change the repository path for the two ArgoApps</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ sed -i "s|path: .*|path: site-configs|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
-[user@workstation ~]$ sed -i "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|path: .*|path: site-configs|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
 </div>
 </div>
 </li>
@@ -692,8 +704,8 @@
 <p>Change the repository branch for the two ArgoApps</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
-[user@workstation ~]$ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
 </div>
 </div>
 </li>
@@ -704,7 +716,7 @@
 <p>Apply the ZTP GitOps Pipeline configuration</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ oc apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/</code></pre>
 </div>
 </div>
 </li>
@@ -761,7 +773,7 @@
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="crafting-cluster-cnf-operators-configs.html">Crafting Cluster and CNF Operators Configs</a></span>
+  <span class="prev"><a href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a></span>
   <span class="next"><a href="monitoring-the-deployment.html">Monitoring the Deployment</a></span>
 </nav>
 </article>

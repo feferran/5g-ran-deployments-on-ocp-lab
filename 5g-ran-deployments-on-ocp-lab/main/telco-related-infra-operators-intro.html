@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Introduction :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/introduction.html">
-    <link rel="prev" href="index.html">
-    <link rel="next" href="5g-ran-context.html">
+    <title>Introduction to Telco Related Infrastructure Operators :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/telco-related-infra-operators-intro.html">
+    <link rel="prev" href="sno-intro.html">
+    <link rel="next" href="ztp-intro.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -58,15 +58,15 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item is-current-page" data-depth="1">
+  <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="introduction.html">Introduction</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#lab-aim">Who is this lab aimed at? </a>
+    <a class="nav-link" href="introduction.html#lab-aim">Who is this lab aimed at? </a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#lab-software-versions">Lab Software Versions</a>
+    <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
   </li>
 </ul>
   </li>
@@ -124,21 +124,21 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="telco-related-infra-operators-intro.html">Introduction to Telco Related Infrastructure Operators</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
+    <a class="nav-link" href="#node-tuning-operator">Node Tuning Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#sriov-operator">SR-IOV Operator</a>
+    <a class="nav-link" href="#sriov-operator">SR-IOV Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#ptp-operator">PTP Operator</a>
+    <a class="nav-link" href="#ptp-operator">PTP Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
+    <a class="nav-link" href="#accelerators-operators">Accelerators Operators</a>
   </li>
 </ul>
   </li>
@@ -622,66 +622,103 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="introduction.html">Introduction</a></li>
+    <li><a href="telco-related-infra-operators-intro.html">Introduction to Telco Related Infrastructure Operators</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/introduction.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/main/documentation/modules/ROOT/pages/telco-related-infra-operators-intro.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Introduction</h1>
+<h1 class="page">Introduction to Telco Related Infrastructure Operators</h1>
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Welcome to this 5G RAN Deployments on OpenShift Lab.</p>
-</div>
-<div class="paragraph">
-<p>The first part of this lab is an introduction to the required concepts that one needs to know when planning and running a 5G RAN Deployment on OpenShift. The second part is a practical scenario where we will run RAN-enabled OCP deployments by using the ZTP deployment technologies and methodologies.</p>
+<p>When working on RAN environments there are a set of operators that will be common to almost all of them. In this section we will introduce what those operators are and what they are used for.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="lab-aim"><a class="anchor" href="#lab-aim"></a>Who is this lab aimed at?</h2>
+<h2 id="node-tuning-operator"><a class="anchor" href="#node-tuning-operator"></a>Node Tuning Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The lab is aimed to technical profiles working with OpenShift who are interested in any of these areas:</p>
+<p>The Node Tuning Operator helps you manage node-level tuning by orchestrating the TuneD daemon and other OS level tuning. In the context of RAN deployments it is used to achieve low latency performance by using the Performance Profile controller.</p>
+</div>
+<div class="paragraph">
+<p>In RAN environments we will leverage the PerformanceProfile API in order to:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Interested in GitOps management of a fleet of clusters</p>
+<p>Update the kernel to kernel-rt.</p>
 </li>
 <li>
-<p>Working with telecom customers/partners in projects involving RAN workloads</p>
+<p>Configure CPUs for housekeeping (reserved CPUs).</p>
+</li>
+<li>
+<p>Configure CPUs for running workloads (isolated CPUs).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The Node Tuning Operator is part of the standard OpenShift installation.</p>
+</div>
+<div class="paragraph">
+<p>You can read more about the NTO <a href="https://docs.openshift.com/container-platform/4.11/scalability_and_performance/using-node-tuning-operator.html">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sriov-operator"><a class="anchor" href="#sriov-operator"></a>SR-IOV Operator</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This Operator helps you manage SR-IOV network devices and network attachments. You can think of an SR-IOV NIC like a hypervisor for NICs, you have a physical NIC and you can create (a limited number of) virtualized NICs out of it.</p>
+</div>
+<div class="paragraph">
+<p>We usually refer to this virtualized NICs as virtual functions (VFs), and these are exposed in the containers in order to provide extra networks to workloads. These VFs are "slices" of the underlying NIC which are passed into the container as hardware devices. This allows the container direct access to that "slice" of the NIC and is typically used to provide high performance access to networking.</p>
+</div>
+<div class="paragraph">
+<p>You can read more about the SR-IOV operator <a href="https://docs.openshift.com/container-platform/4.11/networking/hardware_networks/about-sriov.html">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ptp-operator"><a class="anchor" href="#ptp-operator"></a>PTP Operator</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Precision Time Protocol (PTP) is used to synchronize clocks in a network, as discussed <a href="5g-ran-context.html#ptp" class="xref page">previously</a>. When used in conjunction with hardware support, PTP is capable of sub-microsecond accuracy, and is more accurate than Network Time Protocol (NTP).</p>
+</div>
+<div class="paragraph">
+<p>The PTP Operator can be used to configure PTP on OpenShift nodes.</p>
+</div>
+<div class="paragraph">
+<p>Some extra PTP information you may find useful:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.openshift.com/container-platform/4.11/networking/using-ptp.html">PTP Operator Official Docs</a></p>
+</li>
+<li>
+<p>PTP blog posts on cloud.redhat.com <a href="https://cloud.redhat.com/blog/delivering-high-precision-clock-synchronization-for-low-latency-5g-networks-with-openshift-part-1">part 1</a> and <a href="https://cloud.redhat.com/blog/delivering-high-accuracy-clock-synchronization-for-5g-networks-with-openshift-part-2">part 2</a></p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="lab-software-versions"><a class="anchor" href="#lab-software-versions"></a>Lab Software Versions</h2>
+<h2 id="accelerators-operators"><a class="anchor" href="#accelerators-operators"></a>Accelerators Operators</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The lab is based on the following software versions.</p>
+<p>Specialized hardware devices can be used to accelerate 4G/LTE and 5G virtualized radio access networks (vRAN) workloads. The use of these devices increases the overall compute capacity of a commercial, off-the-shelf platform by offloading compute intensive tasks to dedicated hardware.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>HUB Cluster OpenShift v4.11.13</p>
-</li>
-<li>
-<p>SNO Cluster OpenShift v4.11.13 and 4.11.17</p>
-</li>
-<li>
-<p>PolicyGenTool v4.11</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>In order to manage these devices, there are multiple accelerator operators that we may need to deploy in our OpenShift clusters.</p>
 </div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="index.html">Welcome</a></span>
-  <span class="next"><a href="5g-ran-context.html">5G Ran Context</a></span>
+  <span class="prev"><a href="sno-intro.html">Introduction to Single Node OpenShift (SNO)</a></span>
+  <span class="next"><a href="ztp-intro.html">Introduction to Zero Touch Provisioning (ZTP)</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

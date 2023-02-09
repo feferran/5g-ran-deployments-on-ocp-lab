@@ -126,19 +126,19 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="cnf-operators-intro.html">Introduction to CNF Operators</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html">Introduction to Telco Related Infrastructure Operators</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#sriov-operator">SR-IOV Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#sriov-operator">SR-IOV Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#ptp-operator">PTP Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#ptp-operator">PTP Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#accelerators-operators">Accelerators Operators</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
   </li>
 </ul>
   </li>
@@ -433,6 +433,9 @@
     <a class="nav-link" href="#configure-git-server">Configure Git Server</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
+  </li>
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="#create-openshift-nodes-vms">Create OpenShift Nodes VMs</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -446,9 +449,6 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
   </li>
 </ul>
   </li>
@@ -498,22 +498,22 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html">Crafting Cluster and CNF Operators Configs</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-zone-policies">Crafting Zone Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-zone-policies">Crafting Zone Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
   </li>
 </ul>
   </li>
@@ -641,7 +641,7 @@
 <h2 id="lab-requirements"><a class="anchor" href="#lab-requirements"></a>Lab Requirements</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>RHEL 8+ (or similar) box with access to the Internet. This lab relies on KVM, so a baremetal host is highly recommended. Our lab environment has the following specs:</p>
+<p>RHEL 8 (or similar) box with access to the Internet. This lab relies on KVM, so a baremetal host is highly recommended. Our lab environment has the following specs:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -678,10 +678,22 @@ All the steps in the below sections must be run as <code>root</code> user on the
 <div class="paragraph">
 <p>We use <a href="https://github.com/karmab/kcli">kcli</a> to do several things, like managing VMs, deploying the first OCP cluster, etc. Additional kcli documentation can be found at <code><a href="https://kcli.readthedocs.io" class="bare">https://kcli.readthedocs.io</a></code></p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Below commands must be executed from the hypervisor host as root if not specified otherwise.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# dnf -y copr enable karmab/kcli
-[root@hypervisor ~]# dnf -y install kcli bash-completion vim jq tar</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y copr enable karmab/kcli
+dnf -y install kcli bash-completion vim jq tar</code></pre>
 </div>
 </div>
 </div>
@@ -689,9 +701,9 @@ All the steps in the below sections must be run as <code>root</code> user on the
 <h3 id="install-oc-kubectl"><a class="anchor" href="#install-oc-kubectl"></a>Install oc/kubectl CLIs</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# kcli download oc -P version=stable -P tag='4.11'
-[root@hypervisor ~]# kcli download kubectl -P version=stable -P tag='4.11'
-[root@hypervisor ~]# mv kubectl oc /usr/bin/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli download oc -P version=stable -P tag='4.11'
+kcli download kubectl -P version=stable -P tag='4.11'
+mv kubectl oc /usr/bin/</code></pre>
 </div>
 </div>
 </div>
@@ -699,7 +711,7 @@ All the steps in the below sections must be run as <code>root</code> user on the
 <h3 id="configure-disconnected-network"><a class="anchor" href="#configure-disconnected-network"></a>Configure Disconnected Network</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# kcli create network -c 192.168.125.0/24 --nodhcp --domain 5g-deployment.lab 5gdeploymentlab</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli create network -c 192.168.125.0/24 --nodhcp --domain 5g-deployment.lab 5gdeploymentlab</code></pre>
 </div>
 </div>
 </div>
@@ -707,21 +719,21 @@ All the steps in the below sections must be run as <code>root</code> user on the
 <h3 id="configure-local-dns-dhcp-server"><a class="anchor" href="#configure-local-dns-dhcp-server"></a>Configure Local DNS/DHCP Server</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# dnf -y install dnsmasq policycoreutils-python-utils
-[root@hypervisor ~]# mkdir -p /opt/dnsmasq/include.d/
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf</a> -o /opt/dnsmasq/dnsmasq.conf
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf</a> -o /opt/dnsmasq/upstream-resolv.conf
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/hub.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/hub.ipv4</a> -o /opt/dnsmasq/include.d/hub.ipv4
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/sno1.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/sno1.ipv4</a> -o /opt/dnsmasq/include.d/sno1.ipv4
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/sno2.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/sno2.ipv4</a> -o /opt/dnsmasq/include.d/sno2.ipv4
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4</a> -o /opt/dnsmasq/include.d/infrastructure-host.ipv4
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service</a> -o /etc/systemd/system/dnsmasq-virt.service
-[root@hypervisor ~]# touch /opt/dnsmasq/hosts.leases
-[root@hypervisor ~]# semanage fcontext -a -t dnsmasq_lease_t /opt/dnsmasq/hosts.leases
-[root@hypervisor ~]# restorecon /opt/dnsmasq/hosts.leases
-[root@hypervisor ~]# systemctl daemon-reload
-[root@hypervisor ~]# systemctl enable --now dnsmasq-virt
-[root@hypervisor ~]# systemctl mask dnsmasq</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y install dnsmasq policycoreutils-python-utils
+mkdir -p /opt/dnsmasq/include.d/
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf</a> -o /opt/dnsmasq/dnsmasq.conf
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf</a> -o /opt/dnsmasq/upstream-resolv.conf
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/hub.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/hub.ipv4</a> -o /opt/dnsmasq/include.d/hub.ipv4
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/sno1.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/sno1.ipv4</a> -o /opt/dnsmasq/include.d/sno1.ipv4
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/sno2.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/sno2.ipv4</a> -o /opt/dnsmasq/include.d/sno2.ipv4
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4</a> -o /opt/dnsmasq/include.d/infrastructure-host.ipv4
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service</a> -o /etc/systemd/system/dnsmasq-virt.service
+touch /opt/dnsmasq/hosts.leases
+semanage fcontext -a -t dnsmasq_lease_t /opt/dnsmasq/hosts.leases
+restorecon /opt/dnsmasq/hosts.leases
+systemctl daemon-reload
+systemctl enable --now dnsmasq-virt
+systemctl mask dnsmasq</code></pre>
 </div>
 </div>
 </div>
@@ -729,10 +741,10 @@ All the steps in the below sections must be run as <code>root</code> user on the
 <h3 id="configure-local-dns-as-primary-server"><a class="anchor" href="#configure-local-dns-as-primary-server"></a>Configure Local DNS as Primary Server</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hypervisor/forcedns" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hypervisor/forcedns</a> -o /etc/NetworkManager/dispatcher.d/forcedns
-[root@hypervisor ~]# chmod +x /etc/NetworkManager/dispatcher.d/forcedns
-[root@hypervisor ~]# systemctl restart NetworkManager
-[root@hypervisor ~]# /etc/NetworkManager/dispatcher.d/forcedns</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hypervisor/forcedns" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hypervisor/forcedns</a> -o /etc/NetworkManager/dispatcher.d/forcedns
+chmod +x /etc/NetworkManager/dispatcher.d/forcedns
+systemctl restart NetworkManager
+/etc/NetworkManager/dispatcher.d/forcedns</code></pre>
 </div>
 </div>
 </div>
@@ -743,9 +755,9 @@ All the steps in the below sections must be run as <code>root</code> user on the
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# systemctl disable firewalld iptables
-[root@hypervisor ~]# systemctl stop firewalld iptables
-[root@hypervisor ~]# iptables -F</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl disable firewalld iptables
+systemctl stop firewalld iptables
+iptables -F</code></pre>
 </div>
 </div>
 </div>
@@ -753,9 +765,9 @@ All the steps in the below sections must be run as <code>root</code> user on the
 <h3 id="install-sushytools"><a class="anchor" href="#install-sushytools"></a>Install Sushy Tools</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# curl -L <a href="https://gist.githubusercontent.com/mvazquezc/0acb9e716c329abb9a184f1bcceed591/raw/4ae558082a3289d5d46be7d745bc2474e834e238/deploy-sushy-tools.sh" class="bare">https://gist.githubusercontent.com/mvazquezc/0acb9e716c329abb9a184f1bcceed591/raw/4ae558082a3289d5d46be7d745bc2474e834e238/deploy-sushy-tools.sh</a> -o /tmp/deploy-sushy-tools.sh
-[root@hypervisor ~]# chmod +x /tmp/deploy-sushy-tools.sh
-[root@hypervisor ~]# /tmp/deploy-sushy-tools.sh</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://gist.githubusercontent.com/mvazquezc/0acb9e716c329abb9a184f1bcceed591/raw/4ae558082a3289d5d46be7d745bc2474e834e238/deploy-sushy-tools.sh" class="bare">https://gist.githubusercontent.com/mvazquezc/0acb9e716c329abb9a184f1bcceed591/raw/4ae558082a3289d5d46be7d745bc2474e834e238/deploy-sushy-tools.sh</a> -o /tmp/deploy-sushy-tools.sh
+chmod +x /tmp/deploy-sushy-tools.sh
+/tmp/deploy-sushy-tools.sh</code></pre>
 </div>
 </div>
 </div>
@@ -763,19 +775,19 @@ All the steps in the below sections must be run as <code>root</code> user on the
 <h3 id="configure-disconnected-registry"><a class="anchor" href="#configure-disconnected-registry"></a>Configure Disconnected Registry</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# dnf -y install podman httpd-tools
-[root@hypervisor ~]# REGISTRY_NAME=infra.5g-deployment.lab
-[root@hypervisor ~]# mkdir -p /opt/registry/{auth,certs,data,conf}
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-key.pem" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-key.pem</a> -o /opt/registry/certs/registry-key.pem
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-cert.pem" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-cert.pem</a> -o /opt/registry/certs/registry-cert.pem
-[root@hypervisor ~]# htpasswd -bBc /opt/registry/auth/htpasswd admin r3dh4t1!
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/config.yml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/config.yml</a> -o /opt/registry/conf/config.yml
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/podman-registry.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/podman-registry.service</a> -o /etc/systemd/system/podman-registry.service
-[root@hypervisor ~]# systemctl daemon-reload
-[root@hypervisor ~]# systemctl enable podman-registry --now
-[root@hypervisor ~]# cp /opt/registry/certs/registry-cert.pem /etc/pki/ca-trust/source/anchors/
-[root@hypervisor ~]# update-ca-trust
-[root@hypervisor ~]# podman login --authfile auth.json -u admin  infra.5g-deployment.lab:8443 -p r3dh4t1!</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y install podman httpd-tools
+REGISTRY_NAME=infra.5g-deployment.lab
+mkdir -p /opt/registry/{auth,certs,data,conf}
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-key.pem" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-key.pem</a> -o /opt/registry/certs/registry-key.pem
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-cert.pem" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-cert.pem</a> -o /opt/registry/certs/registry-cert.pem
+htpasswd -bBc /opt/registry/auth/htpasswd admin r3dh4t1!
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/config.yml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/config.yml</a> -o /opt/registry/conf/config.yml
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/podman-registry.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/podman-registry.service</a> -o /etc/systemd/system/podman-registry.service
+systemctl daemon-reload
+systemctl enable podman-registry --now
+cp /opt/registry/certs/registry-cert.pem /etc/pki/ca-trust/source/anchors/
+update-ca-trust
+podman login --authfile auth.json -u admin  infra.5g-deployment.lab:8443 -p r3dh4t1!</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -795,13 +807,35 @@ Link to additional configuration documentation of a disconnected registry: <a hr
 <h3 id="configure-git-server"><a class="anchor" href="#configure-git-server"></a>Configure Git Server</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# mkdir -p /opt/gitea/
-[root@hypervisor ~]# chown -R 1000:1000 /opt/gitea/
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/gitea/podman-gitea.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/gitea/podman-gitea.service</a> -o /etc/systemd/system/podman-gitea.service
-[root@hypervisor ~]# systemctl daemon-reload
-[root@hypervisor ~]# systemctl enable podman-gitea --now
-[root@hypervisor ~]# podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email <a href="mailto:student@5g-deployment.lab">student@5g-deployment.lab</a> --must-change-password=false --admin'
-[root@hypervisor ~]# curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' <a href="http://infra.5g-deployment.lab:3000/api/v1/repos/migrate" class="bare">http://infra.5g-deployment.lab:3000/api/v1/repos/migrate</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p /opt/gitea/
+chown -R 1000:1000 /opt/gitea/
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/gitea/podman-gitea.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/gitea/podman-gitea.service</a> -o /etc/systemd/system/podman-gitea.service
+systemctl daemon-reload
+systemctl enable podman-gitea --now
+podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email <a href="mailto:student@5g-deployment.lab">student@5g-deployment.lab</a> --must-change-password=false --admin'
+curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' <a href="http://infra.5g-deployment.lab:3000/api/v1/repos/migrate" class="bare">http://infra.5g-deployment.lab:3000/api/v1/repos/migrate</a></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configure-access-to-cluster-apps"><a class="anchor" href="#configure-access-to-cluster-apps"></a>Configure Access to Cluster Apps</h3>
+<div class="paragraph">
+<p>In order to access the hub cluster we will deploy an HAProxy that will be listening on the public interface of the Hypervisor host.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install haproxy -y
+semanage port -a -t http_port_t -p tcp 6443
+curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/haproxy/haproxy.cfg" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/haproxy/haproxy.cfg</a> -o /etc/haproxy/haproxy.cfg
+systemctl enable haproxy --now</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After that you need to add the following entries to your /etc/hosts file:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">&lt;HYPERVISOR_REACHABLE_IP&gt; infra.5g-deployment.lab api.hub.5g-deployment.lab multicloud-console.apps.hub.5g-deployment.lab console-openshift-console.apps.hub.5g-deployment.lab oauth-openshift.apps.hub.5g-deployment.lab openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab</code></pre>
 </div>
 </div>
 </div>
@@ -809,12 +843,12 @@ Link to additional configuration documentation of a disconnected registry: <a hr
 <h3 id="create-openshift-nodes-vms"><a class="anchor" href="#create-openshift-nodes-vms"></a>Create OpenShift Nodes VMs</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# kcli create pool -p /var/lib/libvirt/images default
-[root@hypervisor ~]# kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0101 hub-master0
-[root@hypervisor ~]# kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:02"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0102 hub-master1
-[root@hypervisor ~]# kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:03"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0103 hub-master2
-[root@hypervisor ~]# kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:02:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201 sno1
-[root@hypervisor ~]# kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:03:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301 sno2</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli create pool -p /var/lib/libvirt/images default
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0101 hub-master0
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:02"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0102 hub-master1
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:03"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0103 hub-master2
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:02:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201 sno1
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:03:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301 sno2</code></pre>
 </div>
 </div>
 </div>
@@ -834,11 +868,11 @@ This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# git clone <a href="https://github.com/karmab/kcli-openshift4-baremetal.git" class="bare">https://github.com/karmab/kcli-openshift4-baremetal.git</a>
-[root@hypervisor ~]# curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/hub.yml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/hub.yml</a> -o /root/kcli-openshift4-baremetal/hub.yml
-[root@hypervisor ~]# cp /root/openshift_pull.json /root/kcli-openshift4-baremetal/openshift_pull.json
-[root@hypervisor ~]# cd /root/kcli-openshift4-baremetal/
-[root@hypervisor kcli-openshift4-baremetal]# kcli create plan --pf hub.yml --force</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone <a href="https://github.com/karmab/kcli-openshift4-baremetal.git" class="bare">https://github.com/karmab/kcli-openshift4-baremetal.git</a>
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/hub.yml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/hub.yml</a> -o /root/kcli-openshift4-baremetal/hub.yml
+cp /root/openshift_pull.json /root/kcli-openshift4-baremetal/openshift_pull.json
+cd /root/kcli-openshift4-baremetal/
+kcli create plan --pf hub.yml --force</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -849,17 +883,17 @@ This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.
 <h3 id="configure-openshift-hub-cluster"><a class="anchor" href="#configure-openshift-hub-cluster"></a>Configure OpenShift Hub Cluster</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor kcli-openshift4-baremetal]# cd ~
-[root@hypervisor ~]# kcli ssh hub-installer -- "sudo cp /root/ocp/auth/kubeconfig /tmp/kubeconfig &amp;&amp; sudo chmod 644 /tmp/kubeconfig"
-[root@hypervisor ~]# kcli scp hub-installer:/tmp/kubeconfig ~/hub-kubeconfig
-[root@hypervisor ~]# export KUBECONFIG=~/hub-kubeconfig
-[root@hypervisor ~]# oc apply -f <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/lvmcluster.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/lvmcluster.yaml</a>
-[root@hypervisor ~]# oc -n openshift-storage wait lvmcluster odf-lvmcluster --for=jsonpath='{.status.ready}'=true --timeout=900s
-[root@hypervisor ~]# oc patch storageclass odf-lvm-vg1 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-[root@hypervisor ~]# curl <a href="https://raw.githubusercontent.com/openshift-kni/cnf-features-deploy/master/ztp/gitops-subscriptions/argocd/deployment/argocd-openshift-gitops-patch.json" class="bare">https://raw.githubusercontent.com/openshift-kni/cnf-features-deploy/master/ztp/gitops-subscriptions/argocd/deployment/argocd-openshift-gitops-patch.json</a> -o /tmp/argopatch.json
-[root@hypervisor ~]# oc patch argocd openshift-gitops -n openshift-gitops --type=merge --patch-file /tmp/argopatch.json
-[root@hypervisor ~]# oc wait --for=condition=Ready pod -lapp.kubernetes.io/name=openshift-gitops-repo-server -n openshift-gitops
-[root@hypervisor ~]# oc -n openshift-gitops adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~
+kcli ssh hub-installer -- "sudo cp /root/ocp/auth/kubeconfig /tmp/kubeconfig &amp;&amp; sudo chmod 644 /tmp/kubeconfig"
+kcli scp hub-installer:/tmp/kubeconfig ~/hub-kubeconfig
+export KUBECONFIG=~/hub-kubeconfig
+oc apply -f <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/lvmcluster.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/lvmcluster.yaml</a>
+oc -n openshift-storage wait lvmcluster odf-lvmcluster --for=jsonpath='{.status.ready}'=true --timeout=900s
+oc patch storageclass odf-lvm-vg1 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+curl <a href="https://raw.githubusercontent.com/openshift-kni/cnf-features-deploy/master/ztp/gitops-subscriptions/argocd/deployment/argocd-openshift-gitops-patch.json" class="bare">https://raw.githubusercontent.com/openshift-kni/cnf-features-deploy/master/ztp/gitops-subscriptions/argocd/deployment/argocd-openshift-gitops-patch.json</a> -o /tmp/argopatch.json
+oc patch argocd openshift-gitops -n openshift-gitops --type=merge --patch-file /tmp/argopatch.json
+oc wait --for=condition=Ready pod -lapp.kubernetes.io/name=openshift-gitops-repo-server -n openshift-gitops
+oc -n openshift-gitops adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller</code></pre>
 </div>
 </div>
 </div>
@@ -867,7 +901,7 @@ This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.
 <h3 id="deploy-openshift-hub-cluster-operators"><a class="anchor" href="#deploy-openshift-hub-cluster-operators"></a>Deploy OpenShift HUB Cluster Operators</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# oc apply -f <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml</a></code></pre>
 </div>
 </div>
 </div>
@@ -878,9 +912,9 @@ This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# curl -L <a href="http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/main/lab-materials/lab-env-data/hypervisor/ssh-key" class="bare">http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/main/lab-materials/lab-env-data/hypervisor/ssh-key</a> -o /root/.ssh/snokey
-[root@hypervisor ~]# chmod 400 /root/.ssh/snokey
-[root@hypervisor ~]# oc apply -f <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/main/lab-materials/lab-env-data/hypervisor/ssh-key" class="bare">http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/main/lab-materials/lab-env-data/hypervisor/ssh-key</a> -o /root/.ssh/snokey
+chmod 400 /root/.ssh/snokey
+oc apply -f <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml</a></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -888,43 +922,21 @@ This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# oc -n sno1 get agentclusterinstall,agent
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc -n sno1 get agentclusterinstall,agent
 NAME                                                    CLUSTER   STATE
 agentclusterinstall.extensions.hive.openshift.io/sno1   sno1      adding-hosts
 
 NAME                                                                    CLUSTER   APPROVED   ROLE     STAGE
 agent.agent-install.openshift.io/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201   sno1      true       master   Done
 
-[root@hypervisor ~]# oc extract secret/sno1-admin-kubeconfig --to=- -n sno1 &gt; /root/sno1kubeconfig
-[root@hypervisor ~]# oc --kubeconfig /root/sno1kubeconfig get nodes,clusterversion
+oc extract secret/sno1-admin-kubeconfig --to=- -n sno1 &gt; /root/sno1kubeconfig
+oc --kubeconfig /root/sno1kubeconfig get nodes,clusterversion
 
 NAME                      STATUS   ROLES           AGE   VERSION
 node/openshift-master-0   Ready    master,worker   46m   v1.24.6+5157800
 
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.11.13   True        False         22m     Cluster version is 4.11.13</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configure-access-to-cluster-apps"><a class="anchor" href="#configure-access-to-cluster-apps"></a>Configure Access to Cluster Apps</h3>
-<div class="paragraph">
-<p>In order to access the hub cluster we will deploy an HAProxy that will be listening on the public interface of the Hypervisor host.</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]# dnf install haproxy -y
-[root@hypervisor ~]# semanage port -a -t http_port_t -p tcp 6443
-[root@hypervisor ~]# curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/haproxy/haproxy.cfg" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/haproxy/haproxy.cfg</a> -o /etc/haproxy/haproxy.cfg
-[root@hypervisor ~]# systemctl enable haproxy --now</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>After that you need to add the following entries to your /etc/hosts file:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">&lt;HYPERVISOR_REACHABLE_IP&gt; infra.5g-deployment.lab api.hub.5g-deployment.lab multicloud-console.apps.hub.5g-deployment.lab console-openshift-console.apps.hub.5g-deployment.lab oauth-openshift.apps.hub.5g-deployment.lab openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab</code></pre>
 </div>
 </div>
 </div>

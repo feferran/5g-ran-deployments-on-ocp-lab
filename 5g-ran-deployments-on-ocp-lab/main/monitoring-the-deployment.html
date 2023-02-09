@@ -126,19 +126,19 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="cnf-operators-intro.html">Introduction to CNF Operators</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html">Introduction to Telco Related Infrastructure Operators</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#sriov-operator">SR-IOV Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#sriov-operator">SR-IOV Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#ptp-operator">PTP Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#ptp-operator">PTP Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#accelerators-operators">Accelerators Operators</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
   </li>
 </ul>
   </li>
@@ -433,6 +433,9 @@
     <a class="nav-link" href="lab-environment.html#configure-git-server">Configure Git Server</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
+  </li>
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#create-openshift-nodes-vms">Create OpenShift Nodes VMs</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -446,9 +449,6 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
   </li>
 </ul>
   </li>
@@ -498,22 +498,22 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html">Crafting Cluster and CNF Operators Configs</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-zone-policies">Crafting Zone Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-zone-policies">Crafting Zone Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
   </li>
 </ul>
   </li>
@@ -684,13 +684,25 @@
 <div class="sect1">
 <h2 id="monitoring-deployment-cli"><a class="anchor" href="#monitoring-deployment-cli"></a>Monitoring the Deployment via the CLI</h2>
 <div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Below commands must be executed from the workstation host if not specified otherwise.
+</td>
+</tr>
+</table>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
 <p>Access the Hub cluster as admin</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ oc login -u admin -p admin <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login -u admin -p admin <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a></code></pre>
 </div>
 </div>
 </li>
@@ -698,7 +710,7 @@
 <p>Check the <code>AgentClusterInstall</code> for SNO2 cluster</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ oc -n sno2 get agentclusterinstall sno2
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc -n sno2 get agentclusterinstall sno2
 
 NAME   CLUSTER   STATE
 sno2   sno2      finalizing</code></pre>

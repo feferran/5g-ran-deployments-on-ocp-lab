@@ -6,7 +6,7 @@
     <title>Crafting the Deployment Infrastructure as Code :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/crafting-deployments-iaac.html">
     <link rel="prev" href="lab-environment-introduction.html">
-    <link rel="next" href="crafting-cluster-cnf-operators-configs.html">
+    <link rel="next" href="crafting-cluster-telco-related-infra-operators-configs.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -126,19 +126,19 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="cnf-operators-intro.html">Introduction to CNF Operators</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html">Introduction to Telco Related Infrastructure Operators</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#sriov-operator">SR-IOV Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#sriov-operator">SR-IOV Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#ptp-operator">PTP Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#ptp-operator">PTP Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="cnf-operators-intro.html#accelerators-operators">Accelerators Operators</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
   </li>
 </ul>
   </li>
@@ -433,6 +433,9 @@
     <a class="nav-link" href="lab-environment.html#configure-git-server">Configure Git Server</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
+  </li>
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#create-openshift-nodes-vms">Create OpenShift Nodes VMs</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -446,9 +449,6 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
   </li>
 </ul>
   </li>
@@ -498,22 +498,22 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html">Crafting Cluster and CNF Operators Configs</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-zone-policies">Crafting Zone Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-zone-policies">Crafting Zone Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-cnf-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
   </li>
 </ul>
   </li>
@@ -699,12 +699,24 @@ The steps below rely on the lab environment being up and running.
 </ol>
 </div>
 <div class="paragraph">
-<p>Now that we have a repository ready to be used we will clone it in our laptop:</p>
+<p>Now that we have a repository ready to be used we will clone it in our workstation:</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Below commands must be executed from the workstation host if not specified otherwise.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ mkdir -p ~/5g-deployment-lab/
-[user@workstation ~]$ git clone <a href="http://student:student@infra.5g-deployment.lab:3000/student/ztp-repository.git" class="bare">http://student:student@infra.5g-deployment.lab:3000/student/ztp-repository.git</a> ~/5g-deployment-lab/ztp-repository/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/5g-deployment-lab/
+git clone <a href="http://student:student@infra.5g-deployment.lab:3000/student/ztp-repository.git" class="bare">http://student:student@infra.5g-deployment.lab:3000/student/ztp-repository.git</a> ~/5g-deployment-lab/ztp-repository/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -742,14 +754,14 @@ The cluster name for the SNO that we will be deploying in the lab will be sno2, 
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ cd ~/5g-deployment-lab/ztp-repository/
-[user@workstation ~]$ mkdir -p site-configs/pre-reqs/sno2
-[user@workstation ~]$ mkdir -p site-policies/{common-policies,group-policies,site-policies,zone-policies}
-[user@workstation ~]$ touch site-configs/pre-reqs/sno2/.gitkeep
-[user@workstation ~]$ touch site-policies/{common-policies,group-policies,site-policies,zone-policies}/.gitkeep
-[user@workstation ~]$ git add --all
-[user@workstation ~]$ git commit -m 'Initialized repo structure'
-[user@workstation ~]$ git push origin main</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository/
+mkdir -p site-configs/pre-reqs/sno2
+mkdir -p site-policies/{common-policies,group-policies,site-policies,zone-policies}
+touch site-configs/pre-reqs/sno2/.gitkeep
+touch site-policies/{common-policies,group-policies,site-policies,zone-policies}/.gitkeep
+git add --all
+git commit -m 'Initialized repo structure'
+git push origin main</code></pre>
 </div>
 </div>
 </div>
@@ -801,7 +813,7 @@ In a production environment you don&#8217;t want to add sensible information in 
 <p>BMC credentials file</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/bmc-credentials.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/bmc-credentials.yaml
 ---
 apiVersion: v1
 kind: Secret
@@ -820,7 +832,7 @@ EOF</code></pre>
 <p>Pull secret for accessing the disconnected registry</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/pull-secret.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/pull-secret.yaml
 ---
 apiVersion: v1
 kind: Secret
@@ -838,7 +850,7 @@ EOF</code></pre>
 <p>Kustomization file for the SNO2 pre-reqs</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/kustomization.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -853,7 +865,7 @@ EOF</code></pre>
 <p>Kustomization file for the clusters pre-reqs</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/kustomization.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -876,7 +888,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/5glab.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/5glab.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: SiteConfig
@@ -953,7 +965,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/kustomization.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -969,11 +981,11 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[user@workstation ~]$ cd ~/5g-deployment-lab/ztp-repository
-[user@workstation ztp-repository]$ git add --all
-[user@workstation ztp-repository]$ git commit -m 'Added SNO2 and 5GLab Site information'
-[user@workstation ztp-repository]$ git push origin main
-[user@workstation ztp-repository]$ cd ~</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository
+git add --all
+git commit -m 'Added SNO2 and 5GLab Site information'
+git push origin main
+cd ~</code></pre>
 </div>
 </div>
 </div>
@@ -981,7 +993,7 @@ EOF</code></pre>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="lab-environment-introduction.html">Introduction to the Lab Environment</a></span>
-  <span class="next"><a href="crafting-cluster-cnf-operators-configs.html">Crafting Cluster and CNF Operators Configs</a></span>
+  <span class="next"><a href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
