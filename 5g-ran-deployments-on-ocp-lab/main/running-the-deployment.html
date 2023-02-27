@@ -549,6 +549,18 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-webui">Check SNO Deployment has Finished via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
@@ -568,18 +580,6 @@
     <a class="nav-link" href="using-talm-to-update-clusters.html#talm-upgrade">Triggering the upgrade</a>
   </li>
 </ul>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-webui">Check SNO Deployment has Finished via the WebUI</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
   </li>
 </ul>
   </li>
@@ -661,11 +661,23 @@ Below commands must be executed from the workstation host if not specified other
 <div class="paragraph">
 <p>In the workstation, run the following command to extract the pipeline installation files:</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If you get <code>ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 65536</code>: newuidmap: write to uid_map failed: Operation not permitted` when running podman commands, run them with sudo.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/5g-deployment-lab/ztp-pipeline/
-podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1!
-podman run --log-driver=none --rm infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.11 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/</code></pre>
+podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
+podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.11 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/</code></pre>
 </div>
 </div>
 <div class="paragraph">

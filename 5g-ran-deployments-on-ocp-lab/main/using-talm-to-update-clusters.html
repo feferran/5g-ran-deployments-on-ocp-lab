@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Using TALM to Update Clusters :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/using-talm-to-update-clusters.html">
-    <link rel="prev" href="managing-existing-clusters.html">
-    <link rel="next" href="check-deployment-is-finished.html">
+    <link rel="prev" href="check-deployment-is-finished.html">
+    <link rel="next" href="troubleshooting-tips.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
   </head>
@@ -547,6 +547,18 @@
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="managing-existing-clusters.html">Managing Existing Clusters</a>
   </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-webui">Check SNO Deployment has Finished via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
+  </li>
+</ul>
+  </li>
   <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
@@ -568,18 +580,6 @@
     <a class="nav-link" href="#talm-upgrade">Triggering the upgrade</a>
   </li>
 </ul>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-webui">Check SNO Deployment has Finished via the WebUI</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
   </li>
 </ul>
   </li>
@@ -664,6 +664,7 @@ Below commands must be executed from the workstation host if not specified other
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get operators
+
 NAME                                                   AGE
 advanced-cluster-management.open-cluster-management    2d15h
 multicluster-engine.multicluster-engine                2d15h
@@ -678,6 +679,7 @@ topology-aware-lifecycle-manager.openshift-operators   2d15h</code></pre>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods,sa,deployments -n openshift-operators
+
 NAME                                                           READY   STATUS    RESTARTS        AGE
 pod/cluster-group-upgrades-controller-manager-6d6fc98d-6cnf9   2/2     Running   1 (2d14h ago)   2d14h
 pod/gitops-operator-controller-manager-c6bc6db9f-5z752         1/1     Running   0               2d15h
@@ -698,9 +700,22 @@ deployment.apps/gitops-operator-controller-manager          1/1     1           
 <div class="paragraph">
 <p>Finally, let&#8217;s take a look at the cluster group upgrade (CGU) CRD managed by TALM. If we pay a closer look we will notice that an already completed CGU was applied to SNO2. As we mentioned in <a href="talm.html#inform-policies">inform policies</a> section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+It&#8217;s possible that you get <code>UpgradeNotCompleted</code>, if that&#8217;s the case you need to wait for the remaining policies to be applied.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get cgu -A
+
 NAMESPACE     NAME   UPGRADE STATE      AGE
 ztp-install   sno2   UpgradeCompleted   14h</code></pre>
 </div>
@@ -745,21 +760,11 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD. The kustomization file should look like this:</p>
+<p>Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-generators:
-  - common-policies/common-411.yaml
-  - group-policies/group-du-sno.yaml
-  - zone-policies/zone-europe.yaml
-  - zone-policies/upgrade-411-17.yaml
-  - site-policies/site-sno2.yaml
-resources:
-  - policies-namespace.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "/- zone-policies\/zone-europe.yaml/a \ \ - zone-policies/upgrade-411-17.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/kustomization.yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -767,7 +772,8 @@ resources:
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git add site-policies/zone-policies/upgrade-411-17.yaml site-policies/kustomization.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository/
+git add site-policies/zone-policies/upgrade-411-17.yaml site-policies/kustomization.yaml
 git commit -m "adds upgrade policy"
 git push origin main</code></pre>
 </div>
@@ -786,6 +792,7 @@ git push origin main</code></pre>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc label managedcluster sno1 du-zone=europe
+
 managedcluster.cluster.open-cluster-management.io/sno1 labeled</code></pre>
 </div>
 </div>
@@ -845,7 +852,7 @@ There is an extra violation in the zone-europe-storage-operator since this PGT w
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/cgu-upgrade-411-17.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc apply -f -
 ---
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
@@ -868,17 +875,13 @@ spec:
 EOF</code></pre>
 </div>
 </div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f ~/5g-deployment-lab/cgu-upgrade-411-17.yaml</code></pre>
-</div>
-</div>
 <div class="paragraph">
 <p>Once applied, we can see that the status moved to BackupNotDone. This means that the first step in our process is executing the backup.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get cgu -A
+
 NAMESPACE      NAME        UPGRADE STATE      AGE
 ztp-install    sno2        UpgradeCompleted   16h
 ztp-policies   telco-ops   BackupNotDone      15s</code></pre>
@@ -887,10 +890,22 @@ ztp-policies   telco-ops   BackupNotDone      15s</code></pre>
 <div class="paragraph">
 <p>Connecting to any of our spoke clusters we can see a new job being created called backup-agent.</p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+All the steps in the below section must be run as <code>root</code> user on the hypervisor host.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig
-[root@hypervisor ~]$ oc get jobs -A
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get jobs -A
+
 NAMESPACE                              NAME                                                              COMPLETIONS   DURATION   AGE
 assisted-installer                     assisted-installer-controller                                     1/1           42m        17h
 openshift-image-registry               image-pruner-27846720                                             1/1           13s        9h
@@ -1084,8 +1099,8 @@ node/openshift-master-0   Ready    master,worker   2d18h   v1.24.6+5658434</code
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="managing-existing-clusters.html">Managing Existing Clusters</a></span>
-  <span class="next"><a href="check-deployment-is-finished.html">Check SNO Deployment is finished</a></span>
+  <span class="prev"><a href="check-deployment-is-finished.html">Check SNO Deployment is finished</a></span>
+  <span class="next"><a href="troubleshooting-tips.html">Troubleshooting Tips</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
