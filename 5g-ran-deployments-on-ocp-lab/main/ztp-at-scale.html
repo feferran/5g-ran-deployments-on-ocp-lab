@@ -641,19 +641,19 @@
 <div class="ulist">
 <ul>
 <li>
-<p>A <strong>Git repository</strong> that declares the <code>SiteConfig</code>, e.g. how the cluster is going to be provisioned, and one or multiple `PolicyGenTemplates that defines how the node is configured. This includes, the operators that are going to be installed, the configuration to be applied and the applications to be deployed. Notice that this is a must in any GitOps methodology.</p>
+<p>A <strong>Git repository</strong> that declares the <code>SiteConfig</code> resource, e.g. how the cluster is provisioned, and one or multiple <code>PolicyGenTemplates</code> (PGT) resources that defines how the cluster is configured. This includes, the operators that are going to be installed, the configuration to be applied and the applications to be deployed. Notice that a Git repository is a must in any GitOps methodology.</p>
 </li>
 <li>
-<p><strong>Red Hat Advanced Cluster Management</strong> installed at the hub cluster, at the heart of the architecture.</p>
+<p><strong>Red Hat Advanced Cluster Management</strong> installed on the hub cluster, at the heart of the architecture.</p>
 </li>
 <li>
 <p>The <strong>OpenShift GitOps</strong> operator which needs to be patched to include a couple of required kustomize plugins: <code>siteconfig-generator</code> and <code>policy-generator</code> .</p>
 </li>
 <li>
-<p>The <strong>Assisted Service</strong> Operator, now called Infrastructure Operator. In previous releases it was required to be installed indidually, but now it is part of the Multicluster Engine operator which is a prerequisite for RHACM.</p>
+<p>The <strong>Assisted Service</strong> operator, now called Infrastructure operator. In previous releases it was required to be installed indidually, but now it is part of the Multicluster Engine operator which is a prerequisite for RHACM.</p>
 </li>
 <li>
-<p>The <strong>Topology Aware Lifecycle Manager</strong> (TALM), previously known as TALO.</p>
+<p>The <strong>Topology Aware Lifecycle Manager</strong> (TALM) responsible for managing the software lifecycle of the managed clusters.</p>
 </li>
 </ul>
 </div>
@@ -669,7 +669,7 @@
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-The ZTP workflow starts when the site is connected to the network and ends with the CNF workload deployed and running on the site nodes
+The ZTP workflow starts when the site is connected to the network and ends with the CNF workload deployed and running on the site nodes.
 </td>
 </tr>
 </table>
@@ -693,7 +693,7 @@ The ZTP workflow starts when the site is connected to the network and ends with 
 <div class="sect2">
 <h3 id="mce"><a class="anchor" href="#mce"></a>Multicluster Engine</h3>
 <div class="paragraph">
-<p>The multicluster engine for Kubernetes (MCE) operator is a software operator that enhances cluster fleet management. The multicluster engine for Kubernetes operator supports Red Hat OpenShift Container Platform and Kubernetes cluster lifecycle management across clouds and data centers. MCE provides the tools and capabilities to address common challenges that administrators and site reliability engineers face as they work across a range of environments, including multiple datacenters, private clouds, and public clouds that run Kubernetes clusters.</p>
+<p>The Multicluster Engine for Kubernetes (MCE) operator is a software operator that enhances cluster fleet management. The Multicluster Engine for Kubernetes operator supports Red Hat OpenShift Container Platform and Kubernetes cluster lifecycle management across clouds and data centers. MCE provides the tools and capabilities to address common challenges that administrators and site reliability engineers face as they work across a range of environments, including multiple datacenters, private clouds, and public clouds that run Kubernetes clusters.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -702,7 +702,7 @@ The ZTP workflow starts when the site is connected to the network and ends with 
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-The new multicluster engine for Kubernetes operator will be entitled with OpenShift
+The new Multicluster Engine for Kubernetes operator will be entitled with OpenShift.
 </td>
 </tr>
 </table>
@@ -711,7 +711,7 @@ The new multicluster engine for Kubernetes operator will be entitled with OpenSh
 <p>MCE provides most of the functionality to provision OpenShift clusters, since they include the Assisted Installer operator, Hive and the management of the Klusterlet agents installed on the managed clusters. That&#8217;s why it cannot co-exist with Red Hat Advanced Cluster Management for Kubernetes on versions earlier than 2.5 because they provide some of the same management components.</p>
 </div>
 <div class="paragraph">
-<p>It is recommended that you install multicluster engine for Kubernetes on a cluster that has never previously installed Red Hat Advanced Cluster Management. If you are using Red Hat Advanced Cluster Management for Kubernetes at version 2.5.0 or later than multicluster engine for Kubernetes will already be installed on the cluster with it.</p>
+<p>It is recommended that you install Multicluster Engine for Kubernetes on a cluster that has never previously installed Red Hat Advanced Cluster Management. If you are using Red Hat Advanced Cluster Management for Kubernetes at version 2.5.0 or later, then Multicluster Engine for Kubernetes will already be installed on the cluster with it.</p>
 </div>
 </div>
 <div class="sect2">
@@ -725,7 +725,7 @@ The new multicluster engine for Kubernetes operator will be entitled with OpenSh
 <div class="ulist">
 <ul>
 <li>
-<p>Create a new Cluster resource with the minimal required properties.</p>
+<p>Create a new <code>Cluster</code> resource with the minimal required properties.</p>
 </li>
 <li>
 <p>Generate and download a bootable image which is customized for that cluster. This image is based on RHCOS and is customized to automatically run an agent upon boot.</p>
@@ -754,13 +754,22 @@ The new multicluster engine for Kubernetes operator will be entitled with OpenSh
 <h2 id="gitops-operator"><a class="anchor" href="#gitops-operator"></a>GitOps Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Red Hat OpenShift uses Argo CD to maintain cluster resources. Argo CD is an open-source declarative tool for the continuous integration and continuous deployment (CI/CD) of applications. So, in a ZTP workflow, Argo CD is responsible for pulling the custom resources definitions that are stored in a Git repository and apply them to the hub cluster. In ZTP, the definitions are applied into the hub cluster, where all the components defined in this section are running. Then, RHACM will be in charge of performing the necessary actions to the managed clusters and distributing those policies accordingly.</p>
+<p>Red Hat OpenShift uses Argo CD to maintain cluster resources. Argo CD is an open-source declarative tool for the continuous integration and continuous deployment (CI/CD) of applications. So, in a ZTP workflow, Argo CD is responsible for pulling the custom resources definitions that are stored in a Git repository and apply them to the hub cluster. In ZTP, <strong>the definitions are applied into the hub cluster</strong>, where all the components described in this section are running. It is RHACM in charge of performing the necessary actions to the managed clusters and distributing those policies accordingly.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Argo CD can pull and apply any Kubernetes custom resource, however, for ZTP we are mainly focusing on <code>SiteConfig</code> and <code>PolicyGenTemplates</code> manifests, but Argo CD is not restricted to them.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>Notice that Argo CD can pull and apply any Kubernetes custom resource, however, for ZTP we are mainly focusing on <code>SiteConfig</code> and <code>PolicyGenTemplates</code> manifests, but Argo CD is not restricted to them.</p>
-</div>
-<div class="paragraph">
-<p>We have been talking during this lab how a siteConfig manifest describes the way OpenShift cluster is going to be provisioned. While, usually multiples policyGenTemplates describes the configuration that will be applied to the provisioned cluster. However, certainly, both are high level manifests that are not understood by the hub cluster. There is something in between that will translate those high level definitions into something that RHACM (including MCE) recognizes. These are a couple of kustomize plugins called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin">SiteConfig generator kustomize plugin</a> and <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin">Policy generator kustomize plugin</a>.</p>
+<p>We have been talking during this lab how a siteConfig manifest describes the way OpenShift cluster is going to be provisioned. While one or multiples policyGenTemplates describe/s the configuration that will be applied to the provisioned cluster. However, certainly, both are high level manifests that are not understood by the hub cluster. There is something in between that will translate those high level definitions into something that RHACM (including MCE) recognizes. We are referring to a couple of kustomize plugins called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin">SiteConfig generator kustomize plugin</a> and <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin">Policy generator kustomize plugin</a>.</p>
 </div>
 <div class="paragraph">
 <p>In order to use both plugins we need to modify the OpenShift GitOps operator, specifically the openshift-gitops-repo-server deployment. The procedure is <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/gitops-subscriptions/argocd#preparation-of-hub-cluster-for-ztp">fully documented here</a>. Basically, it modifies the openshift-gitops-repo-server deployment to include an initContainer that will load both kustomize plugins. Then, everytime a siteConfig or PolicyGenTemplate is pulled from a Git repo the proper kustomize plugin will be used and transform the manifest into the proper custom resources.</p>
@@ -808,7 +817,7 @@ The new multicluster engine for Kubernetes operator will be entitled with OpenSh
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-The SiteConfig is a Custom Resource created to facilitate the creation of those CRs and avoid repeating the configuration names.
+The SiteConfig is a custom resource definition (CRD) created to facilitate the creation of the previous CRs and avoid repeating the configuration names.
 </td>
 </tr>
 </table>
@@ -817,7 +826,7 @@ The SiteConfig is a Custom Resource created to facilitate the creation of those 
 <div class="sect2">
 <h3 id="policygen"><a class="anchor" href="#policygen"></a>PolicyGen</h3>
 <div class="paragraph">
-<p>The policy generator kustomize plugin consumes the policygenerator library and PolicyGenTemplate as a kustomize plugin.  The PolicyGen library is used to facilitate creating ACM policies based on a set of provided source CRs (custom resources) and PolicyGenTemplate CR which describe how to customize those source CRs. The plugin helps to generate:</p>
+<p>The policy generator kustomize plugin consumes the policygenerator library and PolicyGenTemplate as a kustomize plugin. The PolicyGen library is used to facilitate creating RHACM policies based on a set of provided source CRs (custom resources) and PolicyGenTemplates. Each PGT describes how to customize those source CRs. The plugin helps to generate:</p>
 </div>
 <div class="ulist">
 <ul>
