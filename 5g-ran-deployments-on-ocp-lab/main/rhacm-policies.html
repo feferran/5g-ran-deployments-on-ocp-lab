@@ -814,7 +814,7 @@ spec:
 <div class="sect2">
 <h3 id="policy-remediation"><a class="anchor" href="#policy-remediation"></a>Policy Remediation</h3>
 <div class="paragraph">
-<p>As we will detail in the following <a href="managing-at-scale.html#inform-policies">section</a> <code>PolicyGenTemplates</code> are by default set to generate Policies in inform mode.</p>
+<p>As we will detail in the following section <a href="managing-at-scale.html#inform-policies">"Managing at Scale"</a>, <code>PolicyGenTemplates</code> are by default set to generate Policies in inform mode.</p>
 </div>
 <div class="paragraph">
 <p>Policy controllers periodically (as set by evaluationInterval) check policies against the current state of CRs on the target clusters. This check sets the Policy to either the Compliant or NonCompliant state. When the policy is set to inform, a report of the violations is created. However, when the controller is set to enforce a report is created <em>and</em> violations are remediated as specified in the policy.</p>
