@@ -636,7 +636,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the previous section we created the infrastructure as code (IaC) for our <code>SNO2</code> cluster using the <code>SiteConfig</code> object. In this section we are going to create the configuration as code (CaC) for our clusters by using the <code>PolicyGenTemplate</code> object.</p>
+<p>In the previous section, we created the infrastructure as code (IaC) for our <code>SNO2</code> cluster using the <code>SiteConfig</code> object. In this section, we are going to create the configuration as code (CaC) for our clusters by using multiple <code>PolicyGenTemplate</code> objects.</p>
 </div>
 <div class="paragraph">
 <p>We described how <code>PolicyGenTemplate</code> works in detail <a href="policygen-deepdive.html#policies-templating" class="xref page">here</a>, so let&#8217;s jump directly to the creation of the different templates.</p>
@@ -659,7 +659,7 @@ Below commands must be executed from the workstation host if not specified other
 <h2 id="crafting-common-policies"><a class="anchor" href="#crafting-common-policies"></a>Crafting Common Policies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The common policies apply to every cluster in our infrastructure that matches our binding rule. These policies are often used to configure things like CatalogSources, Operator Deployments, etc. that are common to all our clusters.</p>
+<p>The common policies apply to every cluster in our infrastructure that matches our binding rule. These policies are often used to configure things like CatalogSources, operator deployments, etc. that are common to all our clusters.</p>
 </div>
 <div class="paragraph">
 <p>These configs may vary from release to release, that&#8217;s why we create a <code>common-411.yaml</code> file. We will likely have a common configuration profile for each release we deploy.</p>
@@ -671,7 +671,7 @@ Below commands must be executed from the workstation host if not specified other
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-If you check the binding rules you can see that we are targeting clusters labeled with <code>common: "ocp411"</code>. This label was set in the <code>InstallConfig</code> in the previous section.
+If you check the binding rules, you see that we are targeting clusters labeled with <code>common: "ocp411"</code>. This label was set in the <code>SiteConfig</code> definition in the <a href="crafting-deployments-iaac.html#siteconfig">previous section</a>.
 </td>
 </tr>
 </table>
@@ -715,10 +715,10 @@ EOF</code></pre>
 <h2 id="crafting-group-policies"><a class="anchor" href="#crafting-group-policies"></a>Crafting Group Policies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The group policies apply to a group of clusters that typically have something in common, for example they are SNOs, or they have SR-IOV cards, etc.</p>
+<p>The group policies apply to a group of clusters that typically have something in common, for example they are SNOs, or they have similar hardware: SR-IOV cards, number of CPUs, etc.</p>
 </div>
 <div class="paragraph">
-<p>The CNF team has prepared some common tuning configurations that should be applied on every SNO DU deployed. In this section we will be crafting these configurations.</p>
+<p>The CNF team has prepared some common tuning configurations that should be applied on every SNO DU deployed. In this section, we will be crafting these configurations.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -727,7 +727,7 @@ EOF</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-If you check the binding rules you can see that we are targeting clusters labeled with <code>group-du-sno: ""</code>. This label was set in the <code>InstallConfig</code> in the previous section.
+If you check the binding rules you can see that we are targeting clusters labeled with <code>group-du-sno: ""</code>. This label was set in the <code>SiteConfig</code> definition in the <a href="crafting-deployments-iaac.html#siteconfig">previous section</a>.
 </td>
 </tr>
 </table>
@@ -772,7 +772,7 @@ EOF</code></pre>
 <p>Zone policies apply to a group of clusters that share a specific zone. Zone can mean multiple things to different people, it can be a region, a city, a physical location, etc.</p>
 </div>
 <div class="paragraph">
-<p>We are going to create some policies that apply to our clusters located in <code>Europe</code>. For example, all our clusters in <code>Europe</code> use the Local Storage Operator to configure their storage, let&#8217;s craft that policy:</p>
+<p>We are going to create some policies that apply to our clusters located in <code>Europe</code>. For example, all our clusters in <code>Europe</code> use the Local Storage operator to configure their storage, let&#8217;s craft that policy:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -909,7 +909,7 @@ EOF</code></pre>
 <h2 id="configure-kustomization-for-policies"><a class="anchor" href="#configure-kustomization-for-policies"></a>Configure Kustomization for Policies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We need to create the required kustomization as we did for SiteConfigs, in this case policies also require a namespace where these will be created, so we will create the required namespace and the kustomization.</p>
+<p>We need to create the required kustomization as we did for SiteConfigs- In this case, policies also require a namespace where they will be created. Therefore, we will create the required namespace and the kustomization.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -949,7 +949,7 @@ EOF</code></pre>
 </div>
 </li>
 <li>
-<p>At this point we can push the changes to the repo and continue to the next section.</p>
+<p>At this point, we can push the changes to the repo and continue to the next section.</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository

@@ -664,7 +664,7 @@
 <h2 id="energy-saving-hw-profiles"><a class="anchor" href="#energy-saving-hw-profiles"></a>Energy Saving Hardware Profiles</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>When running CPU exhaustive workloads we have seen from time to time a drastic decrease in terms of performance of these workloads. Most of the time the issues were caused by a hardware profile which was limiting the energy sent to the CPU.</p>
+<p>When running CPU exhaustive workloads we have seen from time to time a drastic decrease in terms of performance of these workloads. Most of the time, the issues were caused by a hardware profile which was limiting the energy sent to the CPU.</p>
 </div>
 <div class="paragraph">
 <p>Make sure your nodes do not have an energy saving profile configured.</p>
@@ -675,7 +675,7 @@
 <h2 id="secure-boot-oot-unsigned-drivers"><a class="anchor" href="#secure-boot-oot-unsigned-drivers"></a>Secure Boot and Unsigned OoT Drivers</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>When working with out-of-tree drivers which are unsigned, Secure Boot cannot be enabled, otherwise the boot process will fail when those unsigned drivers are loaded. If you plan to use or test these kind of drivers remember to disable the Secure Boot.</p>
+<p>When working with out-of-tree drivers which are unsigned, Secure Boot cannot be enabled, otherwise the boot process will fail when those unsigned drivers are loaded. If you plan to use or test these kind of drivers remember to disable the Secure Boot .</p>
 </div>
 </div>
 </div>
@@ -683,10 +683,10 @@
 <h2 id="sriov-node-drain"><a class="anchor" href="#sriov-node-drain"></a>SR-IOV Node Drain</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>By default, the SR-IOV Network Operator drains workloads from a node before every policy change. The Operator performs this action to ensure that there no workloads using the virtual functions before the reconfiguration.</p>
+<p>By default, the SR-IOV Network operator drains workloads from a node before every policy change. The operator performs this action to ensure that there are no workloads using the virtual functions before the reconfiguration. Eventually, the node waits until the workload is moved to another compute node in the cluster.</p>
 </div>
 <div class="paragraph">
-<p>For installations on a single node, there are no other nodes to receive the workloads. As a result, the Operator must be configured not to drain the workloads from the single node.</p>
+<p>For installations on a single node, there are no other nodes to receive the workloads. As a result, the operator must be configured not to drain the workloads from the single node.</p>
 </div>
 <div class="paragraph">
 <p>The CNF SR-IOV Policy templates already have this configuration in place.</p>
@@ -697,7 +697,7 @@
 <h2 id="pod-disruption-budgets"><a class="anchor" href="#pod-disruption-budgets"></a>Pod Disruption Budgets</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>PDBs will not be honored in single node OpenShift installations. You can read more about it <a href="https://github.com/openshift/machine-config-operator/blob/master/docs/SingleNodeOpenShift.md">here</a>.</p>
+<p>Pod Disruption Budgets (PDBs) will not be honored in Single Node OpenShift installations since applications cannot be moved to another compute node in the cluster. You can read more about it <a href="https://github.com/openshift/machine-config-operator/blob/master/docs/SingleNodeOpenShift.md">here</a>.</p>
 </div>
 </div>
 </div>

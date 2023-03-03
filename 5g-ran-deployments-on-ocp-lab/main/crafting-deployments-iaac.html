@@ -647,13 +647,13 @@
 <h2 id="introduction-to-siteconfig"><a class="anchor" href="#introduction-to-siteconfig"></a>Introduction to the SiteConfig</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <code>SiteConfig</code> is an abstraction layer on top of the different components that are used to deploy an OpenShift cluster using the <code>Assisted Service</code>. For the ones familiar with the <code>Assisted Service</code> you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like <code>ClusterDeployment</code>, <code>InfraEnv</code>, <code>AgentClusterInstall</code>, etc.</p>
+<p>The <code>SiteConfig</code> is an abstraction layer on top of the different components that are used to deploy an OpenShift cluster using the <code>Assisted Service</code>. For the ones familiar with the <code>Assisted Service</code>, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like <code>ClusterDeployment</code>, <code>InfraEnv</code>, <code>AgentClusterInstall</code>, etc.</p>
 </div>
 <div class="paragraph">
-<p>The SiteConfig simplifies this process by providing a unified configuration to describe the cluster deployment configuration in a single place.</p>
+<p>The SiteConfig simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place.</p>
 </div>
 <div class="paragraph">
-<p>In <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/master/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml">this link</a> you can find an example of a SiteConfig for a SNO deployment. In the next section we will create our own SiteConfig to deploy a SNO in our lab environment.</p>
+<p>In <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/master/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml">this link</a> you can find an example of a SiteConfig for a SNO deployment. In the next section, we will create our own SiteConfig to deploy a SNO in our lab environment.</p>
 </div>
 </div>
 </div>
@@ -675,7 +675,7 @@ The steps below rely on the lab environment being up and running.
 <div class="sect2">
 <h3 id="git-repository"><a class="anchor" href="#git-repository"></a>Git Repository</h3>
 <div class="paragraph">
-<p>We need a git repository where we will store our clusters configurations, we will create a new git repository in the Git server running on the infrastructure node.</p>
+<p>We need a Git repository where we will store our clusters configurations, we will create a new Git repository in the Git server running on the infrastructure node.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -683,7 +683,7 @@ The steps below rely on the lab environment being up and running.
 <p>Login into the <a href="http://infra.5g-deployment.lab:3000/">Git server</a> (use student credentials)</p>
 </li>
 <li>
-<p>You will see that a git repository already exist, you <strong>must not</strong> change that repository, instead you will create a new one.</p>
+<p>You will see that a Git repository already exist, you <strong>must not</strong> change that repository, instead you will create a new one.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/gitea-repository.png" alt="Gitea Repository">
@@ -702,7 +702,7 @@ The steps below rely on the lab environment being up and running.
 </ol>
 </div>
 <div class="paragraph">
-<p>Now that we have a repository ready to be used we will clone it in our workstation:</p>
+<p>Now that we have a repository ready to be used we will clone it to our workstation:</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -723,10 +723,10 @@ git clone <a href="http://student:student@infra.5g-deployment.lab:3000/student/z
 </div>
 </div>
 <div class="paragraph">
-<p>We&#8217;re ready to start working in the git repository folder structure.</p>
+<p>We&#8217;re ready to start working in the Git repository folder structure.</p>
 </div>
 <div class="paragraph">
-<p>As we saw in a previous section, the git repository we will be using will have the following structure:</p>
+<p>As we saw in a previous section, the Git repository we will be using will have the following structure:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
