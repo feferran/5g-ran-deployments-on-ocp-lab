@@ -649,7 +649,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Access the <a href="https://multicloud-console.apps.hub.5g-deployment.lab/">RHACM WebUI</a> and login with the OpenShift credentials.</p>
+<p>Access the <a href="https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome">RHACM WebUI</a> and login with the OpenShift credentials.</p>
 </li>
 <li>
 <p>Once you&#8217;re in, click on <code>Infrastructure</code> &#8594; <code>Clusters</code>. You will see a screen like the one below, notice how there is a label saying <code>ztp-done</code> (that means ztp pipeline has finished):</p>
@@ -692,21 +692,16 @@ Below commands must be executed from the workstation host if not specified other
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Access the Hub cluster as admin</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login -u admin -p admin <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a></code></pre>
-</div>
-</div>
-</li>
-<li>
 <p>Check the <code>ManagedCluster</code> for SNO2 cluster (including its labels). You should see the <code>ztp-done</code> label, just as we saw in the WebUI</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get managedcluster sno2 --show-labels
-
-NAME   HUB ACCEPTED   MANAGED CLUSTER URLS                      JOINED   AVAILABLE   AGE    LABELS
-sno2   true           <a href="https://api.sno2.5g-deployment.lab:6443" class="bare">https://api.sno2.5g-deployment.lab:6443</a>   True     True        122m   &lt;OMITTED_LABELS&gt;,ztp-done=</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get managedcluster sno2 --show-labels</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME   HUB ACCEPTED   MANAGED CLUSTER URLS                      JOINED   AVAILABLE   AGE    LABELS
+sno2   true           https://api.sno2.5g-deployment.lab:6443   True     True        122m   &lt;OMITTED_LABELS&gt;,ztp-done=</code></pre>
 </div>
 </div>
 </li>
@@ -714,9 +709,12 @@ sno2   true           <a href="https://api.sno2.5g-deployment.lab:6443" class="b
 <p>Check the policies are compliant for our SNO cluster.</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc -n sno2 get policies
-
-NAME                                           REMEDIATION ACTION   COMPLIANCE STATE   AGE
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get policies</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                           REMEDIATION ACTION   COMPLIANCE STATE   AGE
 ztp-policies.common-operator-catalog-411       inform               Compliant          123m
 ztp-policies.group-du-sno-du-profile-wave1     inform               Compliant          123m
 ztp-policies.group-du-sno-du-profile-wave10    inform               Compliant          123m
