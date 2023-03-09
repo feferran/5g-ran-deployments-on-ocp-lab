@@ -694,6 +694,18 @@
 </li>
 <li>
 <p>Additionally, we can verify that all policies are compliant for our SNO cluster. On the RHACM WebUI go to <code>Governance</code> &#8594; <code>Policies</code> and you will see the following screen where we can see all policies are green:</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Applying policies on <code>sno2</code> can take up to 15 minutes after cluster has been fully deployed.
+</td>
+</tr>
+</table>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/acm-sno2-policies-done.png" alt="RHACM SNO2 policies done">
@@ -744,6 +756,18 @@ sno2   true           https://api.sno2.5g-deployment.lab:6443   True     True   
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get policies</code></pre>
 </div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Applying policies on <code>sno2</code> can take up to 15 minutes after cluster has been fully deployed.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
