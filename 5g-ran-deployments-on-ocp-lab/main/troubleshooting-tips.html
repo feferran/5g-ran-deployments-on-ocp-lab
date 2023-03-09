@@ -584,7 +584,40 @@
 </ul>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="troubleshooting-tips.html">Troubleshooting Tips</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#verification-lab">Verification of the lab status</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#git-registry">Git repository and registry</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#sno2">SNO2 virtual machine</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#hub">Hub cluster</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#dns">DNS resolution</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#argocd-red">ArgoCD sync not working</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#sno2-down">SNO2 is down after syncing Argo applications</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#policies-blank">Policies not showing in the Governance console</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#policies-not-applied">Policies not applied</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
@@ -662,8 +695,12 @@ Below commands must be executed from the hypervisor host as root if not specifie
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ podman ps
-CONTAINER ID  IMAGE                            COMMAND               CREATED       STATUS           PORTS                                         NAMES
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman ps</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">CONTAINER ID  IMAGE                            COMMAND               CREATED       STATUS           PORTS                                         NAMES
 e7cf765660a3  quay.io/mavazque/registry:2.7.1  /etc/docker/regis...  24 hours ago  Up 24 hours ago                                                registry
 557b51f975ce  quay.io/mavazque/gitea:1.17.3    /bin/s6-svscan /e...  24 hours ago  Up 24 hours ago  0.0.0.0:2222-&gt;22/tcp, 0.0.0.0:3000-&gt;3000/tcp  gitea</code></pre>
 </div>
@@ -676,17 +713,21 @@ e7cf765660a3  quay.io/mavazque/registry:2.7.1  /etc/docker/regis...  24 hours ag
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ kcli list vm
--------------------------------------------------------------------------------------------------------------------+
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli list vm</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">+---------------+--------+----------------+------------------------------------------------------+-------------+---------+
 |      Name     | Status |       Ip       |                        Source                        |     Plan    | Profile |
--------------------------------------------------------------------------------------------------------------------+
++---------------+--------+----------------+------------------------------------------------------+-------------+---------+
 | hub-installer |   up   | 192.168.125.25 | CentOS-Stream-GenericCloud-8-20210603.0.x86_64.qcow2 | hub-cluster |  kvirt  |
 |  hub-master0  |   up   | 192.168.125.20 |                                                      |     hub     |  kvirt  |
 |  hub-master1  |   up   | 192.168.125.21 |                                                      |     hub     |  kvirt  |
 |  hub-master2  |   up   | 192.168.125.22 |                                                      |     hub     |  kvirt  |
 |      sno1     |   up   | 192.168.125.30 |                                                      |     hub     |  kvirt  |
 |      sno2     |  down  |                |                                                      |     hub     |  kvirt  |
--------------------------------------------------------------------------------------------------------------------+</code></pre>
++---------------+--------+----------------+------------------------------------------------------+-------------+---------+</code></pre>
 </div>
 </div>
 </div>
@@ -697,28 +738,52 @@ e7cf765660a3  quay.io/mavazque/registry:2.7.1  /etc/docker/regis...  24 hours ag
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ export KUBECONFIG=hub-kubeconfig
-
-$ oc get clusterversion
-NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-version   4.11.13   True        False         22h     Cluster version is 4.11.13
-
-$ oc get nodes
-NAME           STATUS   ROLES           AGE   VERSION
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export KUBECONFIG=hub-kubeconfig
+oc get clusterversion</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
+version   4.11.13   True        False         22h     Cluster version is 4.11.13</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get nodes</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME           STATUS   ROLES           AGE   VERSION
 ocp-master-0   Ready    master,worker   23h   v1.24.6+5157800
 ocp-master-1   Ready    master,worker   23h   v1.24.6+5157800
-ocp-master-2   Ready    master,worker   23h   v1.24.6+5157800
-
-$ oc get operators
-NAME                                                   AGE
+ocp-master-2   Ready    master,worker   23h   v1.24.6+5157800</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get operators</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                                   AGE
 advanced-cluster-management.open-cluster-management    22h
 multicluster-engine.multicluster-engine                22h
 odf-lvm-operator.openshift-storage                     22h
 openshift-gitops-operator.openshift-operators          22h
-topology-aware-lifecycle-manager.openshift-operators   22h
-
-$ oc get catalogsources -A
-NAMESPACE               NAME                    DISPLAY   TYPE   PUBLISHER   AGE
+topology-aware-lifecycle-manager.openshift-operators   22h</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get catalogsources -A</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE               NAME                    DISPLAY   TYPE   PUBLISHER   AGE
 openshift-marketplace   redhat-operator-index             grpc               23h</code></pre>
 </div>
 </div>
@@ -730,11 +795,22 @@ openshift-marketplace   redhat-operator-index             grpc               23h
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ dig +short api.hub.5g-deployment.lab
-192.168.125.10
-
-$ dig +short oauth-openshift.apps.hub.5g-deployment.lab
-192.168.125.11</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dig +short api.hub.5g-deployment.lab</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">192.168.125.10</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dig +short oauth-openshift.apps.hub.5g-deployment.lab</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">192.168.125.11</code></pre>
 </div>
 </div>
 </div>
@@ -751,8 +827,12 @@ $ dig +short oauth-openshift.apps.hub.5g-deployment.lab
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get applications -A
-NAMESPACE          NAME                       SYNC STATUS   HEALTH STATUS
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get applications -A</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE          NAME                       SYNC STATUS   HEALTH STATUS
 openshift-gitops   clusters                   OutOfSync     Healthy
 openshift-gitops   hub-operators-config       Synced        Healthy
 openshift-gitops   hub-operators-deployment   Synced        Healthy
@@ -817,8 +897,12 @@ More information about monitoring the status of the deployment can be found in t
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl -k <a href="https://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301" class="bare">https://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301</a>
-{
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -k <a href="https://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301" class="bare">https://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301</a></code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{
     "@odata.type": "#ComputerSystem.v1_1_0.ComputerSystem",
     "Id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301",
     "Name": "sno2",
@@ -833,7 +917,7 @@ More information about monitoring the status of the deployment can be found in t
 ... REDACTED ...
     "@odata.context": "/redfish/v1/$metadata#ComputerSystem.ComputerSystem",
     "@odata.id": "/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301",
-    "@Redfish.Copyright": "Copyright 2014-2016 Distributed Management Task Force, Inc. (DMTF). For the full DMTF copyright policy, see <a href="http://www.dmtf.org/about/policies/copyright."" class="bare">http://www.dmtf.org/about/policies/copyright."</a></code></pre>
+    "@Redfish.Copyright": "Copyright 2014-2016 Distributed Management Task Force, Inc. (DMTF). For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -841,8 +925,12 @@ More information about monitoring the status of the deployment can be found in t
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc get bmh -A
-NAMESPACE               NAME                     STATE                    CONSUMER             ONLINE   ERROR   AGE
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get bmh -A</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE               NAME                     STATE                    CONSUMER             ONLINE   ERROR   AGE
 openshift-machine-api   hub-ctlplane-0           externally provisioned   hub-7tjlv-master-0   true             24h
 openshift-machine-api   hub-ctlplane-1           externally provisioned   hub-7tjlv-master-1   true             24h
 openshift-machine-api   hub-ctlplane-2           externally provisioned   hub-7tjlv-master-2   true             24h
@@ -855,32 +943,46 @@ sno2                    sno2.5g-deployment.lab   provisioned                    
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc get infraenv -A
-NAMESPACE   NAME   ISO CREATED AT
-sno1        sno1   2023-03-01T10:08:09Z
-sno2        sno2   2023-03-02T10:26:06Z
-
-
-[root@worker-1 ~]# oc get infraenv sno2 -n sno2 -oyaml
-apiVersion: agent-install.openshift.io/v1beta1
-kind: InfraEnv
-metadata:
-... REDACTED ...
-  debugInfo:
-    eventsURL: <a href="https://assisted-service-multicluster-engine.apps.hub.5g-deployment.lab/api/assisted-install/v2/events?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiI2YWEzZGUxNS1hOTQ1LTRjNTgtODljOS02MDBkYzJmNWRmNTkifQ.fG3voLHggbgtCW9fQH1Y2vP5DSCOpo-t2pgDwvEe6Q7nE_Qp9-7BMKudpXiSTTYZCeWVE3s6nsAllP4IkK1ljA&amp;infra_env_id=6aa3de15-a945-4c58-89c9-600dc2f5df59" class="bare">https://assisted-service-multicluster-engine.apps.hub.5g-deployment.lab/api/assisted-install/v2/events?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiI2YWEzZGUxNS1hOTQ1LTRjNTgtODljOS02MDBkYzJmNWRmNTkifQ.fG3voLHggbgtCW9fQH1Y2vP5DSCOpo-t2pgDwvEe6Q7nE_Qp9-7BMKudpXiSTTYZCeWVE3s6nsAllP4IkK1ljA&amp;infra_env_id=6aa3de15-a945-4c58-89c9-600dc2f5df59</a>
-  isoDownloadURL: <a href="https://assisted-image-service-multicluster-engine.apps.hub.5g-deployment.lab/images/6aa3de15-a945-4c58-89c9-600dc2f5df59?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiI2YWEzZGUxNS1hOTQ1LTRjNTgtODljOS02MDBkYzJmNWRmNTkifQ.AFhkv4UPH0R0kGpBdZ8cqo8iNSH7z-CRsHsYbwQ6cVzjcnxnDRIEiout29UJOyt-lcCPPsOLW1YPKDh5GJ1Tqg&amp;arch=x86_64&amp;type=minimal-iso&amp;version=4.11" class="bare">https://assisted-image-service-multicluster-engine.apps.hub.5g-deployment.lab/images/6aa3de15-a945-4c58-89c9-600dc2f5df59?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiI2YWEzZGUxNS1hOTQ1LTRjNTgtODljOS02MDBkYzJmNWRmNTkifQ.AFhkv4UPH0R0kGpBdZ8cqo8iNSH7z-CRsHsYbwQ6cVzjcnxnDRIEiout29UJOyt-lcCPPsOLW1YPKDh5GJ1Tqg&amp;arch=x86_64&amp;type=minimal-iso&amp;version=4.11</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get infraenv -A</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc get bmh sno2.5g-deployment.lab -n sno2 -oyaml
-apiVersion: metal3.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE   NAME   ISO CREATED AT
+sno1        sno1   2023-03-01T10:08:09Z
+sno2        sno2   2023-03-02T10:26:06Z</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get infraenv sno2 -n sno2 -oyaml</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">apiVersion: agent-install.openshift.io/v1beta1
+kind: InfraEnv
+metadata:
+... REDACTED ...
+  debugInfo:
+    eventsURL: https://assisted-service-multicluster-engine.apps.hub.5g-deployment.lab/api/assisted-install/v2/events?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiI2YWEzZGUxNS1hOTQ1LTRjNTgtODljOS02MDBkYzJmNWRmNTkifQ.fG3voLHggbgtCW9fQH1Y2vP5DSCOpo-t2pgDwvEe6Q7nE_Qp9-7BMKudpXiSTTYZCeWVE3s6nsAllP4IkK1ljA&amp;infra_env_id=6aa3de15-a945-4c58-89c9-600dc2f5df59
+  isoDownloadURL: https://assisted-image-service-multicluster-engine.apps.hub.5g-deployment.lab/images/6aa3de15-a945-4c58-89c9-600dc2f5df59?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiI2YWEzZGUxNS1hOTQ1LTRjNTgtODljOS02MDBkYzJmNWRmNTkifQ.AFhkv4UPH0R0kGpBdZ8cqo8iNSH7z-CRsHsYbwQ6cVzjcnxnDRIEiout29UJOyt-lcCPPsOLW1YPKDh5GJ1Tqg&amp;arch=x86_64&amp;type=minimal-iso&amp;version=4.11</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get bmh sno2.5g-deployment.lab -n sno2 -o yaml</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">apiVersion: metal3.io/v1alpha1
 kind: BareMetalHost
 metadata:
 ... REDACTED ...
   image:
     format: live-iso
-    url: <a href="https://assisted-image-service-multicluster-engine.apps.hub.5g-deployment.lab/images/6aa3de15-a945-4c58-89c9-600dc2f5df59?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiI2YWEzZGUxNS1hOTQ1LTRjNTgtODljOS02MDBkYzJmNWRmNTkifQ.AFhkv4UPH0R0kGpBdZ8cqo8iNSH7z-CRsHsYbwQ6cVzjcnxnDRIEiout29UJOyt-lcCPPsOLW1YPKDh5GJ1Tqg&amp;arch=x86_64&amp;type=minimal-iso&amp;version=4.11" class="bare">https://assisted-image-service-multicluster-engine.apps.hub.5g-deployment.lab/images/6aa3de15-a945-4c58-89c9-600dc2f5df59?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiI2YWEzZGUxNS1hOTQ1LTRjNTgtODljOS02MDBkYzJmNWRmNTkifQ.AFhkv4UPH0R0kGpBdZ8cqo8iNSH7z-CRsHsYbwQ6cVzjcnxnDRIEiout29UJOyt-lcCPPsOLW1YPKDh5GJ1Tqg&amp;arch=x86_64&amp;type=minimal-iso&amp;version=4.11</a>
+    url: https://assisted-image-service-multicluster-engine.apps.hub.5g-deployment.lab/images/6aa3de15-a945-4c58-89c9-600dc2f5df59?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiI2YWEzZGUxNS1hOTQ1LTRjNTgtODljOS02MDBkYzJmNWRmNTkifQ.AFhkv4UPH0R0kGpBdZ8cqo8iNSH7z-CRsHsYbwQ6cVzjcnxnDRIEiout29UJOyt-lcCPPsOLW1YPKDh5GJ1Tqg&amp;arch=x86_64&amp;type=minimal-iso&amp;version=4.11
   online: true</code></pre>
 </div>
 </div>
@@ -909,8 +1011,12 @@ More information about monitoring the status of the deployment can be found in t
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc get policies -A
-NAMESPACE      NAME                                           REMEDIATION ACTION   COMPLIANCE STATE   AGE
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get policies -A</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE      NAME                                           REMEDIATION ACTION   COMPLIANCE STATE   AGE
 sno2           ztp-policies.common-operator-catalog-411       inform                                  14m
 sno2           ztp-policies.group-du-sno-du-profile-wave1     inform                                  14m
 sno2           ztp-policies.group-du-sno-du-profile-wave10    inform                                  14m
@@ -943,8 +1049,12 @@ ztp-policies   zone-europe-storage-operator                   inform            
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc get pods -n openshift-operators
-NAME                                                        READY   STATUS    RESTARTS      AGE
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n openshift-operators</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                                        READY   STATUS    RESTARTS      AGE
 cluster-group-upgrades-controller-manager-b757bcdb9-46xtx   2/2     Running   1 (24h ago)   24h
 gitops-operator-controller-manager-cd79b49dc-tvdp6          1/1     Running   0             25h</code></pre>
 </div>
@@ -954,8 +1064,12 @@ gitops-operator-controller-manager-cd79b49dc-tvdp6          1/1     Running   0 
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc get cgu -A
-NAMESPACE     NAME   UPGRADE STATE         AGE
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get cgu -A</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE     NAME   UPGRADE STATE         AGE
 ztp-install   sno2   UpgradeNotCompleted   2m27s</code></pre>
 </div>
 </div>
@@ -964,8 +1078,12 @@ ztp-install   sno2   UpgradeNotCompleted   2m27s</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc get cgu -n ztp-install sno2 -oyaml
-apiVersion: ran.openshift.io/v1alpha1
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get cgu -n ztp-install sno2 -oyaml</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
 metadata:
 ... REDACTED ...
@@ -1000,8 +1118,12 @@ status:
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ oc get policies -A
-NAMESPACE      NAME                                                    REMEDIATION ACTION   COMPLIANCE STATE   AGE
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get policies -A</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE      NAME                                                    REMEDIATION ACTION   COMPLIANCE STATE   AGE
 sno2           ztp-install.sno2-common-operator-catalog-411-2rtdv      enforce              Compliant          6m8s
 sno2           ztp-install.sno2-group-du-sno-du-profile-wave1-4jrqr    enforce              Compliant          5m17s
 sno2           ztp-install.sno2-group-du-sno-du-profile-wave10-xbbsz   enforce              Compliant          2m38s
