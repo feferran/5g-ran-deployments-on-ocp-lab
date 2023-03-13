@@ -9,8 +9,9 @@ site:
 content:
   sources:
     - url: .
-      branches: HEAD
+      branches: [lab-4.11]
       start_path: documentation
+
 asciidoc:
   attributes:
     title: LAB - 5G RAN Deployments on OpenShift
