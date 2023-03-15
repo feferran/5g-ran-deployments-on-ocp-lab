@@ -516,6 +516,9 @@
     <a class="nav-link" href="#crafting-site-policies">Crafting Site Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#crafting-testing-policies">Crafting testing Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
   </li>
 </ul>
@@ -695,7 +698,7 @@ Below commands must be executed from the workstation host if not specified other
 <p>The common policies apply to every cluster in our infrastructure that matches our binding rule. These policies are often used to configure things like CatalogSources, operator deployments, etc. that are common to all our clusters.</p>
 </div>
 <div class="paragraph">
-<p>These configs may vary from release to release, that&#8217;s why we create a <code>common-411.yaml</code> file. We will likely have a common configuration profile for each release we deploy.</p>
+<p>These configs may vary from release to release, that&#8217;s why we create a <code>common-412.yaml</code> file. We will likely have a common configuration profile for each release we deploy.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -704,7 +707,7 @@ Below commands must be executed from the workstation host if not specified other
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-If you check the binding rules, you see that we are targeting clusters labeled with <code>common: "ocp411"</code>. This label was set in the <code>SiteConfig</code> definition in the <a href="crafting-deployments-iaac.html#siteconfig">previous section</a>.
+If you check the binding rules, you see that we are targeting clusters labeled with <code>common: "ocp412"</code> and <code>logicalGroup: "active"</code>. These labels were set in the <code>SiteConfig</code> definition in the <a href="crafting-deployments-iaac.html#siteconfig">previous section</a>.
 </td>
 </tr>
 </table>
@@ -712,10 +715,10 @@ If you check the binding rules, you see that we are targeting clusters labeled w
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Create the <code>common</code> PolicyGenTemplate for 4.11 SNOs:</p>
+<p>Create the <code>common</code> PolicyGenTemplate for 4.12 SNOs:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/common-policies/common-411.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/common-412.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
@@ -724,18 +727,31 @@ metadata:
   namespace: "ztp-policies"
 spec:
   bindingRules:
-    common: "ocp411"
+    common: "ocp412"
+    logicalGroup: "active"
   mcp: master
   remediationAction: inform
   sourceFiles:
     - fileName: OperatorHub.yaml
-      policyName: operator-catalog-411
+      policyName: config-policies
     - fileName: DefaultCatsrc.yaml
       metadata:
         name: redhat-operator-index
       spec:
-        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.11
-      policyName: operator-catalog-411
+        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.12
+      policyName: config-policies
+    - fileName: ReduceMonitoringFootprint.yaml
+      policyName: config-policies
+    - fileName: StorageLVMOSubscriptionNS.yaml
+      policyName: subscription-policies
+    - fileName: StorageLVMOSubscriptionOperGroup.yaml
+      policyName: subscription-policies
+    - fileName: StorageLVMOSubscription.yaml
+      spec:
+        name: lvms-operator
+        channel: stable-4.12
+        source: redhat-operator-index
+      policyName: subscription-policies
 EOF</code></pre>
 </div>
 </div>
@@ -760,7 +776,7 @@ EOF</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-If you check the binding rules you can see that we are targeting clusters labeled with <code>group-du-sno: ""</code>. This label was set in the <code>SiteConfig</code> definition in the <a href="crafting-deployments-iaac.html#siteconfig">previous section</a>.
+If you check the binding rules you can see that we are targeting clusters labeled with <code>group-du-sno: ""</code> and <code>logicalGroup: "active"</code>. These labels were set in the <code>SiteConfig</code> definition in the <a href="crafting-deployments-iaac.html#siteconfig">previous section</a>.
 </td>
 </tr>
 </table>
@@ -771,71 +787,50 @@ If you check the binding rules you can see that we are targeting clusters labele
 <p>Create the <code>group</code> PolicyGenTemplate for SNOs:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/group-policies/group-du-sno.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/group-du-sno.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
 metadata:
-  name: "group-du-sno"
+  name: "du-sno"
   namespace: "ztp-policies"
 spec:
   bindingRules:
     group-du-sno: ""
+    logicalGroup: "active"
   mcp: master
   remediationAction: inform
   sourceFiles:
-    - fileName: ReduceMonitoringFootprint.yaml
-      policyName: du-profile-wave1
     - fileName: ConsoleOperatorDisable.yaml
-      policyName: du-profile-wave10
+      policyName: group-policies
     - fileName: DisableSnoNetworkDiag.yaml
-      policyName: du-profile-wave10
+      policyName: group-policies
 EOF</code></pre>
 </div>
 </div>
 </li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="crafting-zone-policies"><a class="anchor" href="#crafting-zone-policies"></a>Crafting Zone Policies</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Zone policies apply to a group of clusters that share a specific zone. Zone can mean multiple things to different people, it can be a region, a city, a physical location, etc.</p>
-</div>
-<div class="paragraph">
-<p>We are going to create some policies that apply to our clusters located in <code>Europe</code>. For example, all our clusters in <code>Europe</code> use the Local Storage operator to configure their storage, let&#8217;s craft that policy:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
 <li>
-<p>Create the <code>zone</code> PolicyGenTemplate for clusters in Europe:</p>
+<p>Since we are deploying DUs, we need to run the validator policies crafted by the CNF team as well:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/zone-policies/zone-europe.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/group-du-sno-validator.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
 metadata:
-  name: "zone-europe"
+  name: "du-sno-validator"
   namespace: "ztp-policies"
 spec:
   bindingRules:
-    du-zone: "europe"
-  mcp: master
-  remediationAction: inform
+    group-du-sno: ""
+    logicalGroup: "active"
+  bindingExcludedRules:
+    ztp-done: ""
+  mcp: "master"
   sourceFiles:
-    - fileName: StorageNS.yaml
-      policyName: storage-operator
-    - fileName: StorageOperGroup.yaml
-      policyName: storage-operator
-    - fileName: StorageSubscription.yaml
-      spec:
-        source: redhat-operator-index
-      policyName: storage-operator
-    - fileName: StorageOperatorStatus.yaml
-      policyName: storage-operator
+    - fileName: validatorCRs/informDuValidator.yaml
+      remediationAction: inform
+      policyName: "validation"
 EOF</code></pre>
 </div>
 </div>
@@ -859,34 +854,32 @@ EOF</code></pre>
 <p>Create the <code>sno2</code> PolicyGenTemplate for the <code>SNO2</code> cluster in our <code>5glab</code> site:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/site-policies/site-sno2.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/site-sno2.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
 metadata:
-  name: "site-sno2"
+  name: "sno2"
   namespace: "ztp-policies"
 spec:
   bindingRules:
     du-site: "sno2"
+    logicalGroup: "active"
   mcp: master
   remediationAction: inform
   sourceFiles:
-    - fileName: StorageLV.yaml
+    - fileName: StorageLVMCluster.yaml
       spec:
-        storageClassDevices:
-          - storageClassName: "lso-fs"
-            volumeMode: Filesystem
-            fsType: xfs
-            devicePaths:
-              - /dev/vdb
-      policyName: storage-configuration
-    - fileName: StorageClass.yaml
-      metadata:
-        name: lso-fs
-      policyName: storage-configuration
+        storage:
+          deviceClasses:
+            - name: vg1
+              thinPoolConfig:
+                name: thin-pool-1
+                sizePercent: 90
+                overprovisionRatio: 10
+      policyName: "site-policies"
     - fileName: PerformanceProfile.yaml
-      policyName: "performance-policy"
+      policyName: "site-policies"
       metadata:
         annotations:
           kubeletconfig.experimental: |
@@ -896,24 +889,24 @@ spec:
       spec:
         additionalKernelArgs:
         - "firmware_class.path=/var/lib/firmware/"
-        - "nohz_full=4-11"
+        - 'nohz_full={{hub fromConfigMap "" "hub1-sites-data" (printf "%s-isolated-cpus" .ManagedClusterName) hub}}'
         - "crashkernel=1024M"
         - "efi=runtime"
         cpu:
-          isolated: "4-11"
-          reserved: "0-3"
+          isolated: '{{hub fromConfigMap "" "hub1-sites-data" (printf "%s-isolated-cpus" .ManagedClusterName) hub}}'
+          reserved: '{{hub fromConfigMap "" "hub1-sites-data" (printf "%s-reserved-cpus" .ManagedClusterName) hub}}'
         hugepages:
           defaultHugepagesSize: 1G
           pages:
-          - count: 4
-            size: 1G
+          - count: '{{hub fromConfigMap "" "hub1-sites-data" (printf "%s-hugepages-count" .ManagedClusterName)|toInt hub}}'
+            size: '{{hub fromConfigMap "" "hub1-sites-data" (printf "%s-hugepages-size" .ManagedClusterName) hub}}'
         numa:
           topologyPolicy: single-numa-node
         realTimeKernel:
           enabled: false
         globallyDisableIrqLoadBalancing: false
     - fileName: TunedPerformancePatch.yaml
-      policyName: "tuned-policy"
+      policyName: "site-policies"
       spec:
         profile:
           - name: performance-patch
@@ -922,7 +915,7 @@ spec:
               summary=Configuration changes profile inherited from performance created tuned
               include=openshift-node-performance-openshift-node-performance-profile
               [bootloader]
-              cmdline_crash=nohz_full=4-11
+              cmdline_crash=nohz_full={{hub fromConfigMap "" "hub1-sites-data" (printf "%s-isolated-cpus" .ManagedClusterName) hub}}
               [sysctl]
               kernel.timer_migration=1
               [scheduler]
@@ -934,7 +927,131 @@ EOF</code></pre>
 </div>
 </div>
 </li>
+<li>
+<p>We&#8217;re using policy templating, so we need to create the <code>ConfigMap</code> with the templating values to be used:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/hub1-sites-data.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hub1-sites-data
+  namespace: ztp-policies
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=true
+data:
+  sno2-isolated-cpus: "4-11"
+  sno2-reserved-cpus: "0-3"
+  sno2-hugepages-count: "4"
+  sno2-hugepages-size: "1G"
+EOF</code></pre>
+</div>
+</div>
+</li>
 </ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="crafting-testing-policies"><a class="anchor" href="#crafting-testing-policies"></a>Crafting testing Policies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Testing policies before applying them to our production clusters is a must, in order to do that we will create a set of testing policies (which usually will be very similar to the production ones) and these policies will target clusters labeled with <code>logicalGroup: "testing"</code>. We won&#8217;t go over every file, if you check the files that will be created those are the same as in <code>production</code> but with different names and binding policies.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create the <code>common</code> testing PolicyGenTemplate for 4.12 SNOs:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/common-412.yaml
+---
+apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+  name: "common-test"
+  namespace: "ztp-policies"
+spec:
+  bindingRules:
+    common: "ocp412"
+    logicalGroup: "testing"
+  mcp: master
+  remediationAction: inform
+  sourceFiles:
+    - fileName: OperatorHub.yaml
+      policyName: config-policies
+    - fileName: DefaultCatsrc.yaml
+      metadata:
+        name: redhat-operator-index
+      spec:
+        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.12
+      policyName: config-policies
+    - fileName: ReduceMonitoringFootprint.yaml
+      policyName: config-policies
+    - fileName: StorageLVMOSubscriptionNS.yaml
+      policyName: subscription-policies
+    - fileName: StorageLVMOSubscriptionOperGroup.yaml
+      policyName: subscription-policies
+    - fileName: StorageLVMOSubscription.yaml
+      spec:
+        name: lvms-operator
+        channel: stable-4.12
+        source: redhat-operator-index
+      policyName: subscription-policies
+EOF</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Create the <code>group</code> testing PolicyGenTemplate for SNOs:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/group-du-sno.yaml
+---
+apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+  name: "du-sno-test"
+  namespace: "ztp-policies"
+spec:
+  bindingRules:
+    group-du-sno: ""
+    logicalGroup: "testing"
+  mcp: master
+  remediationAction: inform
+  sourceFiles:
+    - fileName: ConsoleOperatorDisable.yaml
+      policyName: group-policies
+    - fileName: DisableSnoNetworkDiag.yaml
+      policyName: group-policies
+EOF
+cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/group-du-sno-validator.yaml
+---
+apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+  name: "du-sno-validator-test"
+  namespace: "ztp-policies"
+spec:
+  bindingRules:
+    group-du-sno: ""
+    logicalGroup: "testing"
+  bindingExcludedRules:
+    ztp-done: ""
+  mcp: "master"
+  sourceFiles:
+    - fileName: validatorCRs/informDuValidator.yaml
+      remediationAction: inform
+      policyName: "validation"
+EOF</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>At this point policies are the same as in production, in the future you want to use testing policies before promoting changes to production.</p>
 </div>
 </div>
 </div>
@@ -942,7 +1059,7 @@ EOF</code></pre>
 <h2 id="configure-kustomization-for-policies"><a class="anchor" href="#configure-kustomization-for-policies"></a>Configure Kustomization for Policies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>We need to create the required kustomization as we did for SiteConfigs. In this case, policies also require a namespace where they will be created. Therefore, we will create the required namespace and the kustomization.</p>
+<p>We need to create the required kustomization files as we did for SiteConfigs. In this case, policies also require a namespace where they will be created. Therefore, we will create the required namespace and the kustomization files.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -970,13 +1087,53 @@ EOF</code></pre>
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-generators:
-  - common-policies/common-411.yaml
-  - group-policies/group-du-sno.yaml
-  - zone-policies/zone-europe.yaml
-  - site-policies/site-sno2.yaml
+bases:
+  - fleet/
+  - sites/
 resources:
   - policies-namespace.yaml
+EOF
+cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/sites/kustomization.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+  - hub-1/
+EOF
+cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/kustomization.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generators:
+  - site-sno2.yaml
+resources:
+  - hub1-sites-data.yaml
+EOF
+cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/kustomization.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+  - active/
+  - testing/
+EOF
+cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generators:
+  - common-412.yaml
+  - group-du-sno.yaml
+  - group-du-sno-validator.yaml
+EOF
+cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/kustomization.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generators:
+  - common-412.yaml
+  - group-du-sno.yaml
+  - group-du-sno-validator.yaml
 EOF</code></pre>
 </div>
 </div>
