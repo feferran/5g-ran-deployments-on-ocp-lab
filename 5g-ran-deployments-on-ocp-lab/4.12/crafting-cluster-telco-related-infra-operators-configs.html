@@ -1081,6 +1081,18 @@ EOF</code></pre>
 </li>
 <li>
 <p>Create the required Kustomization files</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You can see that we commented the <code>group-du-sno-validator.yaml</code> files in our Kustomization files. Since this is a lab environment and we don&#8217;t have PTP/SRIO-V hardware the validator policies won&#8217;t be able to verify our SNOs as a well-configured DU. We kept the files here so you know how a real environment should be configured.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/kustomization.yaml
@@ -1124,7 +1136,7 @@ kind: Kustomization
 generators:
   - common-412.yaml
   - group-du-sno.yaml
-  - group-du-sno-validator.yaml
+#  - group-du-sno-validator.yaml
 EOF
 cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/kustomization.yaml
 ---
@@ -1133,7 +1145,7 @@ kind: Kustomization
 generators:
   - common-412.yaml
   - group-du-sno.yaml
-  - group-du-sno-validator.yaml
+#  - group-du-sno-validator.yaml
 EOF</code></pre>
 </div>
 </div>
