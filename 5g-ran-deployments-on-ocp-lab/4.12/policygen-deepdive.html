@@ -1013,7 +1013,7 @@ Some of these configurations are configured at install time (through the use of 
 <h2 id="policies-templating"><a class="anchor" href="#policies-templating"></a>Policies Templating</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Policies templating is a bit different, we have a set of policy templates, known as source-crs, that we can use. This set of policies can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs">here</a>.</p>
+<p>Policies templating is a bit different, we have a set of policy templates, known as source-crs, that we can use. This set of policies can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/source-crs">here</a>.</p>
 </div>
 <div class="paragraph">
 <p>If you access this link you will see lots of files, like for example:</p>
@@ -1035,7 +1035,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>The way the templating works is a follows:</p>
 </div>
 <div class="paragraph">
-<p>We will have one or more PolicyGenTemplates where we will reference these policy templates. We can see an example <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/57a05afbe836e9210ad638f6abe65f72b569148a/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml">here</a>.</p>
+<p>We will have one or more PolicyGenTemplates where we will reference these policy templates. We can see an example <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml">here</a>.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s use the following PolicyGenTemplate as example.</p>
@@ -1102,7 +1102,7 @@ Inside the templates we can often see references to what may appear variables li
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/.config/kustomize/plugin
-podman cp $(podman create --name policgentool --rm quay.io/openshift-kni/ztp-site-generator:4.11):/kustomize/plugin/ran.openshift.io ~/.config/kustomize/plugin/
+podman cp $(podman create --name policgentool --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.12):/kustomize/plugin/ran.openshift.io ~/.config/kustomize/plugin/
 podman rm -f policgentool</code></pre>
 </div>
 </div>
