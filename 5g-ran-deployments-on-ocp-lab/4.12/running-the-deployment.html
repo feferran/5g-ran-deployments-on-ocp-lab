@@ -725,7 +725,7 @@ podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:844
 <p>Login into the hub cluster</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig login -u admin -p admin <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig login -u admin -p admin <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a> --insecure-skip-tls-verify=true</code></pre>
 </div>
 </div>
 </li>
@@ -757,6 +757,14 @@ sed -i "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
 sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Allow <code>ClusterImageSet</code> resource to the list of allowed resources</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "/clusterResourceWhitelist:/a \ \ - group: \'hive.openshift.io\'\n \ \ \ kind: ClusterImageSet" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/app-project.yaml</code></pre>
 </div>
 </div>
 </li>
