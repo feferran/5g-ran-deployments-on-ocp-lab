@@ -723,63 +723,95 @@ podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:844
 <ol class="arabic">
 <li>
 <p>Login into the hub cluster</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Use the OpenShift admin password provided in the e-mail you received when the lab was ready.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig login -u admin -p admin <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a> --insecure-skip-tls-verify=true</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig login -u admin -p &lt;admin_password&gt; <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a> --insecure-skip-tls-verify=true</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p>Modify the ZTP GitOps Pipeline configuration to match our environment configuration</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Change the repository url for the two ArgoApps</p>
+<div class="paragraph">
+<p>+
+. Modify the ZTP GitOps Pipeline configuration to match our environment configuration</p>
+</div>
+<div class="paragraph">
+<p>+
+.. Change the repository url for the two ArgoApps</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|repoURL: .*|repoURL: <a href="http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"" class="bare">http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"</a> ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
 sed -i "s|repoURL: .*|repoURL: <a href="http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"" class="bare">http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"</a> ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p>Change the repository path for the two ArgoApps</p>
+<div class="paragraph">
+<p>+
+.. Change the repository path for the two ArgoApps</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|path: .*|path: site-configs|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
 sed -i "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p>Change the repository branch for the two ArgoApps</p>
+<div class="paragraph">
+<p>+
+.. Change the repository branch for the two ArgoApps</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
 sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
 </div>
 </div>
-</li>
-<li>
-<p>Allow <code>ClusterImageSet</code> resource to the list of allowed resources</p>
+<div class="paragraph">
+<p>+
+.. Allow <code>ClusterImageSet</code> resource to the list of allowed resources</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "/clusterResourceWhitelist:/a \ \ - group: \'hive.openshift.io\'\n \ \ \ kind: ClusterImageSet" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/app-project.yaml</code></pre>
 </div>
 </div>
-</li>
-</ol>
+<div class="paragraph">
+<p>+
+. Apply the ZTP GitOps Pipeline configuration</p>
 </div>
-</li>
-<li>
-<p>Apply the ZTP GitOps Pipeline configuration</p>
+<div class="paragraph">
+<p>+</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/</code></pre>
 </div>
-</div>
-</li>
-</ol>
 </div>
 </div>
 </div>

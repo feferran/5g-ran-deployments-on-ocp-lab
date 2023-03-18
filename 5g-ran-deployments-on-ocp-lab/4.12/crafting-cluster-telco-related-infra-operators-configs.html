@@ -957,7 +957,7 @@ EOF</code></pre>
 <h2 id="crafting-testing-policies"><a class="anchor" href="#crafting-testing-policies"></a>Crafting testing Policies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Testing policies before applying them to our production clusters is a must, in order to do that we will create a set of testing policies (which usually will be very similar to the production ones) and these policies will target clusters labeled with <code>logicalGroup: "testing"</code>. We won&#8217;t go over every file, if you check the files that will be created those are the same as in <code>production</code> but with different names and binding policies.</p>
+<p>Testing policies before applying them to our production clusters is a must, in order to do that we will create a set of testing policies (which usually will be very similar to the production ones) and these policies will target clusters labeled with <code>logicalGroup: "testing"</code>. We won&#8217;t go over every file, if you check the files that will be created those are the same as in <code>active</code>, also known as <code>production</code>, but with different names and binding policies.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -1051,7 +1051,7 @@ EOF</code></pre>
 </ol>
 </div>
 <div class="paragraph">
-<p>At this point policies are the same as in production, in the future you want to use testing policies before promoting changes to production.</p>
+<p>At this point, policies are the same as in production (active). In the future, you prior want to apply these groups of testing policies for the clusters running in your test environment before promoting changes to production (active).</p>
 </div>
 </div>
 </div>
