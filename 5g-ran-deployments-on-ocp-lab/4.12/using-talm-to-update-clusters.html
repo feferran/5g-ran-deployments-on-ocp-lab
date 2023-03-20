@@ -783,7 +783,7 @@ ztp-install   sno2   3h29m   Completed   All clusters are compliant with all the
 <h2 id="getting-snos-kubeconfigs"><a class="anchor" href="#getting-snos-kubeconfigs"></a>Getting the SNO clusters kubeconfigs</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the previous sections we have deployed the <code>sno2</code> cluster and attached the <code>sno1</code> cluster. Before we continue with TALM, let&#8217;s grab the kubeconfigs for both cluster since we will need them for the next sections. The following commands need to be only executed in the hypervisor as the root user.</p>
+<p>In the previous sections we have deployed the <code>sno2</code> cluster and attached the <code>sno1</code> cluster. Before we continue with TALM, let&#8217;s grab the kubeconfigs for both cluster since we will need them for the next sections.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -852,7 +852,7 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-snos-upgrade-version-412-5 has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That&#8217;s because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule.</p>
+<p>Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named <code>europe-snos-upgrade-version-412-5</code> has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That&#8217;s because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1177,7 +1177,7 @@ node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h7m   v1.2
 </div>
 </div>
 <div class="paragraph">
-<p>Meanwhile, the clusters are upgrading we can take a look at the <a href="https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/governance/policies">multicloud console</a> and see that there is a new policy in enforce mode</p>
+<p>Meanwhile, the clusters are upgrading we can take a look at the <a href="https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/governance/policies">multicloud console</a> and see that there is a new policy in enforce mode:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1185,7 +1185,7 @@ node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h7m   v1.2
 </div>
 </div>
 <div class="paragraph">
-<p>Moving to the Infrastructure &#8594; Cluster section of the multicloud console we can also graphically see the upgrading of both clusters</p>
+<p>Moving to the Infrastructure &#8594; Cluster section of the multicloud console we can also graphically see the upgrading of both clusters:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1224,7 +1224,10 @@ node/openshift-master-0   Ready    control-plane,master,worker   18h   v1.25.4+a
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that now the upgrade policy (europe-snos-upgrade-version-412-5) is now compliant on both clusters. See that, in order to save resources, the enforce policy is removed once the CGU is successfully applied. And finally, the CGU will be <code>Completed</code>:</p>
+<p>Notice that now the upgrade policy <code>europe-snos-upgrade-version-412-5</code> is now compliant on both clusters. See that, in order to save resources, the enforce policy is removed once the CGU is successfully applied.</p>
+</div>
+<div class="paragraph">
+<p>And finally, the CGU will be <code>Completed</code>:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
