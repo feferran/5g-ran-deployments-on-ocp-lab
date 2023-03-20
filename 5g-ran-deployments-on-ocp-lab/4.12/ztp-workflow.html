@@ -687,7 +687,7 @@ The workflow does not need any intervention, so ZTP automatically will configure
 </table>
 </div>
 <div class="paragraph">
-<p>The workflow is officially started by creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is described in a custom resource called <code>siteConfig</code>. See that in a disconnected environment, there is a need for a container registry to deliver the OpenShift container images required for the installation. This task can be achieved by using <a href="https://docs.openshift.com/container-platform/latest/installing/disconnected_install/installing-mirroring-disconnected.html">oc-mirror</a>. More information about disconnected environments can be found in <a href="deployment-considerations.html#disconnected-environments">Deployment Considerations section</a>.</p>
+<p>The workflow is officially started by creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is described in a custom resource called <code>SiteConfig</code>. See that in a disconnected environment, there is a need for a container registry to deliver the OpenShift container images required for the installation. This task can be achieved by using <a href="https://docs.openshift.com/container-platform/4.12/installing/disconnected_install/installing-mirroring-disconnected.html">oc-mirror</a>. More information about disconnected environments can be found in <a href="deployment-considerations.html#disconnected-environments">Deployment Considerations section</a>.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -696,7 +696,7 @@ The workflow does not need any intervention, so ZTP automatically will configure
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Depending on your specific environment, you might need a couple of extra services such as DHCP, DNS, NTP or HTTP. The latest will be needed for downloading the RHCOS live ISO and the rootfs image locally instead of the default <a href="http://mirror.openshift.com" class="bare">http://mirror.openshift.com</a>.
+Depending on your specific environment, you might need a couple of extra services such as DHCP, DNS, NTP or HTTP. The latest will be needed for downloading the RHCOS live ISO and the RootFS image locally instead of the default <a href="http://mirror.openshift.com" class="bare">http://mirror.openshift.com</a>.
 </td>
 </tr>
 </table>
@@ -710,7 +710,7 @@ Depending on your specific environment, you might need a couple of extra service
 </div>
 </div>
 <div class="paragraph">
-<p>Argo CD pulls the siteConfig and uses a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin">siteconfig-generator</a> to transform it into custom resources that are understood by the hub cluster (RHACM/MCE). A siteConfig contains all the necessary information to provision your node or nodes. Basically, it will create ISO images with the defined configuration that are delivered to the edge nodes to begin the installation process. The images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you keep up with requirements from the field for far edge nodes.</p>
+<p>Argo CD pulls the SiteConfig and uses a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/siteconfig-generator-kustomize-plugin">siteconfig-generator</a> to transform it into custom resources that are understood by the hub cluster (RHACM/MCE). A SiteConfig contains all the necessary information to provision your node or nodes. Basically, it will create ISO images with the defined configuration that are delivered to the edge nodes to begin the installation process. The images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you keep up with requirements from the field for far edge nodes.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -725,7 +725,7 @@ On telco use cases, clusters are mainly running on baremetal hosts. Therefore, t
 </table>
 </div>
 <div class="paragraph">
-<p>In the picture, these resulting manifests are called Cluster Installation CRs, but you can find them detailed in the previous <a href="ztp-at-scale.html#sitegen">siteGen section</a>. Finally, the provisioning process starts.</p>
+<p>In the picture, these resulting manifests are called Cluster Installation CRs, but you can find them detailed in the previous <a href="ztp-at-scale.html#sitegen">SiteGen section</a>. Finally, the provisioning process starts.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -753,7 +753,7 @@ Notice, in the picture, how ZTP allows us to provision clusters at scale.
 </div>
 </div>
 <div class="paragraph">
-<p>Once the clusters are provisioned, the day-2 configuration defined in one or multiple <code>PolicyGenTemplate</code> (PGTs) custom resources will be automatically applied. <code>PolicyGenTemplate</code> custom resource is understood by the ZTP using a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin">policy-generator</a>. In RAN DU nodes, this configuration includes the installation of the common telco operators, common configuration for RAN and specific configuration (SR-IOV or performance settings) for each site since it is very dependent on the hardware.</p>
+<p>Once the clusters are provisioned, the day-2 configuration defined in one or multiple <code>PolicyGenTemplate</code> (PGTs) custom resources will be automatically applied. <code>PolicyGenTemplate</code> custom resource is understood by the ZTP using a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/policygenerator-kustomize-plugin">policy-generator</a>. In RAN DU nodes, this configuration includes the installation of the common telco operators, common configuration for RAN and specific configuration (SR-IOV or performance settings) for each site since it is very dependent on the hardware.</p>
 </div>
 <div class="imageblock">
 <div class="content">

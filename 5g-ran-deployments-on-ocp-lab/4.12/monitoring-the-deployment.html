@@ -686,7 +686,7 @@
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-It may take a while for the installation to start, wait at least 10 minutes if you see <code>The cluster is not ready for installation</code> message.
+It may take a while for the installation to start, wait at least 10 minutes if you see <code>The cluster is not ready for installation</code> message or the <code>SNO2</code> cluster shows up as <code>draft</code>.
 </td>
 </tr>
 </table>
@@ -697,7 +697,15 @@ It may take a while for the installation to start, wait at least 10 minutes if y
 <p>Access the <a href="https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome">RHACM WebUI</a> and login with the OpenShift credentials.</p>
 </li>
 <li>
-<p>Once you&#8217;re in, click on <code>Infrastructure</code> &#8594; <code>Clusters</code>. You will see a screen like the one below:</p>
+<p>Once you&#8217;re in, click on <code>Infrastructure</code> &#8594; <code>Clusters</code>. You will see a screen like the one below if the deployment has not yet started:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/acm-clusterview-draft.png" alt="RHACM Cluster View Draft">
+</div>
+</div>
+</li>
+<li>
+<p>Eventually, the <code>SNO2</code> cluster will start its deployment:</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/acm-clusterview.png" alt="RHACM Cluster View">

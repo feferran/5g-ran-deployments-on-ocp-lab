@@ -814,7 +814,7 @@ TALM will basically enforce all existing policies targeting a cluster that has n
 <h2 id="waves"><a class="anchor" href="#waves"></a>Waves</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every <a href="policygen-deepdive.html#policies-templating">policy</a> generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/master/ztp/source-crs/SriovSubscriptionNS.yaml">SriovSubscriptionNS.yaml</a>:</p>
+<p>A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every <a href="policygen-deepdive.html#policies-templating">policy</a> generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovSubscriptionNS.yaml">SriovSubscriptionNS.yaml</a>:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -849,7 +849,7 @@ Detailed information on policy templates can be found in the following <a href="
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate. Default ztp-deploy-wave value can be found on the proper <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/source-crs">source crs</a>.
+All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate. Default ztp-deploy-wave value can be found on the proper <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/source-crs">source crs</a>.
 </td>
 </tr>
 </table>
@@ -875,21 +875,21 @@ All CRs in the same policy must have the same setting for the ztp-deploy-wave an
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
 metadata:
-  name: du-upgrade-41018
-  namespace: ztp-group-du-sno
+  name: du-upgrade-41018
+  namespace: ztp-group-du-sno
 spec:
-  preCaching: true #precache configuration
+  preCaching: true #precache configuration
   backup: true
-  deleteObjectsOnCompletion: true
-  clusters:
-  - cnfdb1
-  - cnfdb2
-  enable: false #precache only
-  managedPolicies:
-  - du-upgrade-platform-upgrade
-  remediationStrategy:
-    maxConcurrency: 2
-    timeout: 240</code></pre>
+  deleteObjectsOnCompletion: true
+  clusters:
+  - cnfdb1
+  - cnfdb2
+  enable: false #precache only
+  managedPolicies:
+  - du-upgrade-platform-upgrade
+  remediationStrategy:
+    maxConcurrency: 2
+    timeout: 240</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -974,13 +974,13 @@ spec:
 <p>The backup workload generates a utility called <code>upgrade-recovery.sh</code> in the recovery partition or at the recovery folder at <code>/var/recovery</code> and takes the pre-upgrade backup. In addition, the active OS deployment is pinned using ostree and the standby deployments are removed.</p>
 </div>
 <div class="paragraph">
-<p>In case, the upgrade failed in a manaaged cluster, the TALM CGU needs to be deleted in the hub cluster and an admin needs to log in to the spoke cluster to start the recovery process. The process is detailed in the <a href="https://github.com/openshift-kni/cluster-group-upgrades-operator/tree/main/docs/backup-recovery#recovery-from-upgrade-failure">Recovery from Upgrade failure</a> documentation.</p>
+<p>In case, the upgrade failed in a managed cluster, the TALM CGU needs to be deleted in the hub cluster and an admin needs to log in to the spoke cluster to start the recovery process. The process is detailed in the <a href="https://github.com/openshift-kni/cluster-group-upgrades-operator/tree/main/docs/backup-recovery#recovery-from-upgrade-failure">Recovery from Upgrade failure</a> documentation.</p>
 </div>
 <div class="paragraph">
 <p>A more in-detail explanation of the Backup &amp; Recovery is covered in this <a href="https://videos.learning.redhat.com/media/Upgrade%2C+backup+and+recovery+with+TALO/1_27k8gb8m/253048913">training material</a>: "Upgrade, backup and recover your cluster with TALM" recording.</p>
 </div>
 <div class="paragraph">
-<p>[1] You can read more about it <a href="https://docs.openshift.com/container-platform/latest/scalability_and_performance/cnf-talm-for-cluster-upgrades.html">here</a>.</p>
+<p>You can read more about it <a href="https://docs.openshift.com/container-platform/latest/scalability_and_performance/cnf-talm-for-cluster-upgrades.html">here</a> and <a href="https://videos.learning.redhat.com/media/Using+TALO+to+perform+OCP+upgrades+via+RHACM/1_ozf040n9/253048913">here</a>.</p>
 </div>
 </div>
 </div>
