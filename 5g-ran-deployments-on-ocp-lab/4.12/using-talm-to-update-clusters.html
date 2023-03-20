@@ -672,10 +672,22 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this section we will perform a platform upgrade to both managed clusters using the pre-cache and backup feature implemented in the Topology Aware Lifecycle Manager (TALM) operator. The pre-cache feature prepares the maintenance operation in the managed clusters by pulling the required artifacts prior to the upgrade. The reasoning behind this feature is that SNO spoke clusters may have limited bandwidth to the container registry, which will make it difficult for the upgrade to complete within the required time. In order to ensure the upgrade can fit within the maintenance window, the required artifacts need to be present on the spoke cluster prior to the upgrade. The idea is pre-caching all the images needed for the platform and operator upgrade on the node, so they are not pulled at upgrade time. Do it in a maintenance window(s) before the upgrade maintenance window.</p>
+<p>In this section, we will perform a platform upgrade to both managed clusters using the pre-cache and backup feature implemented in the Topology Aware Lifecycle Manager (TALM) operator. The pre-cache feature prepares the maintenance operation in the managed clusters by pulling the required artifacts prior to the upgrade. The reasoning behind this feature is that SNO spoke clusters may have limited bandwidth to the container registry, which will make it difficult for the upgrade to complete within the required time. In order to ensure the upgrade can fit within the maintenance window, the required artifacts need to be present on the spoke cluster prior to the upgrade. The idea is pre-caching all the images needed for the platform and operator upgrade on the node, so they are not pulled at upgrade time. Do it in a maintenance window(s) before the upgrade maintenance window.</p>
 </div>
 <div class="paragraph">
 <p>The backup feature, on the other hand, implements a procedure for rapid recovery of a SNO in the event of a failed upgrade that is unrecoverable. The SNO needs to be restored to a working state with the previous version of OCP without requiring a re-provision of the application(s).</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The backup feature only allows SNOs to be restored, this is not applicable to any other kind of OpenShift clusters.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s upgrade our both clusters. First of all, let&#8217;s verify the TALM operator is running in our <strong>hub cluster</strong>:</p>
@@ -740,7 +752,7 @@ deployment.apps/gitops-operator-controller-manager          1/1     1           
 </div>
 </div>
 <div class="paragraph">
-<p>Finally, let&#8217;s take a look at the cluster group upgrade (CGU) CRD managed by TALM. If we pay a closer look we will notice that an already completed CGU was applied to SNO2. As we mentioned in <a href="talm.html#inform-policies">inform policies</a> section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.</p>
+<p>Finally, let&#8217;s take a look at the cluster group upgrade (CGU) CRD managed by TALM. If we pay a closer look we will notice that an already completed CGU was applied to SNO2. As we mentioned in <a href="talm.html#inform-policies">inform policies</a> section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP, we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -771,12 +783,24 @@ ztp-install   sno2   3h29m   Completed   All clusters are compliant with all the
 <h2 id="getting-snos-kubeconfigs"><a class="anchor" href="#getting-snos-kubeconfigs"></a>Getting the SNO clusters kubeconfigs</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the previous sections we have deployed the <code>sno2</code> cluster and attached the <code>sno1</code> cluster. Before we continue with TALM, let&#8217;s grab the kubeconfigs for both cluster since we will need them for the next sections.</p>
+<p>In the previous sections we have deployed the <code>sno2</code> cluster and attached the <code>sno1</code> cluster. Before we continue with TALM, let&#8217;s grab the kubeconfigs for both cluster since we will need them for the next sections. The following commands need to be only executed in the hypervisor as the root user.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Be sure you are executing the following commands after becoming root in the hypervisor. Notice that when becoming root you can connect to the hub cluster using the <code>oc</code> binary.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno1 extract secret/sno1-admin-kubeconfig --to=- &gt; ~/5g-deployment-lab/sno1-kubeconfig
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 extract secret/sno2-admin-kubeconfig --to=- &gt; ~/5g-deployment-lab/sno2-kubeconfig</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno1 extract secret/sno1-admin-kubeconfig --to=- &gt; ~/sno1-kubeconfig
+oc --kubeconfig ~/hub-kubeconfig -n sno2 extract secret/sno2-admin-kubeconfig --to=- &gt; ~/sno2-kubeconfig</code></pre>
 </div>
 </div>
 </div>
@@ -840,7 +864,19 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-snos-upgrade-version-412-5 has a violation. However, only one. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That&#8217;s because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule.</p>
+<p>Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-snos-upgrade-version-412-5 has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That&#8217;s because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Notice in the following picture that there are policies not applying to any cluster. Those are policies targeting the test environment. This is expected since we do not have any clusters in the test environment, e.g, no clusters are labeled with the proper label for testing: logicalGroup=test.
+</td>
+</tr>
+</table>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -848,7 +884,7 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s add the proper labels to SNO1:</p>
+<p>Let&#8217;s add the proper labels to production cluster SNO1:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -866,7 +902,7 @@ git push origin main</code></pre>
 <h2 id="upgrade-cgu-creation"><a class="anchor" href="#upgrade-cgu-creation"></a>Applying the upgrade</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>At this point we need to create a CGU resource that will start the upgrade process. In our case, the process will be divided into two stages:</p>
+<p>At this point, we need to create a Cluster Group Upgrade (CGU) resource that will start the upgrade process. In our case, the process will be divided into two stages:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -881,7 +917,7 @@ git push origin main</code></pre>
 <div class="sect2">
 <h3 id="talm-backup-precache"><a class="anchor" href="#talm-backup-precache"></a>Backup and pre-cache</h3>
 <div class="paragraph">
-<p>Let&#8217;s create the CGU. In this case, we will apply the managed policy (europe-snos-upgrade-version-412-5) to both clusters at the same time (maxConcurrency is 2). Notice that the CGU is disabled, this is suggested if we are going to run the precaching feature. This means, that once the precaching process is done we are ready to start the upgrade process. This idea is related to the compliance of a maintenance window in an enterprise.</p>
+<p>Let&#8217;s create the CGU. In this case, we will apply the managed policy (europe-snos-upgrade-version-412-5) to both clusters at the same time (maxConcurrency is 2). Notice that the CGU is disabled, this is suggested if we are going to run the precaching feature. This means, that once the precaching process is done we are ready to start the upgrade process by enabling the CGU. This idea is related to the compliance of a maintenance window in an enterprise.</p>
 </div>
 <div class="paragraph">
 <p>Remember that several gigabytes of artifacts needs to be downloaded to the spoke for a full upgrade. SNO spoke clusters may have limited bandwidth to the hub cluster hosting the registry, which will make it difficult for the upgrade to complete within the required time. In order to ensure the upgrade can fit within the maintenance window, the required artifacts need to be present on the spoke cluster prior to the upgrade. Therefore, the process is split up into two stages as mentioned.</p>
@@ -906,7 +942,6 @@ metadata:
 spec:
   preCaching: true
   backup: true
-  deleteObjectsOnCompletion: false
   clusters:
   - sno1
   - sno2
@@ -924,7 +959,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get cgu -A</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -944,14 +979,14 @@ ztp-policies   update-europe-snos   10s     PrecacheSpecIsWellFormed   Precachin
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Pre-cache job can take up to 5m to be created.
+Be sure you are executing the following commands in the hypervisor. Notice that pre-cache job can take up to 5m to be created.
 </td>
 </tr>
 </table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig -n openshift-talo-pre-cache get job pre-cache</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno2-kubeconfig -n openshift-talo-pre-cache get job pre-cache</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -965,14 +1000,14 @@ pre-cache   0/1           64s        64s</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/pre-cache -n openshift-talo-pre-cache</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno2-kubeconfig logs job/pre-cache -n openshift-talo-pre-cache -f</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Release index image processing done
 58ff6e48f95bf6b444150290f481ad6fc6051e76defccf3611bdc2f9ddc1cccc
-upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Operators index is not specified. Operators won't be pre-cached
+upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Operators index is not specified. Operators will not be pre-cached
 upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:006e37a1f141eb219364a501767fb4a26210908385eef9576af00b55d8225ecb [1/183]
 upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:01b510f238c0a8ad44df44d4aba3d0d2cfa429153ce3f451095484815f5746fd [2/183]
 upgrades.pre-cache 2023-03-16T12:59:11+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:02c9c2a2ef5941156a767d40abe900a669a8237a8444a3974b360c326a21ffc3 [3/183]
@@ -1001,7 +1036,12 @@ It can take up to 5 minutes for the CGU to report the new state.
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">WARNING: The following commands are executed from the workstation.</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A</pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -1015,7 +1055,7 @@ ztp-policies   update-europe-snos   20m   NotEnabled   Not enabled</code></pre>
 <div class="sect2">
 <h3 id="talm-upgrade"><a class="anchor" href="#talm-upgrade"></a>Triggering the upgrade</h3>
 <div class="paragraph">
-<p>Now that the pre-cache is ready, we can trigger the update. As we said earlier, before the update is actually executed a backup will be done so we can rollback. In order to trigger the update we need to enable the CGU:</p>
+<p>Now that the pre-cache is done, we can trigger the update. As we said earlier, before the update is actually executed a backup will be done so we can rollback. In order to trigger the update we need to enable the CGU:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1047,14 +1087,14 @@ ztp-policies   update-europe-snos   25m    InProgress   Backup in progress for 2
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Backup job can take up to 5m to be created.
+Be sure you are executing the following commands in the hypervisor. Notice that backup job can take up to 5m to be created.
 </td>
 </tr>
 </table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig get jobs -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1-kubeconfig get jobs -A</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -1074,7 +1114,7 @@ openshift-talo-pre-cache               pre-cache                                
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/backup-agent -n openshift-talo-backup</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno2-kubeconfig logs job/backup-agent -n openshift-talo-backup -f</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -1124,6 +1164,18 @@ INFO[0023] backup has successfully finished ...</code></pre>
 <div class="paragraph">
 <p>Once backups are finished for all clusters, the CGU state will move to <code>BackupCompleted</code>:</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The following command is executed from your laptop or workstation.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A</code></pre>
@@ -1139,9 +1191,21 @@ ztp-policies   update-europe-snos   28m    BackupCompleted   Backup is completed
 <div class="paragraph">
 <p>At this point, if we connect to any of our spoke clusters we can see that the upgrade process is actually taking place.</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Be sure you are executing the following commands in the hypervisor.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno2-kubeconfig get clusterversion,nodes</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -1174,7 +1238,7 @@ node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h7m   v1.2
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno2-kubeconfig get clusterversion,nodes</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -1188,7 +1252,7 @@ node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h56m   v1.
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig get clusterversion,nodes</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1-kubeconfig get clusterversion,nodes</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -1201,7 +1265,19 @@ node/openshift-master-0   Ready    control-plane,master,worker   18h   v1.25.4+a
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that now the upgrade policy (europe-snos-upgrade-version-412-5) is now compliant on both clusters. See that the enforce policy is removed once the CGU is successfully applied. And finally, the CGU will be <code>Completed</code>:</p>
+<p>Notice that now the upgrade policy (europe-snos-upgrade-version-412-5) is now compliant on both clusters. See that, in order to save resources, the enforce policy is removed once the CGU is successfully applied. And finally, the CGU will be <code>Completed</code>:</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The following command is executed from your laptop or workstation.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
