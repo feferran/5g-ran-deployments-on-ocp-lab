@@ -698,6 +698,17 @@
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>These are the steps to install the required packages on a RHEL 8 (or similar) server:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum -y install libvirt libvirt-daemon-driver-qemu qemu-kvm
+usermod -aG qemu,libvirt $(id -un)
+newgrp libvirt
+systemctl enable --now libvirtd</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -735,7 +746,7 @@ Below commands must be executed from the hypervisor host as root if not specifie
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y copr enable karmab/kcli
-dnf -y install kcli bash-completion vim jq tar</code></pre>
+dnf -y install kcli bash-completion vim jq tar git ipcalc</code></pre>
 </div>
 </div>
 </div>
@@ -871,6 +882,18 @@ systemctl enable podman-gitea --now
 podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email <a href="mailto:student@5g-deployment.lab">student@5g-deployment.lab</a> --must-change-password=false --admin'
 curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' <a href="http://infra.5g-deployment.lab:3000/api/v1/repos/migrate" class="bare">http://infra.5g-deployment.lab:3000/api/v1/repos/migrate</a></code></pre>
 </div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+It could be possible that the last two commands do not work at the first time since the registry container image is being pulled and then started. If that&#8217;s the case, try them once again after a couple of seconds.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
