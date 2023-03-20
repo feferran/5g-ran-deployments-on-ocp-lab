@@ -805,7 +805,7 @@ iptables -F</code></pre>
 <h3 id="configure-webcache"><a class="anchor" href="#configure-webcache"></a>Configure Webcache</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{{" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{{</a> lab_version }}/lab-materials/lab-env-data/webcache/podman-webcache.service -o /etc/systemd/system/podman-webcache.service
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.12/lab-materials/lab-env-data/webcache/podman-webcache.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.12/lab-materials/lab-env-data/webcache/podman-webcache.service</a> -o /etc/systemd/system/podman-webcache.service
 mkdir -p /opt/webcache/data
 curl -L <a href="https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.12/4.12.3/rhcos-4.12.3-x86_64-live-rootfs.x86_64.img" class="bare">https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.12/4.12.3/rhcos-4.12.3-x86_64-live-rootfs.x86_64.img</a> -o /opt/webcache/data/rhcos-4.12.3-x86_64-live-rootfs.x86_64.img
 curl -L <a href="https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.12/4.12.3/rhcos-4.12.3-x86_64-live.x86_64.iso" class="bare">https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.12/4.12.3/rhcos-4.12.3-x86_64-live.x86_64.iso</a> -o /opt/webcache/data/rhcos-4.12.3-x86_64-live.x86_64.iso
